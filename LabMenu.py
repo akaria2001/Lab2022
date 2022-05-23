@@ -2,6 +2,7 @@ import subprocess as cmd
 import time
 import getpass
 import platform
+import argparse
 
 """
 Useful Links I referenced when writing this script
@@ -62,8 +63,25 @@ def grab_os():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--debug', required=False, help="Show debugging", action='store_true')
+    args = parser.parse_args()
+    debug = args.debug
+    cmd.call("clear", shell=False)
+
+    if(debug):
+       print_blue("Debugging is enabled")
+       print_blue(type(args))
+       print_blue(args)
+       print_blue(debug)
+       time.sleep(3)
+    else:
+        print_yellow("Debugging is not enabled")
+        time.sleep(1)
+    
     cmd.call("clear", shell=False)
     time.sleep(1)
+    
     while(True):
         print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
         print_green(r"""
@@ -76,8 +94,10 @@ def main():
 \___)=(___/
 
        """)
-        print_blue(f"OS Version: {grab_os()}")
-        print_blue(f"Python Version: {platform.python_version()}\n")
+        if(debug):
+            print_blue(f"OS Version: {grab_os()}")
+            print_blue(f"Python Version: {platform.python_version()}\n")
+        
         for menu_item in generate_menu():
             print_green(f"{menu_item[0]}:\t{menu_item[1]}")
         print_red("0:\tExit Application")
