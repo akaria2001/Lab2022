@@ -1,3 +1,4 @@
+#!/bin/python3
 import subprocess as cmd
 import time
 import getpass
@@ -44,7 +45,7 @@ def generate_menu():
                   [4, 'Show System Usage using glances', 'glances'],
                   [5, 'Show current lab (qemu vm and lxc container machines)', 'lxc list'],
                   [6, 'Spin Up Sample Lab', '/home/akaria/bin/spinUpSampleLab.sh'],
-                  [7, 'Destroy Lab', '/home/akaria/bin/destroyLab.sh'],
+                  [7, 'Destroy Lab', '/home/akaria/bin/destroyLab.py'],
                   [8, 'Show Hardware Information', 'sudo lshw'],
                   [9, 'Show Uptime and Load Average', 'uptime'],
                   [10, 'Show contents of current directory', 'ls -la']]

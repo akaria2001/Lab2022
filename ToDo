@@ -1,0 +1,2 @@
+1) Refactor destroyLab.py to use pure Python and not shell out
+2) Refact spinUpSampleLab.sh to spinUpSampleLab.py and use pure Python
