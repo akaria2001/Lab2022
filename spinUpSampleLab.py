@@ -44,7 +44,6 @@ def lab_status():
 def createLab(debug):
     print_yellow("Current Lab Status")
     lab_status()
-    lab_status()
     confirmation = user_input()
     print_green(f"You entered {confirmation}")
 
@@ -62,12 +61,12 @@ def createLab(debug):
                         print_yellow(f"Creating {instanceType}:{osType}:{number}")
                         if(osType == "Rocky 8 Linux"):
                             command = f"lxc launch images:rockylinux/8 rocky-container-{number}"
-                            print(f"Command to be run : {command}")
+                            print_blue(f"Command to be run : {command}")
                             cmd.call(command.split(), shell=False)
                             time.sleep(5)
                         else:
                             command = f"lxc launch ubuntu:22.04 ubuntu-container-{number}"
-                            print(f"Command to be run : {command}")
+                            print_blue(f"Command to be run : {command}")
                             cmd.call(command.split(), shell=False)
                             time.sleep(5)                           
                 else:
@@ -75,12 +74,12 @@ def createLab(debug):
                         print_yellow(f"Creating {instanceType}:{osType}:{number}")
                         if(osType == "Rocky 8 Linux"):
                             command = f"lxc launch images:rockylinux/8 rocky-vm-{number} --vm"
-                            print(f"Command to be run : {command}")
+                            print_blue(f"Command to be run : {command}")
                             cmd.call(command.split(), shell=False)
                             time.sleep(10)
                         else:
                             command = f"lxc launch ubuntu:22.04 ubuntu-vm-{number} --vm"
-                            print(f"Command to be run : {command}")
+                            print_blue(f"Command to be run : {command}")
                             cmd.call(command.split(), shell=False)
                             time.sleep(10)                           
 

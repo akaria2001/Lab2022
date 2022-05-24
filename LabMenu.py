@@ -39,7 +39,7 @@ def print_blue(text):
 
 
 def generate_menu():
-    menu_items = [[1, 'OS Upgrade', 'sudo dnf update -y'],
+    menu_items = [[1, 'OS Upgrade', '/home/akaria/bin/os_update.sh'],
                   [2, 'Show System Information', 'neofetch'],
                   [3, 'Show System Usage using bashtop', 'bashtop'],
                   [4, 'Show System Usage using glances', 'glances'],
