@@ -4,39 +4,11 @@ import time
 import getpass
 import platform
 import argparse
-
-"""
-Useful Links I referenced when writing this script
-Printing Coloured text
-https://stackabuse.com/how-to-print-colored-text-in-python/
-Sub Process to call external commands
-https://docs.python.org/3/library/subprocess.html
-www.it-howto.co.uk
-For option detect OS and then run the correct command to update OS
-rhel, zorin, ubuntu, rocky
-"""
-
+import print_colours
 
 def generate_username():
     username = getpass.getuser()
     return username
-
-
-def print_yellow(text):
-    print(f'\033[1;33m{text}\033[0;0m')
-
-
-def print_red(text):
-    print(f'\033[1;31m{text}\033[0;0m')
-
-
-def print_green(text):
-    print(f'\033[1;32m{text}\033[0;0m')
-
-
-def print_blue(text):
-    print(f'\033[1;34m{text}\033[0;0m')
-
 
 def generate_menu():
     menu_items = [[1, 'OS Upgrade', '/home/akaria/bin/os_update.sh'],
@@ -58,7 +30,7 @@ def grab_os():
         with open("/etc/lsb-release") as file:
             osversion = file.read()
     except FileNotFoundError:
-        print_red("Unable to detect OS Version")
+        print_colours.print_red("Unable to detect OS Version")
         next
     return osversion.strip()
 
@@ -71,21 +43,21 @@ def main():
     cmd.call("clear", shell=False)
 
     if(debug):
-       print_blue("Debugging is enabled")
-       print_blue(type(args))
-       print_blue(args)
-       print_blue(debug)
+       print_colours.print_blue("Debugging is enabled")
+       print_colours.print_blue(type(args))
+       print_colours.print_blue(args)
+       print_colours.print_blue(debug)
        time.sleep(3)
     else:
-        print_yellow("Debugging is not enabled")
+        print_colours.print_yellow("Debugging is not enabled")
         time.sleep(1)
     
     cmd.call("clear", shell=False)
     time.sleep(1)
     
     while(True):
-        print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
-        print_green(r"""
+        print_colours.print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
+        print_colours.print_green(r"""
     .--.
    |o_o |
    |:_/ |
@@ -96,24 +68,24 @@ def main():
 
        """)
         if(debug):
-            print_blue(f"OS Version: {grab_os()}")
-            print_blue(f"Python Version: {platform.python_version()}\n")
+            print_colours.print_blue(f"OS Version: {grab_os()}")
+            print_colours.print_blue(f"Python Version: {platform.python_version()}\n")
         
         for menu_item in generate_menu():
-            print_green(f"{menu_item[0]}:\t{menu_item[1]}")
-        print_red("0:\tExit Application")
+            print_colours.print_green(f"{menu_item[0]}:\t{menu_item[1]}")
+        print_colours.print_red("0:\tExit Application")
         try:
             user_choice = int(input("Please select option : "))
         except ValueError:
-            print_red("Please enter a valid choice")
+            print_colours.print_red("Please enter a valid choice")
         if user_choice == 0:
             cmd.call("clear", shell=False)
             exit()
         else:
             for choice in generate_menu():
                 if(user_choice == choice[0]):
-                    print_blue(f"You have chosen : {choice[1]}")
-                    print_blue(f"Will run command : '{choice[2]}'")
+                    print_colours.print_blue(f"You have chosen : {choice[1]}")
+                    print_colours.print_blue(f"Will run command : '{choice[2]}'")
                     cmd.call("clear", shell=False)
                     cmd.call(choice[2].split(), shell=False)
                     time.sleep(1)
