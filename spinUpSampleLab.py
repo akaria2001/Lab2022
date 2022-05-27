@@ -19,6 +19,8 @@ def lab_status():
     cmd.call(["lxc", "list"], shell=False)
 
 def createLab(debug):
+    if (debug):
+        print_colours.print_blue("DEBUG: Debugging enabled")
     print_colours.print_yellow("Current Lab Status")
     lab_status()
     confirmation = user_input()
