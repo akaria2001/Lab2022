@@ -1,7 +1,8 @@
 1) Refactor destroyLab.py to use pure Python and not shell out, use lxc list -f (lxc list -f csv) to specify format that is easier parse then work on it - completed
-2) Refact spinUpSampleLab.py and use pure Python, clean up logic to be more dynamic, there is currently a lot off cut and paste code :(
+2) Refact spinUpSampleLab.py and use pure Python, clean up logic to be more dynamic, there is currently a lot off cut and paste code :( - completed
 3) Re-write os_update.sh in  Python
 4) Look at defining the lab in json and write a script to create the lab from json
-5) Within main() function for destroyLab.py, move the instance deletion logic to destroyLab() function
+5) Within main() function for destroyLab.py, move the instance deletion logic to destroyLab() function - completed
 6) Example to show remote images :- lxc image list -c lat images: -f csv 'alpine'
 7) Start standardising names for variables, arrays and functions, current a mix between bouncyCaps and hyphenated naming, need to make this consistant
+8) Refactor LabMenu.py to not call external python scripts via subprocess, use import instead - completed

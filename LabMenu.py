@@ -4,6 +4,9 @@ import time
 import getpass
 import platform
 import argparse
+import labStatus
+import spinUpSampleLab
+import destroyLab
 import print_colours
 
 def generate_username():
@@ -11,16 +14,16 @@ def generate_username():
     return username
 
 def generate_menu():
-    menu_items = [[1, 'OS Upgrade', '/home/akaria/bin/os_update.sh'],
-                  [2, 'Show System Information', 'neofetch'],
-                  [3, 'Show System Usage using bashtop', 'bashtop'],
-                  [4, 'Show System Usage using glances', 'glances'],
-                  [5, 'Show current lab (qemu vm and lxc container machines)', 'lxc list'],
-                  [6, 'Spin Up Sample Lab', '/home/akaria/bin/spinUpSampleLab.py'],
-                  [7, 'Destroy Lab', '/home/akaria/bin/destroyLab.py'],
-                  [8, 'Show Hardware Information', 'sudo lshw'],
-                  [9, 'Show Uptime and Load Average', 'uptime'],
-                  [10, 'Show contents of current directory', 'ls -la']]
+    menu_items = [[1, 'OS Upgrade', '/home/akaria/bin/os_update.sh', 'command'],
+                  [2, 'Show System Information', 'neofetch', 'command'],
+                  [3, 'Show System Usage using bashtop', 'bashtop', 'command'],
+                  [4, 'Show System Usage using glances', 'glances', 'command'],
+                  [5, 'Show current lab (qemu vm and lxc container machines)', 'labStatus.lab_status()', 'module'],
+                  [6, 'Spin Up Sample Lab', 'spinUpSampleLab.createLab()', 'module'],
+                  [7, 'Destroy Lab', 'destroyLab.destroyLab()', 'module'],
+                  [8, 'Show Hardware Information', 'sudo lshw', 'command'],
+                  [9, 'Show Uptime and Load Average', 'uptime', 'command'],
+                  [10, 'Show contents of current directory', 'ls -la', 'command']]
     return menu_items
 
 
@@ -88,15 +91,25 @@ def main():
             cmd.call("clear", shell=False)
             for choice in generate_menu():
                 if(user_choice == choice[0]):
-                    print_colours.print_blue(f"You have chosen : {choice[1]}")
-                    print_colours.print_blue(f"Will run command : '{choice[2]}'")
-                    cmd.call("clear", shell=False)
-                    cmd.call(choice[2].split(), shell=False)
-                    time.sleep(1)
+                    if(choice[3] == 'command'):
+                        print_colours.print_blue("Choice is Linux Command")
+                        input("Press any key to continue : ")
+                        print_colours.print_blue(f"You have chosen : {choice[1]}")
+                        print_colours.print_blue(f"Will run command : '{choice[2]}'")
+                        cmd.call("clear", shell=False)
+                        cmd.call(choice[2].split(), shell=False)
+                        time.sleep(1)
+                    else:
+                        print_colours.print_blue("Choice is a Python Module")
+                        input("Press any key to continue : ")
+                        print_colours.print_blue(f"You have chosen : {choice[1]}")
+                        print_colours.print_blue(f"Will run module : {choice[2]}")
+                        time.sleep(2)
+                        eval(choice[2])
+                        time.sleep(1)
                     input("Press any key to continue : ")
                     cmd.call("clear", shell=False)
                     break
-
 
 if __name__ == '__main__':
     main()
