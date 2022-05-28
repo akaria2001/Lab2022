@@ -2,47 +2,39 @@
 import subprocess as cmd
 import getpass
 import print_colours
+import labStatus
+import cheeckInstancesExist
 
 def generate_username():
     username = getpass.getuser()
     return username
 
-def lab_status():
-    cmd.call("clear", shell=False)
-    print_colours.print_yellow("Current Lab Status")
-    cmd.call(["lxc", "list"], shell=False)
-
 
 def user_input():
-    confirmation = input("Are you sure? - type 'yes' if you want to proceed : ")
+    confirmation = input("You will delete any existing instances, Are you sure? - type 'yes' if you want to proceed : ")
     return confirmation
 
-def destroyLab():
-        print_colours.print_red("Will destroy Lab!!!")
-        confirmation = user_input()
-        print_colours.print_green(f"You entered {confirmation}")
 
-        if(confirmation == "yes"):
-            print_colours.print_red("Destroying Lab")
+def destroyLab():
+    if(cheeckInstancesExist.instancesExist()):
+        print_colours.print_red("Instances found")
+        labStatus.lab_status()
+        confirmation = user_input()
+        if(confirmation == 'yes'):
+            print_colours.print_red(f"{generate_username()} has chosen {confirmation}: Instances will be deleted from the environment")
             command = "lxc list -c n -f csv"
             output = cmd.check_output(command.split(), shell=False)
             output = output.decode('utf8')
-            if(len(output) == 0):
-                print_colours.print_blue("No instances to remove")
-                exit()
-            lab_status()
-            user_input()
             for entry in output.split("\n"):
                 if(len(entry) <= 1):
                     continue
                 destroy_command = f"lxc delete -f {entry}"
                 print_colours.print_red(f"Running command : {destroy_command}")
                 cmd.call(destroy_command.split(), shell=False)
-                lab_status()
-        else:
-            print_colours.print_green("Will retain the Lab")
-            cmd.call("clear", shell=False)
-        lab_status()
+                labStatus.lab_status()
+    else:
+        print_colours.print_blue("No Instances found")
+        
 
 def main():
     cmd.call("clear", shell=False)

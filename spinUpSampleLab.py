@@ -1,72 +1,50 @@
 #!/bin/python3
+from re import template
 import subprocess as cmd
 import time
 import getpass
 import argparse
 import print_colours
+import labStatus
+import destroyLab
+import cheeckInstancesExist
 
 def generate_username():
     username = getpass.getuser()
     return username
 
 def user_input():
-    confirmation = input("Are you sure you want to recreate the Lab, this will destroy the existing Lab? - type 'yes' if you want to proceed : ")
+    confirmation = input("Are you sure you want to recreate the Lab, this will destroy any existing instances? - type 'yes' if you want to proceed : ")
     return confirmation
 
-def lab_status():
-    cmd.call("clear", shell=False)
-    print_colours.print_yellow("Current Lab Status")
-    cmd.call(["lxc", "list"], shell=False)
-
-def createLab(debug):
-    if (debug):
-        print_colours.print_blue("DEBUG: Debugging enabled")
-    print_colours.print_yellow("Current Lab Status")
-    lab_status()
-    confirmation = user_input()
-    print_colours.print_green(f"You entered {confirmation}")
-
-    if(confirmation == "yes"):
-        destroyCmd = "/home/akaria/bin/destroyLab.py"
-        cmd.call(destroyCmd, shell=False)
-        print_colours.print_red("Creating Lab")
-        for instanceType in ("LXC Container", "QEMU Virtual Machine"):
-            print_colours.print_green(f"Instance Type to be created is {instanceType}")
-            for osType in ("Rocky 8 Linux", "Ubuntu 22.04 Server Linux"):
-                print_colours.print_green(f"Will provision OS : {osType}")
-                command = ""
-                if(instanceType == "LXC Container"):
-                    for number in (1, 2, 3, 4):
-                        print_colours.print_yellow(f"Creating {instanceType}:{osType}:{number}")
-                        if(osType == "Rocky 8 Linux"):
-                            command = f"lxc launch images:rockylinux/8 rocky-container-{number}"
-                            print_colours.print_blue(f"Command to be run : {command}")
-                            cmd.call(command.split(), shell=False)
-                            time.sleep(5)
-                        else:
-                            command = f"lxc launch ubuntu:22.04 ubuntu-container-{number}"
-                            print_colours.print_blue(f"Command to be run : {command}")
-                            cmd.call(command.split(), shell=False)
-                            time.sleep(5)                           
-                else:
-                    for number in (1, 2):
-                        print_colours.print_yellow(f"Creating {instanceType}:{osType}:{number}")
-                        if(osType == "Rocky 8 Linux"):
-                            command = f"lxc launch images:rockylinux/8 rocky-vm-{number} --vm"
-                            print_colours.print_blue(f"Command to be run : {command}")
-                            cmd.call(command.split(), shell=False)
-                            time.sleep(10)
-                        else:
-                            command = f"lxc launch ubuntu:22.04 ubuntu-vm-{number} --vm"
-                            print_colours.print_blue(f"Command to be run : {command}")
-                            cmd.call(command.split(), shell=False)
-                            time.sleep(10)                           
-
+def create_instance(osType, instanceType, template):
+    for number in (1, 2, 3):
+        if(instanceType == "vm"):
+            command = f"lxc launch {template} {osType}-{instanceType}-{number} --vm"
+        else:
+            command = f"lxc launch {template} {osType}-{instanceType}-{number}"
+        print_colours.print_blue(f"Command to be run : {command}")
+        cmd.call(command.split(), shell=False)
         time.sleep(5)
+
+def createLab():
+    print_colours.print_blue("Checking if any existing instances exist, remove if any found")
+    if(cheeckInstancesExist.instancesExist()):
+        destroyLab.destroyLab()
     else:
-        print_colours.print_green("Will not create the Lab")
-        cmd.call("clear", shell=False)
-    lab_status()
+        print_colours.print_blue("No instances found, will continue")
+    print_colours.print_green("Creating Lab")
+    for os in ("rocky", "ubuntu"):
+        for type in ("container", "vm"):
+            if(os == "rocky"):
+                template = "images:rockylinux/8"
+                create_instance(os, type, template)
+            else:
+                template = "ubuntu:22.04"
+                create_instance(os, type, template)
+    time.sleep(10)
+    labStatus.lab_status()
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -87,9 +65,9 @@ def main():
     
     cmd.call("clear", shell=False)
     time.sleep(1)
-    lab_status()
+    labStatus.lab_status()
 
-    createLab(debug)
+    createLab()
 
 
 if __name__ == '__main__':

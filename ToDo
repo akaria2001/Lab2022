@@ -4,3 +4,4 @@
 4) Look at defining the lab in json and write a script to create the lab from json
 5) Within main() function for destroyLab.py, move the instance deletion logic to destroyLab() function
 6) Example to show remote images :- lxc image list -c lat images: -f csv 'alpine'
+7) Start standardising names for variables, arrays and functions, current a mix between bouncyCaps and hyphenated naming, need to make this consistant
