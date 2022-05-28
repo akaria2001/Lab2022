@@ -74,14 +74,18 @@ def main():
         for menu_item in generate_menu():
             print_colours.print_green(f"{menu_item[0]}:\t{menu_item[1]}")
         print_colours.print_red("0:\tExit Application")
+        user_choice = 99
         try:
             user_choice = int(input("Please select option : "))
         except ValueError:
+            print_colours.print_red("Please enter a valid choice")
+        except UnboundLocalError:
             print_colours.print_red("Please enter a valid choice")
         if user_choice == 0:
             cmd.call("clear", shell=False)
             exit()
         else:
+            cmd.call("clear", shell=False)
             for choice in generate_menu():
                 if(user_choice == choice[0]):
                     print_colours.print_blue(f"You have chosen : {choice[1]}")
