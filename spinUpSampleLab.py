@@ -15,7 +15,15 @@ def generate_username():
 
 
 def user_input():
-    confirmation = input("Are you sure you want to recreate the Lab, this will destroy any existing instances? - type 'yes' if you want to proceed : ")
+    message = """
+Are you sure you want to recreate the Lab?
+this will destroy any existing instaces?
+
+type 'yes' if you want to proceed : """
+
+    confirmation = input(message)
+    print_colours.print_blue(f"Confirmation : {confirmation}")
+    time.sleep(1)
     return confirmation
 
 
@@ -33,6 +41,7 @@ def create_instance(osType, instanceType, template):
 def createLab():
     print_colours.print_blue("Checking if any existing instances exist, remove if any found")
     if(cheeckInstancesExist.instancesExist()):
+        user_input()
         destroyLab.destroyLab()
     else:
         print_colours.print_blue("No instances found, will continue")
