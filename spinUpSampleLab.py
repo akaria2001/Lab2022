@@ -8,13 +8,16 @@ import labStatus
 import destroyLab
 import cheeckInstancesExist
 
+
 def generate_username():
     username = getpass.getuser()
     return username
 
+
 def user_input():
     confirmation = input("Are you sure you want to recreate the Lab, this will destroy any existing instances? - type 'yes' if you want to proceed : ")
     return confirmation
+
 
 def create_instance(osType, instanceType, template):
     for number in (1, 2, 3):
@@ -25,6 +28,7 @@ def create_instance(osType, instanceType, template):
         print_colours.print_blue(f"Command to be run : {command}")
         cmd.call(command.split(), shell=False)
         time.sleep(5)
+
 
 def createLab():
     print_colours.print_blue("Checking if any existing instances exist, remove if any found")
@@ -53,15 +57,15 @@ def main():
     cmd.call("clear", shell=False)
 
     if(debug):
-       print_colours.print_blue("DEBUG: Debugging is enabled")
-       print_colours.print_blue(f"DEBUG: {type(args)}")
-       print_colours.print_blue(f"DEBUG: {args}")
-       print_colours.print_blue(f"DEBUG: {debug}")
-       time.sleep(3)
+        print_colours.print_blue("DEBUG: Debugging is enabled")
+        print_colours.print_blue(f"DEBUG: {type(args)}")
+        print_colours.print_blue(f"DEBUG: {args}")
+        print_colours.print_blue(f"DEBUG: {debug}")
+        time.sleep(3)
     else:
         print_colours.print_yellow("Debugging is not enabled")
         time.sleep(1)
-    
+
     cmd.call("clear", shell=False)
     time.sleep(1)
     labStatus.lab_status()

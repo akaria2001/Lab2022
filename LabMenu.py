@@ -9,9 +9,11 @@ import spinUpSampleLab
 import destroyLab
 import print_colours
 
+
 def generate_username():
     username = getpass.getuser()
     return username
+
 
 def generate_menu():
     menu_items = [[1, 'OS Upgrade', '/home/akaria/bin/os_update.sh', 'command'],
@@ -46,18 +48,18 @@ def main():
     cmd.call("clear", shell=False)
 
     if(debug):
-       print_colours.print_blue("Debugging is enabled")
-       print_colours.print_blue(type(args))
-       print_colours.print_blue(args)
-       print_colours.print_blue(debug)
-       time.sleep(3)
+        print_colours.print_blue("Debugging is enabled")
+        print_colours.print_blue(type(args))
+        print_colours.print_blue(args)
+        print_colours.print_blue(debug)
+        time.sleep(3)
     else:
         print_colours.print_yellow("Debugging is not enabled")
         time.sleep(1)
-    
+
     cmd.call("clear", shell=False)
     time.sleep(1)
-    
+
     while(True):
         print_colours.print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
         print_colours.print_green(r"""
@@ -73,7 +75,7 @@ def main():
         if(debug):
             print_colours.print_blue(f"OS Version: {grab_os()}")
             print_colours.print_blue(f"Python Version: {platform.python_version()}\n")
-        
+
         for menu_item in generate_menu():
             print_colours.print_green(f"{menu_item[0]}:\t{menu_item[1]}")
         print_colours.print_red("0:\tExit Application")
@@ -110,6 +112,7 @@ def main():
                     input("Press any key to continue : ")
                     cmd.call("clear", shell=False)
                     break
+
 
 if __name__ == '__main__':
     main()
