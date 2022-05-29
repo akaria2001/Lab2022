@@ -1,5 +1,4 @@
 #!/bin/python3
-from re import template
 import subprocess as cmd
 import time
 import getpass
