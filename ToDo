@@ -6,3 +6,6 @@
 6) Example to show remote images :- lxc image list -c lat images: -f csv 'alpine'
 7) Start standardising names for variables, arrays and functions, current a mix between bouncyCaps and hyphenated naming, need to make this consistant
 8) Refactor LabMenu.py to not call external python scripts via subprocess, use import instead - completed
+9) Fix linting errors, increase Flake8 line length allowance
+10) Fix spelling mistake
+11) Add logging

@@ -34,7 +34,7 @@ class TestGenerateUsername(unittest.TestCase):
         """
         menu = LabMenu.generate_menu()
         for item in menu:
-            self.assertIs(len(item), 3)
+            self.assertIs(len(item), 4)
 
     def test_generate_menu_item_1(self):
         """
@@ -59,6 +59,7 @@ class TestGenerateUsername(unittest.TestCase):
         menu = LabMenu.generate_menu()
         for item in menu:
             self.assertIsInstance(item[2], str)
+
 
 if __name__ == '__main__':
     cmd.call("clear", shell=False)

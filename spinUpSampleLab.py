@@ -6,7 +6,7 @@ import argparse
 import print_colours
 import labStatus
 import destroyLab
-import cheeckInstancesExist
+import checkInstancesExist
 
 
 def generate_username():
@@ -40,7 +40,7 @@ def create_instance(osType, instanceType, template):
 
 def createLab():
     print_colours.print_blue("Checking if any existing instances exist, remove if any found")
-    if(cheeckInstancesExist.instancesExist()):
+    if(checkInstancesExist.instancesExist()):
         user_input()
         destroyLab.destroyLab()
     else:

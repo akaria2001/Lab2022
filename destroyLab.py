@@ -3,7 +3,8 @@ import subprocess as cmd
 import getpass
 import print_colours
 import labStatus
-import cheeckInstancesExist
+import checkInstancesExist
+
 
 def generate_username():
     username = getpass.getuser()
@@ -16,7 +17,7 @@ def user_input():
 
 
 def destroyLab():
-    if(cheeckInstancesExist.instancesExist()):
+    if(checkInstancesExist.instancesExist()):
         print_colours.print_red("Instances found")
         labStatus.lab_status()
         confirmation = user_input()
@@ -34,11 +35,12 @@ def destroyLab():
                 labStatus.lab_status()
     else:
         print_colours.print_blue("No Instances found")
-        
+
 
 def main():
     cmd.call("clear", shell=False)
     destroyLab()
+
 
 if __name__ == '__main__':
     main()
