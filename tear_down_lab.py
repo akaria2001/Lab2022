@@ -1,10 +1,10 @@
 #!/bin/python3
 import subprocess as cmd
 import getpass
-import print_colours
-import labStatus
-import checkInstancesExist
-
+import coloured_text
+import lab_status
+import check_instances_exist
+import countdown
 
 def generate_username():
     username = getpass.getuser()
@@ -16,13 +16,14 @@ def user_input():
     return confirmation
 
 
-def destroyLab():
-    if(checkInstancesExist.instancesExist()):
-        print_colours.print_red("Instances found")
-        labStatus.lab_status()
+def destroy():
+    if(check_instances_exist.instancesExist()):
+        coloured_text.print_red("Instances found")
+        lab_status.display()
         confirmation = user_input()
         if(confirmation == 'yes'):
-            print_colours.print_red(f"{generate_username()} has chosen {confirmation}: Instances will be deleted from the environment")
+            coloured_text.print_red(f"{generate_username()} has chosen {confirmation}: Instances will be deleted from the environment")
+            countdown.destroy_timer()
             command = "lxc list -c n -f csv"
             output = cmd.check_output(command.split(), shell=False)
             output = output.decode('utf8')
@@ -30,16 +31,16 @@ def destroyLab():
                 if(len(entry) <= 1):
                     continue
                 destroy_command = f"lxc delete -f {entry}"
-                print_colours.print_red(f"Running command : {destroy_command}")
+                coloured_text.print_red(f"Running command : {destroy_command}")
                 cmd.call(destroy_command.split(), shell=False)
-                labStatus.lab_status()
+                lab_status.display()
     else:
-        print_colours.print_blue("No Instances found")
+        coloured_text.print_blue("No Instances found")
 
 
 def main():
     cmd.call("clear", shell=False)
-    destroyLab()
+    destroy()
 
 
 if __name__ == '__main__':

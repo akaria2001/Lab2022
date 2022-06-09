@@ -4,10 +4,10 @@ import time
 import getpass
 import platform
 import argparse
-import labStatus
-import spinUpSampleLab
-import destroyLab
-import print_colours
+import lab_status
+import spin_up_lab
+import tear_down_lab
+import coloured_text
 
 
 def generate_username():
@@ -20,9 +20,9 @@ def generate_menu():
                   [2, 'Show System Information', 'neofetch', 'command'],
                   [3, 'Show System Usage using bashtop', 'bashtop', 'command'],
                   [4, 'Show System Usage using glances', 'glances', 'command'],
-                  [5, 'Show current lab (qemu vm and lxc container machines)', 'labStatus.lab_status()', 'module'],
-                  [6, 'Spin Up Sample Lab', 'spinUpSampleLab.createLab()', 'module'],
-                  [7, 'Destroy Lab', 'destroyLab.destroyLab()', 'module'],
+                  [5, 'Show current lab (qemu vm and lxc container machines)', 'lab_status.display()', 'module'],
+                  [6, 'Spin Up Sample Lab', 'spin_up_lab.create()', 'module'],
+                  [7, 'Destroy Lab', 'tear_down_lab.destroy()', 'module'],
                   [8, 'Show Hardware Information', 'sudo lshw', 'command'],
                   [9, 'Show Uptime and Load Average', 'uptime', 'command'],
                   [10, 'Show contents of current directory', 'ls -la', 'command']]
@@ -35,7 +35,7 @@ def grab_os():
         with open("/etc/lsb-release") as file:
             osversion = file.read()
     except FileNotFoundError:
-        print_colours.print_red("Unable to detect OS Version")
+        coloured_text.print_red("Unable to detect OS Version")
         next
     return osversion.strip()
 
@@ -48,21 +48,21 @@ def main():
     cmd.call("clear", shell=False)
 
     if(debug):
-        print_colours.print_blue("Debugging is enabled")
-        print_colours.print_blue(type(args))
-        print_colours.print_blue(args)
-        print_colours.print_blue(debug)
+        coloured_text.print_blue("Debugging is enabled")
+        coloured_text.print_blue(type(args))
+        coloured_text.print_blue(args)
+        coloured_text.print_blue(debug)
         time.sleep(3)
     else:
-        print_colours.print_yellow("Debugging is not enabled")
+        coloured_text.print_yellow("Debugging is not enabled")
         time.sleep(1)
 
     cmd.call("clear", shell=False)
     time.sleep(1)
 
     while(True):
-        print_colours.print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
-        print_colours.print_green(r"""
+        coloured_text.print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
+        coloured_text.print_green(r"""
     .--.
    |o_o |
    |:_/ |
@@ -73,19 +73,19 @@ def main():
 
        """)
         if(debug):
-            print_colours.print_blue(f"OS Version: {grab_os()}")
-            print_colours.print_blue(f"Python Version: {platform.python_version()}\n")
+            coloured_text.print_blue(f"OS Version: {grab_os()}")
+            coloured_text.print_blue(f"Python Version: {platform.python_version()}\n")
 
         for menu_item in generate_menu():
-            print_colours.print_green(f"{menu_item[0]}:\t{menu_item[1]}")
-        print_colours.print_red("0:\tExit Application")
+            coloured_text.print_green(f"{menu_item[0]}:\t{menu_item[1]}")
+        coloured_text.print_red("0:\tExit Application")
         user_choice = 99
         try:
             user_choice = int(input("Please select option : "))
         except ValueError:
-            print_colours.print_red("Please enter a valid choice")
+            coloured_text.print_red("Please enter a valid choice")
         except UnboundLocalError:
-            print_colours.print_red("Please enter a valid choice")
+            coloured_text.print_red("Please enter a valid choice")
         if user_choice == 0:
             cmd.call("clear", shell=False)
             exit()
@@ -94,18 +94,18 @@ def main():
             for choice in generate_menu():
                 if(user_choice == choice[0]):
                     if(choice[3] == 'command'):
-                        print_colours.print_blue("Choice is Linux Command")
+                        coloured_text.print_blue("Choice is Linux Command")
                         input("Press any key to continue : ")
-                        print_colours.print_blue(f"You have chosen : {choice[1]}")
-                        print_colours.print_blue(f"Will run command : '{choice[2]}'")
+                        coloured_text.print_blue(f"You have chosen : {choice[1]}")
+                        coloured_text.print_blue(f"Will run command : '{choice[2]}'")
                         cmd.call("clear", shell=False)
                         cmd.call(choice[2].split(), shell=False)
                         time.sleep(1)
                     else:
-                        print_colours.print_blue("Choice is a Python Module")
+                        coloured_text.print_blue("Choice is a Python Module")
                         input("Press any key to continue : ")
-                        print_colours.print_blue(f"You have chosen : {choice[1]}")
-                        print_colours.print_blue(f"Will run module : {choice[2]}")
+                        coloured_text.print_blue(f"You have chosen : {choice[1]}")
+                        coloured_text.print_blue(f"Will run module : {choice[2]}")
                         time.sleep(2)
                         eval(choice[2])
                         time.sleep(1)

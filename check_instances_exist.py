@@ -1,6 +1,6 @@
 #!/bin/python3
 import subprocess as cmd
-import print_colours
+import coloured_text
 
 
 def instancesExist():
@@ -14,8 +14,8 @@ def instancesExist():
 
 
 def main():
-    print_colours.print_green("Checking if any instances exist")
-    print_colours.print_blue(f"{instancesExist()}")
+    coloured_text.print_green("Checking if any instances exist")
+    coloured_text.print_blue(f"{instancesExist()}")
 
 
 if __name__ == '__main__':

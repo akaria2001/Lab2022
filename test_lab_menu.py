@@ -1,5 +1,5 @@
 import unittest
-import LabMenu
+import lab_menu
 import getpass
 import subprocess as cmd
 
@@ -9,7 +9,7 @@ class TestGenerateUsername(unittest.TestCase):
         """
         Test Generate Username Function
         """
-        self.assertEqual(LabMenu.generate_username(), getpass.getuser())
+        self.assertEqual(lab_menu.generate_username(), getpass.getuser())
 
     # Split following Unit test into seperate Unit tests
 
@@ -17,14 +17,14 @@ class TestGenerateUsername(unittest.TestCase):
         """
         Test Generate Menu - check it is a list
         """
-        menu = LabMenu.generate_menu()
+        menu = lab_menu.generate_menu()
         self.assertIsInstance(menu, list)
 
     def test_generate_menu_item(self):
         """
         Test Generate Menu - check each item is a list
         """
-        menu = LabMenu.generate_menu()
+        menu = lab_menu.generate_menu()
         for item in menu:
             self.assertIsInstance(item, list)
 
@@ -32,7 +32,7 @@ class TestGenerateUsername(unittest.TestCase):
         """
         Test Generate Menu - check each item is a list with 3 items
         """
-        menu = LabMenu.generate_menu()
+        menu = lab_menu.generate_menu()
         for item in menu:
             self.assertIs(len(item), 4)
 
@@ -40,7 +40,7 @@ class TestGenerateUsername(unittest.TestCase):
         """
         Test Generate Menu - check first item is an Integer
         """
-        menu = LabMenu.generate_menu()
+        menu = lab_menu.generate_menu()
         for item in menu:
             self.assertIsInstance(item[0], int)
 
@@ -48,7 +48,7 @@ class TestGenerateUsername(unittest.TestCase):
         """
         Test Generate Menu - check second item is a string
         """
-        menu = LabMenu.generate_menu()
+        menu = lab_menu.generate_menu()
         for item in menu:
             self.assertIsInstance(item[1], str)
 
@@ -56,7 +56,7 @@ class TestGenerateUsername(unittest.TestCase):
         """
         Test Generate Menu - check third item is a string
         """
-        menu = LabMenu.generate_menu()
+        menu = lab_menu.generate_menu()
         for item in menu:
             self.assertIsInstance(item[2], str)
 
