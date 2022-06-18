@@ -5,7 +5,6 @@ import getpass
 import platform
 import argparse
 import lab_status
-import spin_up_lab
 import tear_down_lab
 import coloured_text
 
@@ -21,11 +20,11 @@ def generate_menu():
                   [3, 'Debian 12 Linux', 'images:debian/12'],
                   [4, 'Rocky 8 Linux', 'images:rockylinux/8'],
                   [5, 'Alma 8 Linux', 'images:almalinux/8'],
-                  [6, 'Alma 8 Linux', 'images:almalinux/9'],
+                  [6, 'Alma 9 Linux', 'images:almalinux/9'],
                   [7, 'Ubuntu 22 Linux', 'ubuntu:22.04'],
                   [8, 'CentOS 9 Linux Stream', 'images:centos/9-Stream'],
-                  [9,'Create one instance of each types','all'],
-                  [10, 'Delete all Instances','tear_down_lab.destroy()']]
+                  [9, 'Create one instance of each types', 'all'],
+                  [10, 'Delete all Instances', 'tear_down_lab.destroy()']]
     return menu_items
 
 
@@ -112,7 +111,7 @@ def main():
                             cmd.call(create_cmd.split(), shell=False)
                             if(OS[0] >= 8):
                                 break
-                            time.sleep(3)
+                            time.sleep(10)
                             lab_status.display()
                     else:
                         coloured_text.print_blue("Will create LXC System Container Instance")
