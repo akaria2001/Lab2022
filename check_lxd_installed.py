@@ -4,19 +4,17 @@ import coloured_text
 
 
 def check_lxd_installed():
-    status = ""
+    command = "lxc list -c n -f csv"
     try:
-        cmd.run('lxd', shell=False)
+        cmd.check_output(command.split(), shell=False)
+        return True
     except FileNotFoundError:
-        status = False
-    return status
+        return False
+
 
 def main():
-    coloured_text.print_green("Checking if LXD Installed")
-    if (check_lxd_installed()):
-        print("LXD Installed")
-    else:
-        print("LXD Not Installed")
+    coloured_text.print_green("Checking if any instances exist")
+    coloured_text.print_blue(f"{check_lxd_installed()}")
 
 
 if __name__ == '__main__':

@@ -1,5 +1,4 @@
 #!/bin/python3
-from socket import MsgFlag
 import subprocess as cmd
 import time
 import getpass
