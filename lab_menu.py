@@ -8,6 +8,7 @@ import lab_status
 import spin_up_lab
 import tear_down_lab
 import coloured_text
+import check_lxd_installed
 
 
 def generate_username():
@@ -59,6 +60,16 @@ def main():
 
     cmd.call("clear", shell=False)
     time.sleep(1)
+
+    if(check_lxd_installed.check_lxd_installed()):
+        coloured_text.print_blue("Detected LXD Installed")
+    else:
+        coloured_text.print_red("LXD not installed - will exit")
+        coloured_text.print_blue("Install LXD by running the following command")
+        coloured_text.print_green("sudo snap install lxd")
+        coloured_text.print_blue("Then configure lxd by running")
+        coloured_text.print_green("lxd init")
+        exit()
 
     while(True):
         welcome = f"Hello {generate_username()}, welcome to Lab Menu"
