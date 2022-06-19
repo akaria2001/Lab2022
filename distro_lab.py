@@ -1,4 +1,5 @@
 #!/bin/python3
+from socket import MsgFlag
 import subprocess as cmd
 import time
 import getpass
@@ -60,8 +61,11 @@ def main():
     time.sleep(1)
 
     while(True):
-        coloured_text.print_yellow(f"Hello {generate_username()}, welcome to Linux Lab")
-        coloured_text.print_green("In this Lab you can easily setup a text Linux System Container Instance")
+        welcome = f"Hello {generate_username()}, welcome to Linux Lab"
+
+        coloured_text.print_yellow(welcome)
+        coloured_text.print_green("In this Lab you can easily setup a test")
+        coloured_text.print_green("Linux System Container Instance")
         coloured_text.print_green("Please select from the choice below")
         coloured_text.print_green(r"""
     .--.
@@ -95,7 +99,7 @@ def main():
             for choice in generate_menu():
                 if(user_choice == choice[0]):
                     if(choice[0] == 10):
-                        coloured_text.print_red("Will delete all running instances")
+                        coloured_text.print_red("Will delete running instances")
                         input("Press any key to continue : ")
                         cmd.call("clear", shell=False)
                         tear_down_lab.destroy()

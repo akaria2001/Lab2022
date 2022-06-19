@@ -6,13 +6,22 @@ import lab_status
 import check_instances_exist
 import countdown
 
+
 def generate_username():
     username = getpass.getuser()
     return username
 
 
 def user_input():
-    confirmation = input("You will delete any existing instances, Are you sure? - type 'yes' if you want to proceed : ")
+    coloured_text.print_red("WARNING!!!")
+    msg = '''
+
+    You will delete any existing instances,
+    Are you sure? - type 'yes' if you want to proceed :
+
+    '''
+
+    confirmation = input(msg)
     return confirmation
 
 
@@ -22,7 +31,13 @@ def destroy():
         lab_status.display()
         confirmation = user_input()
         if(confirmation == 'yes'):
-            coloured_text.print_red(f"{generate_username()} has chosen {confirmation}: Instances will be deleted from the environment")
+            msg = f'''
+
+            {generate_username()} has chosen {confirmation}:
+            Instances will be deleted from the environment
+
+            '''
+            coloured_text.print_red(msg)
             countdown.destroy_timer()
             command = "lxc list -c n -f csv"
             output = cmd.check_output(command.split(), shell=False)

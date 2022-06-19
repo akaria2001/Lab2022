@@ -61,7 +61,8 @@ def main():
     time.sleep(1)
 
     while(True):
-        coloured_text.print_yellow(f"Hello {generate_username()}, welcome to Lab Menu")
+        welcome = f"Hello {generate_username()}, welcome to Lab Menu"
+        coloured_text.print_yellow(welcome)
         coloured_text.print_green(r"""
     .--.
    |o_o |
