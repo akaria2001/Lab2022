@@ -13,20 +13,20 @@ def generate_username():
 
 
 def user_input():
-    coloured_text.print_red("WARNING!!!")
+    coloured_text.print_red("WARNING!!! About to delete all instances!!!")
     msg = '''
 
-    You will delete any existing instances,
-    Are you sure? - type 'yes' if you want to proceed :
+You will delete any existing instances,
+Are you sure? - type 'yes' if you want to proceed :
 
-    '''
+'''
 
     confirmation = input(msg)
     return confirmation
 
 
 def destroy():
-    if(check_instances_exist.instancesExist()):
+    if(check_instances_exist.verify()):
         coloured_text.print_red("Instances found")
         lab_status.display()
         confirmation = user_input()

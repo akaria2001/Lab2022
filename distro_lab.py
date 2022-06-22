@@ -24,8 +24,11 @@ def generate_menu():
                   [6, 'Alma 9 Linux', 'images:almalinux/9'],
                   [7, 'Ubuntu 22 Linux', 'ubuntu:22.04'],
                   [8, 'CentOS 9 Linux Stream', 'images:centos/9-Stream'],
-                  [9, 'Create one instance of each types', 'all'],
-                  [10, 'Delete all Instances', 'tear_down_lab.destroy()']]
+                  [9, 'CentOS 8 Linux Stream', 'images:centos/8-Stream'],
+                  [10, 'Alpine Linux', 'images:alpine/3.16'],
+                  [11, 'Kali Linux', 'images:kali'],
+                  [12, 'Create one instance of each types', 'all'],
+                  [13, 'Delete all Instances', 'tear_down_lab.destroy()']]
     return menu_items
 
 
@@ -109,14 +112,14 @@ def main():
             cmd.call("clear", shell=False)
             for choice in generate_menu():
                 if(user_choice == choice[0]):
-                    if(choice[0] == 10):
+                    if(choice[0] == 13):
                         coloured_text.print_red("Will delete running instances")
                         input("Press any key to continue : ")
                         cmd.call("clear", shell=False)
                         tear_down_lab.destroy()
                         time.sleep(1)
                         break
-                    if(choice[0] == 9):
+                    if(choice[0] == 12):
                         coloured_text.print_green("Will create one instance for each OS")
                         coloured_text.print_red("This will delete all running instances first")
                         tear_down_lab.destroy()
@@ -124,9 +127,9 @@ def main():
                             coloured_text.print_yellow(f"Creating {OS[0]} : {OS[1].replace(' ', '-')} System Container")
                             create_cmd = (f"lxc launch {OS[2]} {OS[1].replace(' ', '-')}")
                             cmd.call(create_cmd.split(), shell=False)
-                            if(OS[0] >= 8):
+                            if(OS[0] >= 11):
                                 break
-                            time.sleep(10)
+                            time.sleep(5)
                             lab_status.display()
                     else:
                         coloured_text.print_blue("Will create LXC System Container Instance")

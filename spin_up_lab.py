@@ -40,7 +40,7 @@ def create_instance(osType, instanceType, template):
 
 def create():
     coloured_text.print_red("Checking if any existing instances exist, remove if any found")
-    if(check_instances_exist.instancesExist()):
+    if(check_instances_exist.verify()):
         confirmation = user_input()
         if(confirmation == 'yes'):
             tear_down_lab.destroy()
