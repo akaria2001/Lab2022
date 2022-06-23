@@ -1,6 +1,6 @@
 #!/bin/python3
 import subprocess as cmd
-import coloured_text
+import format_text
 
 
 def check_lxd_installed():
@@ -13,8 +13,8 @@ def check_lxd_installed():
 
 
 def main():
-    coloured_text.print_green("Checking if any instances exist")
-    coloured_text.print_blue(f"{check_lxd_installed()}")
+    format_text.print_green("Checking if any instances exist")
+    format_text.print_blue(f"{check_lxd_installed()}")
 
 
 if __name__ == '__main__':

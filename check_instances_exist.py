@@ -1,6 +1,6 @@
 #!/bin/python3
 import subprocess as cmd
-import coloured_text
+import format_text
 
 
 def verify():
@@ -14,8 +14,8 @@ def verify():
 
 
 def main():
-    coloured_text.print_green("Checking if any instances exist")
-    coloured_text.print_blue(f"{verify()}")
+    format_text.print_green("Checking if any instances exist")
+    format_text.print_blue(f"{verify()}")
 
 
 if __name__ == '__main__':

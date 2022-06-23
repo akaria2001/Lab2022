@@ -1,7 +1,7 @@
 #!/bin/python3
 import subprocess as cmd
 import getpass
-import coloured_text
+import format_text
 import lab_status
 import check_instances_exist
 import countdown
@@ -13,7 +13,7 @@ def generate_username():
 
 
 def user_input():
-    coloured_text.print_red("WARNING!!! About to delete all instances!!!")
+    format_text.print_red("WARNING!!! About to delete all instances!!!")
     msg = '''
 
 You will delete any existing instances,
@@ -27,7 +27,7 @@ Are you sure? - type 'yes' if you want to proceed :
 
 def destroy():
     if(check_instances_exist.verify()):
-        coloured_text.print_red("Instances found")
+        format_text.print_red("Instances found")
         lab_status.display()
         confirmation = user_input()
         if(confirmation == 'yes'):
@@ -37,7 +37,7 @@ def destroy():
             Instances will be deleted from the environment
 
             '''
-            coloured_text.print_red(msg)
+            format_text.print_red(msg)
             countdown.destroy_timer()
             command = "lxc list -c n -f csv"
             output = cmd.check_output(command.split(), shell=False)
@@ -46,11 +46,11 @@ def destroy():
                 if(len(entry) <= 1):
                     continue
                 destroy_command = f"lxc delete -f {entry}"
-                coloured_text.print_red(f"Running command : {destroy_command}")
+                format_text.print_red(f"Running command : {destroy_command}")
                 cmd.call(destroy_command.split(), shell=False)
                 lab_status.display()
     else:
-        coloured_text.print_blue("No Instances found")
+        format_text.print_blue("No Instances found")
 
 
 def main():

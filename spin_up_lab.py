@@ -3,7 +3,7 @@ import subprocess as cmd
 import time
 import getpass
 import argparse
-import coloured_text
+import format_text
 import lab_status
 import tear_down_lab
 import check_instances_exist
@@ -22,7 +22,7 @@ this will destroy any existing instaces?
 type 'yes' if you want to proceed : """
 
     confirmation = input(message)
-    coloured_text.print_blue(f"Confirmation : {confirmation}")
+    format_text.print_blue(f"Confirmation : {confirmation}")
     time.sleep(1)
     return confirmation
 
@@ -33,20 +33,20 @@ def create_instance(osType, instanceType, template):
             command = f"lxc launch {template} {osType}-{instanceType}-{number} --vm"
         else:
             command = f"lxc launch {template} {osType}-{instanceType}-{number}"
-        coloured_text.print_blue(f"Command to be run : {command}")
+        format_text.print_blue(f"Command to be run : {command}")
         cmd.call(command.split(), shell=False)
         time.sleep(10)
 
 
 def create():
-    coloured_text.print_red("Checking if any existing instances exist, remove if any found")
+    format_text.print_red("Checking if any existing instances exist, remove if any found")
     if(check_instances_exist.verify()):
         confirmation = user_input()
         if(confirmation == 'yes'):
             tear_down_lab.destroy()
     else:
-        coloured_text.print_blue("No instances found, will continue")
-    coloured_text.print_green("Creating Lab")
+        format_text.print_blue("No instances found, will continue")
+    format_text.print_green("Creating Lab")
     for os in ("rocky", "ubuntu"):
         for type in ("container", "vm"):
             if(os == "rocky"):
@@ -67,13 +67,13 @@ def main():
     cmd.call("clear", shell=False)
 
     if(debug):
-        coloured_text.print_blue("DEBUG: Debugging is enabled")
-        coloured_text.print_blue(f"DEBUG: {type(args)}")
-        coloured_text.print_blue(f"DEBUG: {args}")
-        coloured_text.print_blue(f"DEBUG: {debug}")
+        format_text.print_blue("DEBUG: Debugging is enabled")
+        format_text.print_blue(f"DEBUG: {type(args)}")
+        format_text.print_blue(f"DEBUG: {args}")
+        format_text.print_blue(f"DEBUG: {debug}")
         time.sleep(3)
     else:
-        coloured_text.print_yellow("Debugging is not enabled")
+        format_text.print_yellow("Debugging is not enabled")
         time.sleep(1)
 
     cmd.call("clear", shell=False)
