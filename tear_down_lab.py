@@ -13,7 +13,7 @@ def generate_username():
 
 
 def user_input():
-    format_text.print_red("WARNING!!! About to delete all instances!!!")
+    format_text.print_warning("WARNING!!! About to delete all instances!!!")
     msg = '''
 
 You will delete any existing instances,

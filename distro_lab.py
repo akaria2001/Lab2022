@@ -1,4 +1,5 @@
 #!/bin/python3
+from cgitb import text
 import subprocess as cmd
 import time
 import getpass
@@ -27,14 +28,15 @@ def create_instances():
         cpucfg = f"lxc config set {instance_name} limits.cpu 4"
         ramcfg = f"lxc config set {instance_name} limits.memory 4GB"
         start_instance = f"lxc start {instance_name}"
-        cmd.call(create.split(), shell=False)
-        cmd.call(cpucfg.split(), shell=False)
-        cmd.call(ramcfg.split(), shell=False)
-        cmd.call(start_instance.split(), shell=False)
+        cmd.call(create.split(), shell=False, stdout=None)
+        cmd.call(cpucfg.split(), shell=False, stdout=None)
+        cmd.call(ramcfg.split(), shell=False, stdout=None)
+        cmd.call(start_instance.split(), shell=False, stdout=None)
+        format_text.print_tick("Success")
         if(OS[0] >= 11):
             break
         time.sleep(10)
-        lab_status.display()
+    lab_status.display()
 
 
 def generate_menu():
@@ -97,8 +99,8 @@ def main():
 
     while(True):
         welcome = f"Hello {generate_username()}, welcome to Linux Lab"
-
         format_text.print_yellow(welcome)
+        format_text.print_smiley()
         format_text.print_green("In this Lab you can easily setup a test")
         format_text.print_green("Linux System Container Instance")
         format_text.print_green("Please select from the choice below")

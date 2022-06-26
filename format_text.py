@@ -26,3 +26,19 @@ def print_green(text):
 
 def print_blue(text):
     print(f'\033[1;34m{text}\033[0;0m')
+
+
+def print_smiley():
+    print("\U0001F60F")
+
+
+def print_folder():
+    print('\U0001F4C1')
+
+
+def print_tick(text):
+    print(f'{text}\u2705')
+
+
+def print_warning(text):
+    print(f'\u274C\u274C\u274C\033[1;31m {text} \033[0;0m\u274C\u274C\u274C')
