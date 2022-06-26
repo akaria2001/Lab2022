@@ -15,6 +15,28 @@ def generate_username():
     return username
 
 
+def create_instances():
+    format_text.print_green("Will create one instance for each OS")
+    format_text.print_red("This will delete all running instances first")
+    tear_down_lab.destroy()
+    for OS in generate_menu():
+        instance_name = OS[1].replace(' ', '-')
+        print(f"Creating LXC Instance {OS[0]} : {instance_name}")
+        print(f"Allocating 4CPU and 4GB RAM to {instance_name}")
+        create = f"lxc init {OS[2]} {instance_name}"
+        cpucfg = f"lxc config set {instance_name} limits.cpu 4"
+        ramcfg = f"lxc config set {instance_name} limits.memory 4GB"
+        start_instance = f"lxc start {instance_name}"
+        cmd.call(create.split(), shell=False)
+        cmd.call(cpucfg.split(), shell=False)
+        cmd.call(ramcfg.split(), shell=False)
+        cmd.call(start_instance.split(), shell=False)
+        if(OS[0] >= 11):
+            break
+        time.sleep(10)
+        lab_status.display()
+
+
 def generate_menu():
     menu_items = [[1, 'Arch Linux', 'images:archlinux'],
                   [2, 'Fedora 36 Linux', 'images:fedora/36'],
@@ -120,24 +142,14 @@ def main():
                         time.sleep(1)
                         break
                     if(choice[0] == 12):
-                        format_text.print_green("Will create one instance for each OS")
-                        format_text.print_red("This will delete all running instances first")
-                        tear_down_lab.destroy()
-                        for OS in generate_menu():
-                            format_text.print_yellow(f"Creating {OS[0]} : {OS[1].replace(' ', '-')} LXC System Container")
-                            create_cmd = (f"lxc launch {OS[2]} {OS[1].replace(' ', '-')}")
-                            cmd.call(create_cmd.split(), shell=False)
-                            if(OS[0] >= 11):
-                                break
-                            time.sleep(5)
-                            lab_status.display()
+                        create_instances()
                     else:
                         format_text.print_blue("Will create LXC System Container Instance")
                         input("Press any key to continue : ")
                         format_text.print_blue(f"You have chosen to create : {choice[1]}")
                         instance_name = input("Please enter name off the Instance : ")
                         time.sleep(1)
-                        spin_up = f"lxc launch {choice[2]} {instance_name}"
+                        spin_up = f"lxc launch {choice[2]} {instance_name.replace(' ', '-')}"
                         cmd.call(spin_up.split(), shell=False)
                         time.sleep(1)
                     input("Press any key to continue : ")
