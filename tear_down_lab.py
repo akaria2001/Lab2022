@@ -49,6 +49,8 @@ def destroy():
                 format_text.print_red(f"Running command : {destroy_command}")
                 cmd.call(destroy_command.split(), shell=False)
                 lab_status.display()
+        else:
+            exit()
     else:
         format_text.print_blue("No Instances found")
 
