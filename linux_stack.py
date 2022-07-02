@@ -25,9 +25,9 @@ def main():
         format_text.print_blue(f"{instance} : {linux_stack[instance]}")
         lxc_init = f"lxc init {linux_stack[instance]['image']} {instance} --vm"
         format_text.print_green(lxc_init)
-        cpucfg = f"lxc config set {instance} limits.cpu 4"
+        cpucfg = f"lxc config set {instance} limits.cpu {linux_stack[instance]['cpu']}"
         format_text.print_blue(cpucfg)
-        ramcfg = f"lxc config set {instance} limits.memory 4GB"
+        ramcfg = f"lxc config set {instance} limits.memory {linux_stack[instance]['ram']}"
         format_text.print_green(ramcfg)
         lxc_start = f"lxc start {instance}"
         format_text.print_blue(lxc_start)
