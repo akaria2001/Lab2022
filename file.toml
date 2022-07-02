@@ -1,4 +1,4 @@
-name = "Amit Linux Lab"
+Stack = "Amit Linux Lab"
 
 [Rocky-Linux-8-1]
 type = "vm"
