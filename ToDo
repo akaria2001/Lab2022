@@ -1,7 +1,7 @@
 1) Refactor destroyLab.py to use pure Python and not shell out, use lxc list -f (lxc list -f csv) to specify format that is easier parse then work on it - completed
 2) Refact spinUpSampleLab.py and use pure Python, clean up logic to be more dynamic, there is currently a lot off cut and paste code :( - completed
 3) Re-write os_update.sh in  Python
-4) Look at defining the lab in json and write a script to create the lab from json
+4) Look at defining the lab in json and write a script to create the lab from json - will use toml instead, see point 12 below
 5) Within main() function for destroyLab.py, move the instance deletion logic to destroyLab() function - completed
 6) Example to show remote images :- lxc image list -c lat images: -f csv 'alpine'
 7) Start standardising names for variables, arrays and functions, current a mix between bouncyCaps and hyphenated naming, need to make this consistant
@@ -9,3 +9,7 @@
 9) Fix linting errors, increase Flake8 line length allowance
 10) Fix spelling mistake
 11) Add logging
+12) First pass at writing stack script to generate lab from toml. Will add following in near future
+
+Check to see instance exists - if it does then shut it down and re-configure it based on values in toml file, don't attempt to create it.
+If instance doesn't exist, then create it and configure it based on values in toml file
