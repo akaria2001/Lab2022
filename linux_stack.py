@@ -3,6 +3,7 @@ import json
 import toml
 import subprocess as cmd
 import format_text
+import time
 
 
 def read_stack():
@@ -18,12 +19,12 @@ def main():
     with open('file.json', 'w') as json_export:
         json.dump(linux_stack, json_export)
     format_text.print_green("Printing Stack Information")
-    format_text.print_yellow(f"Stack Name : {linux_stack['Stack']}")
-    for instance, config in linux_stack.items():
-        if type(config) is dict:
-            print(f"\n{instance}")
-            for instance_nest, config_nest in config.items():
-                format_text.print_blue(f"{instance_nest} -> {config_nest}")
+    for instance in linux_stack:
+        format_text.print_blue(f"{instance} : {linux_stack[instance]}")
+        lxc_init = f"lxc init {linux_stack[instance]['image']} {instance} --vm"
+        format_text.print_green(lxc_init)
+        cmd.call(lxc_init.split(), shell=False)
+        time.sleep(10)
 
 
 if __name__ == '__main__':

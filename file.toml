@@ -1,5 +1,3 @@
-Stack = "Amit Linux Lab"
-
 [Rocky-Linux-8-1]
 type = "vm"
 image = "images:rockylinux/8"
