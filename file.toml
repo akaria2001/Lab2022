@@ -29,7 +29,7 @@ protected = 0
 [Fedora-36-1]
 type = "vm"
 image = "images:fedora/36"
-ram = "12GB"
-cpu = 8
+ram = "6GB"
+cpu = 6
 protected = 0
 

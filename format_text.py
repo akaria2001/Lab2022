@@ -28,8 +28,8 @@ def print_blue(text):
     print(f'\033[1;34m{text}\033[0;0m')
 
 
-def print_smiley():
-    print("\U0001F60F")
+def print_smiley(text):
+    print(f'{text} \U0001F60F')
 
 
 def print_folder():

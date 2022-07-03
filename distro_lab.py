@@ -1,5 +1,4 @@
 #!/bin/python3
-from cgitb import text
 import subprocess as cmd
 import time
 import getpass
@@ -100,7 +99,7 @@ def main():
     while(True):
         welcome = f"Hello {generate_username()}, welcome to Linux Lab"
         format_text.print_yellow(welcome)
-        format_text.print_smiley()
+        format_text.print_smiley("Lets have some fun ... ")
         format_text.print_green("In this Lab you can easily setup a test")
         format_text.print_green("Linux System Container Instance")
         format_text.print_green("Please select from the choice below")
