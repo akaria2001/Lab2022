@@ -1,3 +1,10 @@
+[Rocky-Linux-9-1]
+type = "vm"
+image = "images:rockylinux/9"
+ram = "4GB"
+cpu = 4
+protected = 1
+
 [Rocky-Linux-8-1]
 type = "vm"
 image = "images:rockylinux/8"
@@ -33,3 +40,9 @@ ram = "6GB"
 cpu = 6
 protected = 0
 
+[Alma-Linux-8-1]
+type = "vm"
+image = "images:almalinux/8"
+ram = "4GB"
+cpu = 4
+protected = 0
