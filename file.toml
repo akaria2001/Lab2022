@@ -46,3 +46,17 @@ image = "images:almalinux/8"
 ram = "4GB"
 cpu = 4
 protected = 0
+
+[Debian-Linux-12-1]
+type = "vm"
+image = "images:debian/12"
+ram = "4GB"
+cpu = 4
+protected = 0
+
+[Ubuntu-Linux-22-1]
+type = "vm"
+image = "ubuntu:22.04"
+ram = "4GB"
+cpu = 4
+protected = 0
