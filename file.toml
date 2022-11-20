@@ -60,3 +60,10 @@ image = "ubuntu:22.04"
 ram = "4GB"
 cpu = 4
 protected = 0
+
+[Fedora-37-1]
+type = "vm"
+image = "images:fedora/37"
+ram = "5GB"
+cpu = 8
+protected = 0

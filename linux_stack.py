@@ -38,7 +38,7 @@ def configure_instance(instance, cpu, ram):
     cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL)
     for command in [cpucfg, ramcfg, lxc_start]:
         cmd.call(command.split(), shell=False)
-        time.sleep(10)
+        time.sleep(3)
 
 
 def main():
@@ -57,7 +57,7 @@ def main():
             create_instance(instance, linux_stack[instance]['image'])
         configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'])
     format_text.print_smiley("Lab has been setup, will display it shortly")
-    time.sleep(10)
+    time.sleep(5)
     lab_status.display()
 
 
