@@ -47,6 +47,13 @@ ram = "4GB"
 cpu = 4
 protected = 0
 
+[Debian-Linux-11-1]
+type = "vm"
+image = "images:debian/11"
+ram = "4GB"
+cpu = 4
+protected = 0
+
 [Debian-Linux-12-1]
 type = "vm"
 image = "images:debian/12"
