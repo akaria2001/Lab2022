@@ -57,7 +57,7 @@ def main():
             create_instance(instance, linux_stack[instance]['image'])
         configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'])
     format_text.print_smiley("Lab has been setup, will display it shortly")
-    time.sleep(10)
+    time.sleep(15)
     lab_status.display()
 
 
