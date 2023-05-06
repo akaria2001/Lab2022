@@ -1,17 +1,3 @@
-[Rocky-Linux-9-1]
-type = "vm"
-image = "images:rockylinux/9"
-ram = "4GB"
-cpu = 4
-protected = 1
-
-[Rocky-Linux-9-2]
-type = "vm"
-image = "images:rockylinux/9"
-ram = "4GB"
-cpu = 4
-protected = 1
-
 [Rocky-Linux-8-1]
 type = "vm"
 image = "images:rockylinux/8"
@@ -19,65 +5,30 @@ ram = "4GB"
 cpu = 4
 protected = 1
 
-[Rocky-Linux-8-2]
+[Rocky-Linux-9-1]
 type = "vm"
-image = "images:rockylinux/8"
+image = "images:rockylinux/9"
 ram = "4GB"
 cpu = 4
 protected = 1
 
-[Rocky-Linux-8-3]
+[Fedora-38-1]
 type = "vm"
-image = "images:rockylinux/8"
+image = "images:fedora/38"
 ram = "4GB"
 cpu = 4
-protected = 1
-
-[Rocky-Linux-8-4]
-type = "vm"
-image = "images:rockylinux/8"
-ram = "4GB"
-cpu = 4
-protected = 1
-
-[Alma-Linux-9-1]
-type = "vm"
-image = "images:almalinux/9"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Alma-Linux-9-2]
-type = "vm"
-image = "images:almalinux/9"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Alma-Linux-9-3]
-type = "vm"
-image = "images:almalinux/9"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Alma-Linux-9-4]
-type = "vm"
-image = "images:almalinux/9"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Fedora-36-1]
-type = "vm"
-image = "images:fedora/36"
-ram = "6GB"
-cpu = 6
 protected = 0
 
 [Alma-Linux-8-1]
 type = "vm"
 image = "images:almalinux/8"
+ram = "4GB"
+cpu = 4
+protected = 0
+
+[Alma-Linux-9-1]
+type = "vm"
+image = "images:almalinux/9"
 ram = "4GB"
 cpu = 4
 protected = 0
@@ -94,46 +45,4 @@ type = "vm"
 image = "images:debian/12"
 ram = "4GB"
 cpu = 4
-protected = 0
-
-[Debian-Linux-12-3]
-type = "vm"
-image = "images:debian/12"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Ubuntu-Linux-22-1]
-type = "vm"
-image = "ubuntu:22.04"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Ubuntu-Linux-22-2]
-type = "vm"
-image = "ubuntu:22.04"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Ubuntu-Linux-22-3]
-type = "vm"
-image = "ubuntu:22.04"
-ram = "4GB"
-cpu = 4
-protected = 0
-
-[Fedora-37-1]
-type = "vm"
-image = "images:fedora/37"
-ram = "5GB"
-cpu = 8
-protected = 0
-
-[Fedora-37-2]
-type = "vm"
-image = "images:fedora/37"
-ram = "5GB"
-cpu = 8
 protected = 0

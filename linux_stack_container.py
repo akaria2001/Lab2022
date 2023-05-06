@@ -25,7 +25,7 @@ def check_instance_exists(instance):
 
 def create_instance(instance, image):
     format_text.print_blue(f"Creating instance {instance} using image: {image}")
-    lxc_init = f"lxc init {image} {instance} --vm"
+    lxc_init = f"lxc init {image} {instance}"
     cmd.call(lxc_init.split(), shell=False)
 
 
@@ -48,7 +48,7 @@ def main():
     format_text.print_yellow("Will save configuration into json")
     with open('file.json', 'w') as json_export:
         json.dump(linux_stack, json_export)
-    format_text.print_green("Configuring Linux QEMU VM Server Stack from toml file")
+    format_text.print_green("Configuring Linux LXC VM Server Stack from toml file")
     format_text.print_green("If any existing instances exist they will be shutdown and reconfigured")
     for instance in linux_stack:
         if(check_instance_exists(instance)):
