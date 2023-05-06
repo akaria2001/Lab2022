@@ -1,6 +1,8 @@
 #!/bin/sh
-tmux new-session -d 'watch -n 1 df -i'
-tmux split-window -v 'htop'
-tmux split-window -h
-tmux new-window 'mutt'
-tmux -2 attach-session -d
+if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ] ; } then
+    tmux new-session -d 'watch -n 1 df -i'
+    tmux split-window -v 'htop'
+    tmux split-window -h
+    tmux new-window 'mutt'
+    tmux -2 attach-session -d
+fi
