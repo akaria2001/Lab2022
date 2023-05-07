@@ -25,16 +25,16 @@ def check_instance_exists(instance):
 
 def create_instance(instance, image):
     format_text.print_blue(f"Creating instance {instance} using image: {image}")
-    lxc_init = f"lxc init {image} {instance}"
+    lxc_init = f"lxc init {image} {instance}-lxc-container"
     cmd.call(lxc_init.split(), shell=False)
 
 
 def configure_instance(instance, cpu, ram):
     format_text.print_blue(f"Reconfiguring {instance} - CPU : {cpu }, RAM : {ram}")
-    stop_instance = f"lxc stop {instance}"
-    cpucfg = f"lxc config set {instance} limits.cpu {cpu}"
-    ramcfg = f"lxc config set {instance} limits.memory {ram}"
-    lxc_start = f"lxc start {instance}"
+    stop_instance = f"lxc stop {instance}-lxc-container"
+    cpucfg = f"lxc config set {instance}-lxc-container limits.cpu {cpu}"
+    ramcfg = f"lxc config set {instance}-lxc-container limits.memory {ram}"
+    lxc_start = f"lxc start {instance}-lxc-container"
     cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL)
     for command in [cpucfg, ramcfg, lxc_start]:
         cmd.call(command.split(), shell=False)
