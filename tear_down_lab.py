@@ -45,9 +45,13 @@ def destroy():
             for entry in output.split("\n"):
                 if(len(entry) <= 1):
                     continue
-                destroy_command = f"lxc delete -f {entry}"
-                format_text.print_red(f"Running command : {destroy_command}")
-                cmd.call(destroy_command.split(), shell=False)
+                if(entry == "protected-ubuntu-desktop22"):
+                    format_text.print_red(f"We want to keep this VM so will not delete : {entry}")
+                    next
+                else:
+                    destroy_command = f"lxc delete -f {entry}"
+                    format_text.print_red(f"Running command : {destroy_command}")
+                    cmd.call(destroy_command.split(), shell=False)
                 lab_status.display()
         else:
             exit()
