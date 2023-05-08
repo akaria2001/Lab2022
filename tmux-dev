@@ -1,6 +1,8 @@
 #!/bin/sh
 if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ] ; } then
     tmux new-session -d 'watch -n 1 df -i'
+    tmux split-window -h 'glances'
+    tmux set mouse
     tmux split-window -v 'watch -n1 lxc list'
     tmux split-window -h 'htop'
     tmux split-window -h
