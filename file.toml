@@ -46,10 +46,3 @@ image = "images:debian/12"
 ram = "4GB"
 cpu = 4
 protected = 0
-
-[Ubuntu-Linux-Desktop-2204-1]
-type = "vm"
-image = "ubuntu:22.04"
-ram = "6GB"
-cpu = 4
-protected = 0
