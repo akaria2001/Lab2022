@@ -10,6 +10,10 @@
 10) Fix spelling mistake
 11) Add logging
 12) First pass at writing stack script to generate lab from toml. Will add following in near future
+13) Rewrite populate_hosts.sh in python
+14) Push files to hosts - for example -  `lxc file push $HOME/bin/readme.lxc.md above-dragon/tmp/`
+14) Setup Ansible on Host
+15) Setup automatic SSH access - https://ubuntu.com/blog/howto-automatically-import-your-public-ssh-keys-into-lxd-instances
 
 Check to see instance exists - if it does then shut it down and re-configure it based on values in toml file, don't attempt to create it.
 If instance doesn't exist, then create it and configure it based on values in toml file
