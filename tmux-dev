@@ -1,9 +1,9 @@
 #!/bin/sh
-if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ] ; } then
-    tmux new-session -d 'watch -n 1 df -i'
+if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ] && ! [ $TERM_PROGRAM = "vscode" ]; } then
+    tmux new-session -d 'watch -n 1 df -i /'
     tmux split-window -h 'glances'
     tmux set mouse
-    tmux split-window -v 'watch -n1 lxc list'
+    tmux split-window -v 'watch -n1 lxc list -c n,4 -f compact'
     tmux split-window -h 'htop'
     tmux split-window -h
     tmux new-window 'mutt'
