@@ -10,7 +10,7 @@ with open("/etc/hosts", "w") as f:
     f.write(hosts_seed)
 
 # Get the output of the lxc list command
-lxc_output = os.popen("sudo lxc list -f compact -c 4,4,n").read()
+lxc_output = os.popen("sudo lxc list -f compact -c 4,n,n").read()
 
 # Split the output into lines and remove the first line
 lxc_output_lines = lxc_output.split("\n")[1:]
