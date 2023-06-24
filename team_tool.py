@@ -24,7 +24,7 @@ def names():
 
 def main():
     cmd.call("clear", shell=False)
-    custom_fig = Figlet(font='banner3-D')
+    custom_fig = Figlet(font='starwars')
     print(custom_fig.renderText('Team Tool'))
     spiner()
     cmd.call("clear", shell=False)

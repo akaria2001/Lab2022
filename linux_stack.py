@@ -83,9 +83,12 @@ def main():
     format_text.print_smiley("Lab has been setup, will display it shortly")
     time.sleep(15)
     lab_status.display()
-    format_text.print_red("Following Instances were found to be unhealthy and were removed")
-    for unhealthy_instance in unhealthy_instances:
-        format_text.print_red(unhealthy_instance)
+    unhealthy_instance_qty = len(unhealthy_instances)
+    format_text.print_green(f"Qty of unhealthy instances : {unhealthy_instance_qty}")
+    if unhealthy_instance_qty > 0:
+        format_text.print_red("Following Instances were found to be unhealthy and were removed")
+        for unhealthy_instance in unhealthy_instances:
+            format_text.print_red(unhealthy_instance)
 
 
 if __name__ == '__main__':

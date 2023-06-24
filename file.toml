@@ -15,8 +15,8 @@ protected = 1
 [Fedora-38-1]
 type = "vm"
 image = "images:fedora/38"
-ram = "6GB"
-cpu = 6
+ram = "4GB"
+cpu = 4
 protected = 0
 
 [Alma-Linux-8-1]
@@ -43,6 +43,13 @@ protected = 0
 [Debian-Linux-12-1]
 type = "vm"
 image = "images:debian/12"
+ram = "4GB"
+cpu = 4
+protected = 0
+
+[Ubuntu-Linux-22-1]
+type = "vm"
+image = "ubuntu:22.04"
 ram = "4GB"
 cpu = 4
 protected = 0
