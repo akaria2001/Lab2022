@@ -6,6 +6,5 @@ if ! { [ "$TERM" = "screen" ] && [ -n "$TMUX" ] && ! [ $TERM_PROGRAM = "vscode" 
     tmux split-window -v 'watch -n1 lxc list -c n,4 -f compact'
     tmux split-window -h 'htop'
     tmux split-window -h
-    tmux new-window 'mutt'
     tmux -2 attach-session -d
 fi
