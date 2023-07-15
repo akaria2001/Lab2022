@@ -37,7 +37,6 @@ def print_warning(text):
     print(f'\u274C\u274C\u274C\033[1;31m {text} \033[0;0m\u274C\u274C\u274C')
 
 def spiner():
-    print_green("Choosing engineer to run the session")
     count = 0
     for frame in cycle(r'-\|/'):
         count = count + 1
@@ -91,8 +90,15 @@ def main():
         print_green("Debugging is not enabled")
 
     spiner()
+
+
     cmd.call("clear", shell=False)
     if filename:
+        print_green("Choosing engineer to run the session from the following list")
+        for name in names(filename):
+            print_green(name)
+        sleep(3)
+        cmd.call("clear", shell=False)
         name = custom_fig.renderText(random.choice(names(filename)))
         print_yellow(custom_fig.renderText("Today's session will be run by"))
         print_green(name)
