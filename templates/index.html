@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Name</title>
+</head>
+
+<body>
+    <ul>
+        <h1>"{{ engineer }}" chosen from the following list</h1>
+        {% for name in names %}
+        <li>{{ name }}</li>
+        {% endfor %}
+        <h2></h2>
+    </ul>
+</body>
+</html>
