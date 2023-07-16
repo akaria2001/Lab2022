@@ -4,12 +4,13 @@ import subprocess as cmd
 app = Flask(__name__)
 
 def return_instances():
-    instances = []
+    instance_list = []
     command = "lxc list -c n -f csv"
-    buffer = cmd.check_output(command.split(), shell=False)
-    buffer = buffer.decode('utf8').split()
-    instances.append(buffer)
-    return instances
+    instances = cmd.check_output(command.split(), shell=False)
+    instances = instances.decode('utf8')
+    instance_list = instances.split()
+    return instance_list
+
 
 @app.route('/')
 def index():
