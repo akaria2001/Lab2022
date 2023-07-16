@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Running Instances</title>
+    <title>QEMU VM and LXC System Container Lab by Amit Karia</title>
+    <link rel="stylesheet" href="/static/styles.css" />
 </head>
 
 <script>
@@ -13,15 +14,22 @@
     window.onload = timedRefresh(2000);
 
     //   -->
-    </script>
+</script>
 
 <body>
     <ul>
         <h1>QEMU VM and LXC System Container Lab by Amit Karia</h1>
-        <h1>Running Instances</h1>
-        {% for i in instances %}
-        <li>{{i}}</li>
+        <th class="table_header">
+        <h3>Running Instances</h3>
+        </th>
+        <table class="table">
+        {% for instance in instances %}
+        <tr class="table_row">
+        <td>{{instance}}</td>
+        </tr>
         {% endfor %}
+        </tr>
+        </table>
     </ul>
 </body>
 </html>

@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background-color: hsla(0, 0%, 100%, 0.743);
+    color: hsl(0, 0%, 10%);
+    line-height: 1.5;
+}
+
+.table_row:nth-child(even) {
+    background-color: hsl(197, 34%, 88%);
+}
+
+.table_header {
+    text-align: left;
+}
+
+.table {
+    border-spacing: 1;
+    margin: 1rem;
+    background-color: rgb(127, 178, 255);
+}
