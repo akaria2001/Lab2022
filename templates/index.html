@@ -2,15 +2,28 @@
 <html>
 <head>
     <title>Random Name</title>
+    <link rel="stylesheet" href="/static/styles.css" />
 </head>
 
 <body>
     <ul>
-        <h1>"{{ engineer }}" chosen from the following list</h1>
+        <h1>Team Sprint Planning Review</h1>
+        <th class="table_header">
+            <h3>Will pick engineer from the following list</h3>
+        </th>
+        <table class="table">
         {% for name in names %}
-        <li>{{ name }}</li>
+        <tr class="table_row">
+        <td>{{name}}</td>
+        </tr>
         {% endfor %}
-        <h2></h2>
+        </tr>
+        </table>
+        <table class="table">
+        <tr>
+            <td>Enginer chosen is {{ engineer }}</td>
+        </tr>
+        </table>
     </ul>
 </body>
 </html>
