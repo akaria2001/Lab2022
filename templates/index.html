@@ -5,6 +5,26 @@
     <link rel="stylesheet" href="/static/styles.css" />
 </head>
 
+<script>
+<!--
+function timedRefresh(timeoutPeriod) {
+    setTimeout("location.reload(true);",timeoutPeriod);
+}
+
+if (sessionStorage.getItem('refreshCount') === null) {
+sessionStorage.setItem('refreshCount', 0);
+}
+
+let refreshCount = parseInt(sessionStorage.getItem('refreshCount'));
+
+if (refreshCount < 50) {
+    refreshCount++;
+    sessionStorage.setItem('refreshCount', refreshCount);
+    window.onload = timedRefresh(100);
+}
+    //   -->
+</script>
+
 <body>
     <ul>
         <h1>Team Sprint Planning Review</h1>
