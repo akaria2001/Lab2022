@@ -4,6 +4,7 @@ image = "images:rockylinux/8"
 ram = "4GB"
 cpu = 4
 protected = 1
+secureboot = 1
 
 [Rocky-Linux-9-1]
 type = "vm"
@@ -11,6 +12,7 @@ image = "images:rockylinux/9"
 ram = "4GB"
 cpu = 4
 protected = 1
+secureboot = 1
 
 [Fedora-38-1]
 type = "vm"
@@ -18,6 +20,7 @@ image = "images:fedora/38"
 ram = "4GB"
 cpu = 4
 protected = 0
+secureboot = 1
 
 [Alma-Linux-8-1]
 type = "vm"
@@ -25,6 +28,7 @@ image = "images:almalinux/8"
 ram = "4GB"
 cpu = 4
 protected = 0
+secureboot = 1
 
 [Alma-Linux-9-1]
 type = "vm"
@@ -32,6 +36,7 @@ image = "images:almalinux/9"
 ram = "2GB"
 cpu = 2
 protected = 0
+secureboot = 1
 
 [Debian-Linux-11-1]
 type = "vm"
@@ -39,6 +44,7 @@ image = "images:debian/11"
 ram = "4GB"
 cpu = 4
 protected = 0
+secureboot = 1
 
 [Debian-Linux-12-1]
 type = "vm"
@@ -46,6 +52,7 @@ image = "images:debian/12"
 ram = "4GB"
 cpu = 4
 protected = 0
+secureboot = 1
 
 [Ubuntu-Linux-22-1]
 type = "vm"
@@ -53,3 +60,20 @@ image = "ubuntu:22.04"
 ram = "4GB"
 cpu = 4
 protected = 0
+secureboot = 1
+
+[Arch-Linux-1]
+type = "vm"
+image = "images:archlinux"
+ram = "4GB"
+cpu = 4
+protected = 0
+secureboot = 0
+
+[Arch-Linux-2]
+type = "vm"
+image = "images:archlinux"
+ram = "4GB"
+cpu = 4
+protected = 0
+secureboot = 0

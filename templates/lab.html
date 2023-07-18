@@ -11,7 +11,7 @@
         setTimeout("location.reload(true);",timeoutPeriod);
     }
 
-    window.onload = timedRefresh(2000);
+    window.onload = timedRefresh(2500);
 
     //   -->
 </script>
@@ -20,12 +20,15 @@
     <ul>
         <h1>QEMU VM and LXC System Container Lab by Amit Karia</h1>
         <th class="table_header">
-        <h3>Running Instances</h3>
+        <h3>Instance Qty : {{ instance_qty }} </h3>
         </th>
         <table class="table">
         {% for instance in instances %}
         <tr class="table_row">
-        <td>{{instance}}</td>
+        {% set cells = instance.split() %}
+        {% for cell in cells %}
+        <td> {{ cell }} </td>
+        {% endfor %}
         </tr>
         {% endfor %}
         </tr>

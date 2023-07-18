@@ -23,9 +23,14 @@ def check_instance_exists(instance):
         return False
 
 
-def create_instance(instance, image):
+def create_instance(instance, image, secureboot):
+    if(secureboot == 0):
+        securebootflag = "false"
+    else:
+        securebootflag = "true"
     format_text.print_blue(f"Creating instance {instance} using image: {image}")
-    lxc_init = f"lxc init {image} {instance}-qemu-vm --vm"
+    lxc_init = f"lxc init {image} {instance}-qemu-vm --vm -c security.secureboot={securebootflag}"
+    format_text.print_blue(f"Running command : {lxc_init}")
     cmd.call(lxc_init.split(), shell=False)
     time.sleep(3)
 
@@ -69,7 +74,7 @@ def main():
         if(check_instance_exists(instance)):
             print(f"{instance} already exists")
         else:
-            create_instance(instance, linux_stack[instance]['image'])
+            create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'])
             configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'])
             time.sleep(15)
         if(check_instance_health(instance)):
