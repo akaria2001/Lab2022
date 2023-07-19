@@ -35,17 +35,22 @@ def create_instance(instance, image, secureboot):
     time.sleep(3)
 
 
-def configure_instance(instance, cpu, ram):
+def configure_instance(instance, cpu, ram, tag):
     format_text.print_blue(f"Reconfiguring {instance} - CPU : {cpu }, RAM : {ram}")
     stop_instance = f"lxc stop {instance}-qemu-vm"
     cpucfg = f"lxc config set {instance}-qemu-vm limits.cpu {cpu}"
     ramcfg = f"lxc config set {instance}-qemu-vm limits.memory {ram}"
+    if(tag == 0):
+        protected = "no"
+    else:
+        protected = "yes"
+    tagcfg = f"lxc config set {instance}-qemu-vm user.comment={protected}"
     lxc_start = f"lxc start {instance}-qemu-vm"
     try:
         cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
     except subprocess.subprocess.TimeoutExpired:
         format_text.print_red(f"Timed out trying to shutdown {instance}-qemu-vm to be reconfigured")
-    for command in [cpucfg, ramcfg, lxc_start]:
+    for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
         cmd.call(command.split(), shell=False)
         time.sleep(10)
 
@@ -75,7 +80,7 @@ def main():
             print(f"{instance} already exists")
         else:
             create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'])
-            configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'])
+            configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'])
             time.sleep(15)
         if(check_instance_health(instance)):
             format_text.print_green(f"Instance {instance} is healthy")

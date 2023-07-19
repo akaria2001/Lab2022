@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 def return_instances():
     instance_list = []
-    command = "lxc list -c n,s,t,image.os:OS,4 -f compact"
+    command = "lxc list -c n,s,t,image.os:OS,user.comment:PROTECTED?,4 -f compact"
     instances = cmd.check_output(command.split(), shell=False)
     instances = instances.decode('utf8')
     instance_list = instances.split("\n")
