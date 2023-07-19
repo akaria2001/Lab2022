@@ -77,3 +77,35 @@ ram = "4GB"
 cpu = 4
 protected = 0
 secureboot = 0
+
+[Alpine-Linux-1]
+type = "vm"
+image = "images:alpine"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 0
+
+[Alpine-Linux-2]
+type = "vm"
+image = "images:alpine"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 0
+
+[Alpine-Linux-3]
+type = "vm"
+image = "images:alpine"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 0
+
+[Alpine-Linux-4]
+type = "vm"
+image = "images:alpine"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 0
