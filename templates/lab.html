@@ -32,8 +32,13 @@
         {% endfor %}
         </tr>
         {% endfor %}
+        <tr class="blank_row">
+            <td colspan="3"></td>
         </tr>
-        <td class="row_summary">Instance Qty : {{ instance_qty }}</td>
+        </tr>
+        <td class="row_summary">Total Instance Qty : {{ instance_qty }}</td>
+        <td class="row_summary">LXC Container Qty : {{ lxc_instance_qty }}</td>
+        <td class="row_summary">QEMU VM Qty : {{ vm_instance_qty }}</td>
         </table>
     </ul>
 </body>

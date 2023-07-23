@@ -1,6 +1,4 @@
 import subprocess as cmd
-import format_text
-import ipdb
 
 
 def return_instances():
@@ -21,8 +19,22 @@ def return_instance_qty():
     return int(instance_qty_cmd)
 
 
+def return_lxc_instance_qty():
+    instance_list = "lxc list -c n -f csv"
+    instance_list_cmd =  cmd.run(instance_list.split(), check=True, capture_output=True)
+    instance_type = "grep container"
+    instance_type_cmd = cmd.run(instance_type.split(), input=instance_list_cmd.stdout, capture_output=True)
+    instance_qty = "wc -l"
+    instance_qty_cmd = cmd.run(instance_qty.split(), input=instance_type_cmd.stdout, capture_output=True)
+    instance_qty_cmd = instance_qty_cmd.stdout.decode('utf8').strip()
+    return int(instance_qty_cmd)
+
+
 def main():
-    format_text.print_green(f"Running Instances : {return_instance_qty()}")
+    cmd.call("clear", shell=False)
+    print(f"Running Instances : {return_instance_qty()}")
+    print(f"LXC Container Instances : {return_lxc_instance_qty()}")
+    print(f"QEMU VM Instances : {return_instance_qty() - return_lxc_instance_qty()}")
 
 
 if __name__ == '__main__':

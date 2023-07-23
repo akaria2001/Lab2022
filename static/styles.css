@@ -43,7 +43,6 @@ body {
     border: 0.1px solid rgb(101, 101, 101);
     border-spacing: 0;
     margin: 2rem;
-    background-color: rgb(36, 5, 116);
 }
 
 td {
@@ -58,4 +57,10 @@ td {
     font-weight: bold;
     font-size: medium;
     color: rgb(160, 159, 159);
+}
+
+.blank_row
+{
+    height: 30px !important; /* overwrites any other rules */
+    background-color: #FFFFFF;
 }
