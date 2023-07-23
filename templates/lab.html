@@ -23,9 +23,6 @@
 
 <body>
     <ul>
-        <th class="table_header">
-        <h3>Instance Qty : {{ instance_qty }} </h3>
-        </th>
         <table class="table">
         {% for instance in instances %}
         <tr class="table_row">
@@ -37,6 +34,9 @@
         {% endfor %}
         </tr>
         </table>
+        <th class="table_header">
+            <h3>Instance Qty : {{ instance_qty }} </h3>
+        </th>
     </ul>
 </body>
 </html>
