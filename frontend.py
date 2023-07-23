@@ -26,4 +26,4 @@ def index():
     return render_template('lab.html', instances=return_instances(), instance_qty=return_instance_qty())
 
 if __name__ == '__main__':
-    app.run(port=25000)
+    app.run(host="0.0.0.0", port=25000)

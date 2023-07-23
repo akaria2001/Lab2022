@@ -23,41 +23,47 @@ def check_instance_exists(instance):
         return False
 
 
-def create_instance(instance, image, secureboot):
+def create_instance(instance, image, secureboot, type):
     if(secureboot == 0):
         securebootflag = "false"
     else:
         securebootflag = "true"
-    format_text.print_blue(f"Creating instance {instance} using image: {image}")
-    lxc_init = f"lxc init {image} {instance}-qemu-vm --vm -c security.secureboot={securebootflag}"
-    format_text.print_blue(f"Running command : {lxc_init}")
-    cmd.call(lxc_init.split(), shell=False)
+    format_text.print_blue(f"Creating instance {instance}-{type} using image: {image} -> type {type}")
+    if(type == "vm"):
+        lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
+        format_text.print_blue(f"Running command : {lxc_init}")
+        cmd.call(lxc_init.split(), shell=False)
+    else:
+        lxc_init = f"lxc init {image} {instance}-{type}"
+        format_text.print_blue(f"Running command : {lxc_init}")
+        cmd.call(lxc_init.split(), shell=False)
     time.sleep(3)
 
 
-def configure_instance(instance, cpu, ram, tag):
-    format_text.print_blue(f"Reconfiguring {instance} - CPU : {cpu }, RAM : {ram}")
-    stop_instance = f"lxc stop {instance}-qemu-vm"
-    cpucfg = f"lxc config set {instance}-qemu-vm limits.cpu {cpu}"
-    ramcfg = f"lxc config set {instance}-qemu-vm limits.memory {ram}"
+def configure_instance(instance, cpu, ram, tag, type):
+    format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu }, RAM : {ram}, Type : {type}")
+    stop_instance = f"lxc stop {instance}-{type}"
+    cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
+    ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
     if(tag == 0):
         protected = "no"
     else:
         protected = "yes"
-    tagcfg = f"lxc config set {instance}-qemu-vm user.comment={protected}"
-    lxc_start = f"lxc start {instance}-qemu-vm"
+    tagcfg = f"lxc config set {instance}-{type} user.comment={protected}"
+    lxc_start = f"lxc start {instance}-{type}"
     try:
         cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
     except subprocess.subprocess.TimeoutExpired:
-        format_text.print_red(f"Timed out trying to shutdown {instance}-qemu-vm to be reconfigured")
+        format_text.print_red(f"Timed out trying to shutdown {instance}-{type} to be reconfigured")
     for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
         cmd.call(command.split(), shell=False)
-        time.sleep(10)
+        time.sleep(7.5)
 
 
-def check_instance_health(instance):
+def check_instance_health(instance, type):
     format_text.print_blue(f"Checking Instance health : {instance}")
-    check_cmd = f"lxc exec {instance}-qemu-vm -- ps aux"
+    check_cmd = f"lxc exec {instance}-{type} -- ps aux"
+    format_text.print_blue(f"Running Check : {check_cmd}")
     try:
         cmd.check_output(check_cmd.split(), shell=False, stderr=subprocess.DEVNULL)
         return True
@@ -79,15 +85,15 @@ def main():
         if(check_instance_exists(instance)):
             print(f"{instance} already exists")
         else:
-            create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'])
-            configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'])
+            create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'], linux_stack[instance]['type'])
+            configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'], linux_stack[instance]['type'])
             time.sleep(15)
-        if(check_instance_health(instance)):
+        if(check_instance_health(instance, linux_stack[instance]['type'])):
             format_text.print_green(f"Instance {instance} is healthy")
         else:
-            format_text.print_red(f"Instance {instance}-qemu-vm is not healthy")
-            unhealthy_instances.append(f"{instance}-qemu-vm")
-            del_instance_cmd = f"lxc delete --force {instance}-qemu-vm"
+            format_text.print_red(f"Instance {instance}-{linux_stack[instance]['type']} is not healthy")
+            unhealthy_instances.append(f"{instance}-{instance}-{linux_stack[instance]['type']}")
+            del_instance_cmd = f"lxc delete --force {instance}-{instance}-{linux_stack[instance]['type']}"
             cmd.call(del_instance_cmd.split(), shell=False)
 
     format_text.print_smiley("Lab has been setup, will display it shortly")
