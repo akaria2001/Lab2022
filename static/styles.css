@@ -1,14 +1,17 @@
-.header-image {
-    background-image: url(“cat.jpg”);
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    background-size: cover;
+#header {
+    background: #110bd7;
+    height: auto;
+    padding: 20px 20px;
 }
 
+h2 {
+    color: rgb(246, 242, 242);
+    font-family: Arial;
+    text-align: left;
+}
 
 .header-text {
-    text-align: center
+    text-align: center;
     position: relative;
     top: 60%;
     left: 50%;
@@ -24,16 +27,21 @@ body {
     line-height: 1.5;
 }
 
-.table_row:nth-child(even) {
+.table_row:nth-child(odd) {
     background-color: hsl(250, 90%, 45%);
+}
+
+.table_row:nth-child(even) {
+    background-color: hsl(250, 8%, 15%);
 }
 
 .table_header {
     text-align: left;
+    background-color: #110bd7;
 }
 
 .table {
-    border-spacing: 1;
-    margin: 1rem;
+    border-spacing: 5;
+    margin: 2rem;
     background-color: rgb(36, 5, 116);
 }
