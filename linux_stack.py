@@ -41,7 +41,7 @@ def create_instance(instance, image, secureboot, type):
 
 
 def configure_instance(instance, cpu, ram, tag, type):
-    format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu }, RAM : {ram}, Type : {type}")
+    format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu}, RAM : {ram}, Type : {type}")
     stop_instance = f"lxc stop {instance}-{type}"
     cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
     ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
