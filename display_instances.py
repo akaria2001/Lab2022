@@ -46,7 +46,7 @@ def main():
     print(f"Running Instances : {return_instance_qty()}")
     print(f"LXC Container Instances : {return_lxc_instance_qty()}")
     print(f"QEMU VM Instances : {return_instance_qty() - return_lxc_instance_qty()}")
-    print(f" Running Instances : {return_running_instance_qty()}")
+    print(f"Running Instances : {return_running_instance_qty()}")
 
 
 if __name__ == '__main__':

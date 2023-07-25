@@ -5,10 +5,11 @@ app = Flask(__name__)
 
 def return_instances():
     instance_list = []
-    command = "lxc list -c n,s,t,image.os:OS,user.comment:PROTECTED?,4 -f compact"
+    command = "lxc list -c n,limits.cpu:Cores,limits.memory:System-Ram,c,u,M,m,s,t,image.os:OS,user.comment:PROTECTED?,4 -f csv"
     instances = cmd.check_output(command.split(), shell=False)
     instances = instances.decode('utf8')
     instance_list = instances.split("\n")
+    del instance_list[-1]
     return instance_list
 
 

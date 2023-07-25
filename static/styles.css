@@ -26,11 +26,11 @@ body {
     line-height: 1.5;
 }
 
-.table_row:nth-child(odd) {
+.table_row:nth-child(even) {
     background-color: #110bd7;
 }
 
-.table_row:nth-child(even) {
+.table_row:nth-child(odd) {
     background-color: #000000;;
 }
 
@@ -51,16 +51,16 @@ td {
     font-size: smaller;
 }
 
-.row_summary {
+th {
     border: 0.1px solid rgb(101, 101, 101);
     padding: 5px 5px 5px 10px;
+    font-size: smaller;
+}
+
+.row_summary {
+    border: 0.1px solid rgb(101, 101, 101);
     font-weight: bold;
     font-size: medium;
     color: rgb(160, 159, 159);
 }
 
-.blank_row
-{
-    height: 30px !important; /* overwrites any other rules */
-    background-color: #000000;
-}

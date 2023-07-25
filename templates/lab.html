@@ -24,23 +24,38 @@
 <body>
     <ul>
         <table class="table">
+        <th>Name</th>
+        <th>CPU Cores</th>
+        <th>System RAM</th>
+        <th>Date Created</th>
+        <th>CPU usage (secs)</th>
+        <th>RAM Usage (%)</th>
+        <th>RAM Usage</th>
+        <th>Status</th>
+        <th>Type</th>
+        <th>OS</th>
+        <th>Protected (y/n)</th>
+        <th>Network</th>
         {% for instance in instances %}
         <tr class="table_row">
-        {% set cells = instance.split() %}
+        {% set cells = instance.split(",") %}
         {% for cell in cells %}
+        {% if cell is not none %}
         <td> {{ cell }} </td>
+        {% endif %}
         {% endfor %}
         </tr>
         {% endfor %}
-        <tr class="blank_row">
-            <td colspan="3"></td>
         </tr>
+        </table>
+        <table class="table">
+        <tr>
+            <td class="row_summary">Total Instance Qty : {{ instance_qty }}</td>
+            <td class="row_summary">LXC Container Qty : {{ lxc_instance_qty }}</td>
+            <td class="row_summary">QEMU VM Qty : {{ vm_instance_qty }}</td>
+            <td class="row_summary">Running Instance Qty : {{  running_instance_qty }}</td>
+            <td class="row_summary">Stopped Instance Qty : {{  stopped_instance_qty }}</td>
         </tr>
-        <td class="row_summary">Total Instance Qty : {{ instance_qty }}</td>
-        <td class="row_summary">LXC Container Qty : {{ lxc_instance_qty }}</td>
-        <td class="row_summary">QEMU VM Qty : {{ vm_instance_qty }}</td>
-        <td class="row_summary">Running Instance Qty : {{  running_instance_qty }}</td>
-        <td class="row_summary">Stopped Instance Qty : {{  stopped_instance_qty }}</td>
         </table>
     </ul>
 </body>
