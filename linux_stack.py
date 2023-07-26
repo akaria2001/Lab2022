@@ -24,31 +24,20 @@ def check_instance_exists(instance):
         return False
 
 
-def check_kvm():
-    if(os.path.exists("/dev/kvm")):
-        return True
-    else:
-        return False
-
-
-
 def create_instance(instance, image, secureboot, type):
     if(secureboot == 0):
         securebootflag = "false"
     else:
         securebootflag = "true"
     format_text.print_blue(f"Creating instance {instance}-{type} using image: {image} -> type {type}")
-    if(not check_kvm()):
-        format_text.print_red(f"Host does not support KVM, skipping creation of {instance}-{type}")
+    if(type == "vm"):
+        lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
+        format_text.print_blue(f"Running command : {lxc_init}")
+        cmd.call(lxc_init.split(), shell=False)
     else:
-        if(type == "vm"):
-            lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
-            format_text.print_blue(f"Running command : {lxc_init}")
-            cmd.call(lxc_init.split(), shell=False)
-        else:
-            lxc_init = f"lxc init {image} {instance}-{type}"
-            format_text.print_blue(f"Running command : {lxc_init}")
-            cmd.call(lxc_init.split(), shell=False)
+        lxc_init = f"lxc init {image} {instance}-{type}"
+        format_text.print_blue(f"Running command : {lxc_init}")
+        cmd.call(lxc_init.split(), shell=False)
     time.sleep(3)
 
 
