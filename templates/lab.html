@@ -23,6 +23,19 @@
 
 <body>
     <ul>
+        <table = class="table">
+            <th>Host System Information</th>
+            <tr class="table_row">
+            {% for key in system_info %}
+            <td> {{ key }} </td>
+            {% endfor %}
+            </tr>
+            <tr class="table_row">
+            {% for key in system_info %}
+            <td> {{ system_info[key] }} </td>
+            {% endfor %}
+            </tr>
+        </table>
         <table class="table">
         <th>Name</th>
         <th>CPU Cores</th>

@@ -1,7 +1,30 @@
 from flask import Flask, render_template
 import subprocess as cmd
+import platform
+import socket
+import psutil
+import logging
+
 
 app = Flask(__name__)
+
+
+def return_system_info():
+    try:
+        info={}
+        info['hostname']=socket.gethostname()
+        info['platform']=platform.system()
+        info['platform-release']=platform.release()
+        info['platform-version']=platform.version()
+        info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
+        info['architecture']=platform.machine()
+        info['processor']=platform.processor()
+        info['system ram']=str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB"
+        print("DEBUG : type(info)")
+        return info
+    except Exception as e:
+        logging.exception(e)
+
 
 def return_instances():
     instance_list = []
@@ -64,7 +87,8 @@ def index():
         lxc_instance_qty=return_lxc_instance_qty(),
         vm_instance_qty=return_instance_qty()-return_lxc_instance_qty(),
         running_instance_qty=return_running_instance_qty(),
-        stopped_instance_qty=return_stopped_instance_qty()
+        stopped_instance_qty=return_stopped_instance_qty(),
+        system_info=return_system_info()
         )
 
 if __name__ == '__main__':

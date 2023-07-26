@@ -6,7 +6,6 @@ import subprocess as cmd
 import format_text
 import time
 import lab_status
-import os.path
 
 
 def read_stack():

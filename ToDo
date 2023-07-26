@@ -20,3 +20,40 @@ Image Attribute
 <a href="https://www.freepik.com/free-vector/vector-banners-squares-color-set_1306880.htm#query=website%20header&position=1&from_view=keyword&track=ais">Image by ikatod</a> on Freepik
 
 Copy this link and paste it in a visible place, close to where you’re using the image. If that’s not possible, place it at the footer of your website, blog or newsletter, or in the credits section.
+
+Following from https://stackoverflow.com/questions/3103178/how-to-get-the-system-info-with-python
+
+#Shamelessly combined from google and other stackoverflow like sites to form a single function
+
+import platform,socket,re,uuid,json,psutil,logging
+
+def getSystemInfo():
+    try:
+        info={}
+        info['platform']=platform.system()
+        info['platform-release']=platform.release()
+        info['platform-version']=platform.version()
+        info['architecture']=platform.machine()
+        info['hostname']=socket.gethostname()
+        info['ip-address']=socket.gethostbyname(socket.gethostname())
+        info['mac-address']=':'.join(re.findall('..', '%012x' % uuid.getnode()))
+        info['processor']=platform.processor()
+        info['ram']=str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB"
+        return json.dumps(info)
+    except Exception as e:
+        logging.exception(e)
+
+json.loads(getSystemInfo())
+Output Sample:
+
+{
+ 'platform': 'Linux',
+ 'platform-release': '5.3.0-29-generic',
+ 'platform-version': '#31-Ubuntu SMP Fri Jan 17 17:27:26 UTC 2020',
+ 'architecture': 'x86_64',
+ 'hostname': 'naret-vm',
+ 'ip-address': '127.0.1.1',
+ 'mac-address': 'bb:cc:dd:ee:bc:ff',
+ 'processor': 'x86_64',
+ 'ram': '4 GB'
+}
