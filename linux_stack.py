@@ -6,6 +6,7 @@ import subprocess as cmd
 import format_text
 import time
 import lab_status
+import os.path
 
 
 def read_stack():
@@ -23,21 +24,33 @@ def check_instance_exists(instance):
         return False
 
 
+def check_kvm():
+    if(os.path.exists("/dev/kvm")):
+        return True
+    else:
+        return False
+
+
+
 def create_instance(instance, image, secureboot, type):
     if(secureboot == 0):
         securebootflag = "false"
     else:
         securebootflag = "true"
     format_text.print_blue(f"Creating instance {instance}-{type} using image: {image} -> type {type}")
-    if(type == "vm"):
-        lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
-        format_text.print_blue(f"Running command : {lxc_init}")
-        cmd.call(lxc_init.split(), shell=False)
+    if(not check_kvm()):
+        format_text.print_red(f"Host does not support KVM, skipping creation of {instance}-{type}")
     else:
-        lxc_init = f"lxc init {image} {instance}-{type}"
-        format_text.print_blue(f"Running command : {lxc_init}")
-        cmd.call(lxc_init.split(), shell=False)
+        if(type == "vm"):
+            lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
+            format_text.print_blue(f"Running command : {lxc_init}")
+            cmd.call(lxc_init.split(), shell=False)
+        else:
+            lxc_init = f"lxc init {image} {instance}-{type}"
+            format_text.print_blue(f"Running command : {lxc_init}")
+            cmd.call(lxc_init.split(), shell=False)
     time.sleep(3)
+
 
 
 def configure_instance(instance, cpu, ram, tag, type):
@@ -58,6 +71,7 @@ def configure_instance(instance, cpu, ram, tag, type):
     for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
         cmd.call(command.split(), shell=False)
         time.sleep(7.5)
+
 
 
 def check_instance_health(instance, type):
@@ -105,6 +119,7 @@ def main():
         format_text.print_red("Following Instances were found to be unhealthy and were removed")
         for unhealthy_instance in unhealthy_instances:
             format_text.print_red(unhealthy_instance)
+
 
 
 if __name__ == '__main__':
