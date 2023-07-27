@@ -31,6 +31,16 @@
             {% endfor %}
             </tr>
             <tr class="table_row">
+            {% if system_info['system temp (c)'] > 60 %}
+            <tr class="table_row">
+            <td class=".td_alert" bgcolor="red" > System is in alert as temp exceeds threshold </td>
+            </tr>
+            {% endif %}
+            {% if system_info['system temp (c)'] > 50 and system_info['system temp (c)'] <= 60 %}
+            <tr class="table_row">
+            <td class=".td_alert" bgcolor="darkorange" style="color:black"> System is in warning as temp exceeds threshold </td>
+            </tr>
+            {% endif %}
             {% for key in system_info %}
             <td> {{ system_info[key] }} </td>
             {% endfor %}
