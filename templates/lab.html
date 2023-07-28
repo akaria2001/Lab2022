@@ -47,8 +47,17 @@
             </tr>
         </table>
         <table class="table">
+        <tr>
+        <td class="row_summary">Total Instance Qty : {{ instance_qty }}</td>
+        <td class="row_summary">LXC Container Qty : {{ lxc_instance_qty }}</td>
+        <td class="row_summary">QEMU VM Qty : {{ vm_instance_qty }}</td>
+        <td class="row_summary">Running Instance Qty : {{  running_instance_qty }}</td>
+        <td class="row_summary">Stopped Instance Qty : {{  stopped_instance_qty }}</td>
+        </tr>
+        </table>
+        <table class="table">
         <th>Name</th>
-        <th>CPU Cores</th>
+        <th>CPU Cores</t
         <th>System RAM</th>
         <th>Date Created</th>
         <th>CPU usage (secs)</th>
@@ -57,8 +66,8 @@
         <th>Status</th>
         <th>Type</th>
         <th>OS</th>
-        <th>Protected (y/n)</th>
         <th>Network</th>
+        <th>Protected (y/n)</th>
         {% for instance in instances %}
         <tr class="table_row">
         {% set cells = instance.split(",") %}
@@ -69,15 +78,6 @@
         {% endfor %}
         </tr>
         {% endfor %}
-        </tr>
-        </table>
-        <table class="table">
-        <tr>
-            <td class="row_summary">Total Instance Qty : {{ instance_qty }}</td>
-            <td class="row_summary">LXC Container Qty : {{ lxc_instance_qty }}</td>
-            <td class="row_summary">QEMU VM Qty : {{ vm_instance_qty }}</td>
-            <td class="row_summary">Running Instance Qty : {{  running_instance_qty }}</td>
-            <td class="row_summary">Stopped Instance Qty : {{  stopped_instance_qty }}</td>
         </tr>
         </table>
     </ul>

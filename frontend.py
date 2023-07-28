@@ -17,9 +17,12 @@ def return_system_info():
         info['platform-release']=platform.release()
         info['platform-version']=platform.version()
         info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
-        info['architecture']=platform.machine()
         info['processor']=platform.processor()
-        info['system ram']=str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB"
+        info['system ram']=f"{(round(psutil.virtual_memory().total / (1024.0 **3)))}GB"
+        info['ram percent used']=f"{(round(psutil.virtual_memory()[2]))}%"
+        info['ram used']=f"{(round(psutil.virtual_memory()[3]/1000000000))}GB"
+        info['cpu cores']=int(psutil.cpu_count()/2)
+        info['cpu utilization (last 5 seconds)']=f"{(psutil.cpu_percent(5))}%"
         print("DEBUG : type(info)")
         return info
     except Exception as e:
@@ -28,7 +31,7 @@ def return_system_info():
 
 def return_instances():
     instance_list = []
-    command = "lxc list -c n,limits.cpu:Cores,limits.memory:System-Ram,c,u,M,m,s,t,image.os:OS,user.comment:PROTECTED?,4 -f csv"
+    command = "lxc list -c n,limits.cpu:Cores,limits.memory:System-Ram,c,u,M,m,s,t,image.os:OS,4,user.comment:PROTECTED? -f csv"
     instances = cmd.check_output(command.split(), shell=False)
     instances = instances.decode('utf8')
     instance_list = instances.split("\n")
