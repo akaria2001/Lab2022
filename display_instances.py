@@ -7,8 +7,7 @@ def return_instances():
     instances = cmd.check_output(command.split(), shell=False)
     instances = instances.decode('utf8').replace("'", '"')
     data = json.loads(instances)
-    return_data = json.dumps(data, indent=4, sort_keys=True)
-    return return_data
+    return data
 
 
 def return_instance_qty():
@@ -49,6 +48,7 @@ def main():
     print(f"QEMU VM Instances Qty : {return_instance_qty() - return_lxc_instance_qty()}")
     print(f"Running Instances Qty : {return_running_instance_qty()}")
     print(f"Running Instances Info : {return_instances()}")
+    print(f"Running Instances Info Type : {type(return_instances())}")
 
 
 if __name__ == '__main__':
