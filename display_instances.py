@@ -1,13 +1,14 @@
 import subprocess as cmd
+import json
 
 
 def return_instances():
-    instance_list = []
-    command = "lxc list -c n,s,4,t -f compact"
+    command = "lxc list -f json"
     instances = cmd.check_output(command.split(), shell=False)
-    instances = instances.decode('utf8')
-    instance_list = instances.split("\n")
-    return instance_list
+    instances = instances.decode('utf8').replace("'", '"')
+    data = json.loads(instances)
+    return_data = json.dumps(data, indent=4, sort_keys=True)
+    return return_data
 
 
 def return_instance_qty():
@@ -43,10 +44,11 @@ def return_running_instance_qty():
 
 def main():
     cmd.call("clear", shell=False)
-    print(f"Running Instances : {return_instance_qty()}")
-    print(f"LXC Container Instances : {return_lxc_instance_qty()}")
-    print(f"QEMU VM Instances : {return_instance_qty() - return_lxc_instance_qty()}")
-    print(f"Running Instances : {return_running_instance_qty()}")
+    print(f"Running Instances Qty : {return_instance_qty()}")
+    print(f"LXC Container Instances Qty  : {return_lxc_instance_qty()}")
+    print(f"QEMU VM Instances Qty : {return_instance_qty() - return_lxc_instance_qty()}")
+    print(f"Running Instances Qty : {return_running_instance_qty()}")
+    print(f"Running Instances Info : {return_instances()}")
 
 
 if __name__ == '__main__':
