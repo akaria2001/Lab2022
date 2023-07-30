@@ -3,6 +3,11 @@
     padding: 15px 15px;
 }
 
+#header2 {
+    background: #6f6e76;
+    padding: 2px 15px;
+}
+
 h2 {
     color: rgb(246, 242, 242);
     font-family: Arial;
@@ -31,7 +36,7 @@ body {
 }
 
 .table_row:nth-child(odd) {
-    background-color: #000000;;
+    background-color: #000000;
 }
 
 .table_header {

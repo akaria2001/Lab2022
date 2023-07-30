@@ -9,6 +9,10 @@
 <div id="header">
     <h2>QEMU VM and LXC Container LAB by Amit Karia</h2>
 </div>
+<div id="header2">
+    <h3>Work in progress and at very early stage</h3>
+</div>
+
 
 <script>
     <!--
@@ -61,7 +65,6 @@
         <th>System RAM</th>
         <th>Date Created</th>
         <th>CPU usage</th>
-        <th>RAM Usage (%)</th>
         <th>RAM Usage</th>
         <th>Status</th>
         <th>Type</th>
@@ -73,7 +76,6 @@
         <td> {{ instance['config']['limits.memory'] }} </td>
         <td> {{ instance['created_at'] }} </td>
         <td> {{ instance['state']['cpu']['usage'] }} </td>
-        <td> {{ instance['state']['memory']['usage'] / instance['state']['memory']['total'] *100 |round|int }} </td>
         <td> {{ instance['state']['memory']['usage'] }} </td>
         <td> {{ instance['state']['status'] }} </td>
         <td> {{ instance['type'] }} </td>
