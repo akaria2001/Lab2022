@@ -24,7 +24,7 @@ def return_system_info():
         info['ram used']=f"{(round(psutil.virtual_memory()[3]/1000000000))}GB"
         info['cpu cores']=int(psutil.cpu_count()/2)
         info['cpu utilization (last 5 seconds)']=f"{(psutil.cpu_percent(5))}%"
-        print("DEBUG : type(info)")
+        info['5 minute Load Average']=round(psutil.getloadavg()[1],2)
         return info
     except Exception as e:
         logging.exception(e)
@@ -50,7 +50,7 @@ def return_instance_qty():
 def return_lxc_instance_qty():
     instance_list = "lxc list -c n,t,s -f csv"
     instance_list_cmd =  cmd.run(instance_list.split(), check=True, capture_output=True)
-    instance_type = "grep container"
+    instance_type = "grep -i container"
     instance_type_cmd = cmd.run(instance_type.split(), input=instance_list_cmd.stdout, capture_output=True)
     instance_qty = "wc -l"
     instance_qty_cmd = cmd.run(instance_qty.split(), input=instance_type_cmd.stdout, capture_output=True)
