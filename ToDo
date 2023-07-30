@@ -10,6 +10,7 @@
 9) Check to see instance exists - if it does then shut it down and re-configure it based on values in toml file, don't attempt to create it.
    If instance doesn't exist, then create it and configure it based on values in toml file
 10) Add banner to web app :- https://ordinarycoders.com/blog/article/hero-banners
+11) Currently passing lab as json to Jinja Template and processing it there which is messy, next interation will process Json first into dict and then send to template, also need to process and format presented data
 11) Use lxc instance user.comments for tags to display in web front end, will add following columns
     - protected
     - cpu

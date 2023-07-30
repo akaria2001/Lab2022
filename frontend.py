@@ -4,6 +4,7 @@ import platform
 import socket
 import psutil
 import logging
+import json
 
 
 app = Flask(__name__)
@@ -30,13 +31,11 @@ def return_system_info():
 
 
 def return_instances():
-    instance_list = []
-    command = "lxc list -c n,limits.cpu:Cores,limits.memory:System-Ram,c,u,M,m,s,t,image.os:OS,4,user.comment:PROTECTED? -f csv"
+    command = "lxc list -f json"
     instances = cmd.check_output(command.split(), shell=False)
-    instances = instances.decode('utf8')
-    instance_list = instances.split("\n")
-    del instance_list[-1]
-    return instance_list
+    instances = instances.decode('utf8').replace("'", '"')
+    lab_stack = json.loads(instances)
+    return lab_stack
 
 
 def return_instance_qty():

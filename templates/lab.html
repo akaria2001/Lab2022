@@ -60,22 +60,24 @@
         <th>CPU Cores</th>
         <th>System RAM</th>
         <th>Date Created</th>
-        <th>CPU usage (secs)</th>
+        <th>CPU usage</th>
         <th>RAM Usage (%)</th>
         <th>RAM Usage</th>
         <th>Status</th>
         <th>Type</th>
         <th>OS</th>
-        <th>Network</th>
-        <th>Protected (y/n)</th>
         {% for instance in instances %}
         <tr class="table_row">
-        {% set cells = instance.split(",") %}
-        {% for cell in cells %}
-        {% if cell is not none %}
-        <td> {{ cell }} </td>
-        {% endif %}
-        {% endfor %}
+        <td> {{ instance['name'] }} </td>
+        <td> {{ instance['config']['limits.cpu'] }} </td>
+        <td> {{ instance['config']['limits.memory'] }} </td>
+        <td> {{ instance['created_at'] }} </td>
+        <td> {{ instance['state']['cpu']['usage'] }} </td>
+        <td> {{ instance['state']['memory']['usage'] / instance['state']['memory']['total'] *100 |round|int }} </td>
+        <td> {{ instance['state']['memory']['usage'] }} </td>
+        <td> {{ instance['state']['status'] }} </td>
+        <td> {{ instance['type'] }} </td>
+        <td> {{ instance['config']['image.os'] }} </td>
         </tr>
         {% endfor %}
         </tr>
