@@ -2,17 +2,33 @@
 <html>
 
 <head>
-    <title>QEMU VM and LXC System Container Lab by Amit Karia</title>
+    <title>Project Devyani : QEMU VM and LXC System Container Lab</title>
     <link rel="stylesheet" href="/static/styles.css" />
 </head>
-
-<div id="header">
-    <h2>QEMU VM and LXC Container LAB by Amit Karia</h2>
+<div class="container">
+<div class="left">
+    <h2>Project Devyani : QEMU VM and LXC System Container Lab</h2>
 </div>
-<div id="header2">
-    <h3>Work in progress and at very early stage</h3>
+<div class="left">
+    <h4>Work in progress and at very early stage</h4>
 </div>
-
+{% if system_info['system temp (c)'] > 60 %}
+<div class="status_banner_alert">
+    <td></td> Status : System is in alert as temp exceeds threshold </td>
+</div>
+{% elif system_info['system temp (c)'] > 50 and system_info['system temp (c)'] <= 60 %}
+<div class="status_banner_warning">
+    <td></td> Status : System is in warning as temp exceeds threshold </td>
+</div>
+{% else %}
+<div class="status_banner_clear">
+    <td></td> Status : System is good </td>
+</div>
+{% endif %}
+<div class="status_banner_clear">
+    <td></td> by Amit Karia </td>
+</div>
+</div>
 
 <script>
     <!--
@@ -35,16 +51,6 @@
             {% endfor %}
             </tr>
             <tr class="table_row">
-            {% if system_info['system temp (c)'] > 60 %}
-            <tr class="table_row">
-            <td class=".td_alert" bgcolor="red" > System is in alert as temp exceeds threshold </td>
-            </tr>
-            {% endif %}
-            {% if system_info['system temp (c)'] > 50 and system_info['system temp (c)'] <= 60 %}
-            <tr class="table_row">
-            <td class=".td_alert" bgcolor="darkorange" style="color:black"> System is in warning as temp exceeds threshold </td>
-            </tr>
-            {% endif %}
             {% for key in system_info %}
             <td> {{ system_info[key] }} </td>
             {% endfor %}

@@ -76,3 +76,34 @@ th {
     color: rgb(160, 159, 159);
 }
 
+.status_banner_clear {
+    background-color: rgb(1, 118, 8);
+    padding: 2px 15px;
+}
+
+.status_banner_warning {
+    background-color: rgb(207, 138, 1);
+    padding: 2px 15px;
+}
+
+.status_banner_alert {
+    background-color: rgb(160, 6, 6);
+    padding: 2px 15px;
+}
+
+.left {
+background: blue;
+padding: 2px 15px;
+}
+
+.right {
+background: green;
+padding: 2px 15px;
+}
+
+.container {
+display: grid;
+grid-template-columns: 2fr 1fr;
+color: white;
+padding: 2px 15px;
+}
