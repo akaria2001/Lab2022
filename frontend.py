@@ -5,12 +5,15 @@ import socket
 import psutil
 import logging
 import json
+import os
 
 
 app = Flask(__name__)
 
 
 def return_system_info():
+    total_memory, used_memory, free_memory = map(
+    int, os.popen('free -t -m').readlines()[-1].split()[1:])
     try:
         info={}
         info['hostname']=socket.gethostname()
@@ -19,12 +22,13 @@ def return_system_info():
         info['platform-version']=platform.version()
         info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
         info['processor']=platform.processor()
-        info['system ram']=f"{(round(psutil.virtual_memory().total / (1024.0 **3)))}GB"
-        info['ram percent used']=f"{(round(psutil.virtual_memory()[2]))}%"
-        info['ram used']=f"{(round(psutil.virtual_memory()[3]/1000000000))}GB"
+        info['system ram']=f"{round(total_memory)/1000}GB"
+        info['ram percent used']=f"{round((used_memory/total_memory) * 100, 2)}%"
+        info['ram used']=f"{round(used_memory)/1000}GB"
         info['cpu cores']=int(psutil.cpu_count()/2)
         info['cpu utilization (last 5 seconds)']=f"{(psutil.cpu_percent(5))}%"
         info['5 minute Load Average']=round(psutil.getloadavg()[1],2)
+        info['15 minute Load Average']=round(psutil.getloadavg()[2],2)
         return info
     except Exception as e:
         logging.exception(e)
