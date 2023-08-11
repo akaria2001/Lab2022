@@ -20,7 +20,10 @@ def return_system_info():
         info['platform']=platform.system()
         info['platform-release']=platform.release()
         info['platform-version']=platform.version()
-        info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
+        try:
+            info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
+        except KeyError:
+            next
         info['processor']=platform.processor()
         info['system ram']=f"{round(total_memory)/1000}GB"
         info['ram percent used']=f"{round((used_memory/total_memory) * 100, 2)}%"
