@@ -6,9 +6,18 @@ import psutil
 import logging
 import json
 import os
+from datetime import timedelta
 
 
 app = Flask(__name__)
+
+
+def get_uptime():
+    with open('/proc/uptime', 'r') as f:
+        uptime_seconds = float(f.readline().split()[0])
+    sys_uptime = str(timedelta(seconds=uptime_seconds)).split(':')
+    return(f"{sys_uptime[0]}:{sys_uptime[1]}:{sys_uptime[2]}")
+
 
 
 def return_system_info():
@@ -32,6 +41,7 @@ def return_system_info():
         info['cpu utilization (last 5 seconds)']=f"{(psutil.cpu_percent(5))}%"
         info['5 minute Load Average']=round(psutil.getloadavg()[1],2)
         info['15 minute Load Average']=round(psutil.getloadavg()[2],2)
+        info['Host Uptime HH:MM:SS']=get_uptime()
         return info
     except Exception as e:
         logging.exception(e)
