@@ -6,6 +6,7 @@ import subprocess as cmd
 import format_text
 import time
 import lab_status
+import os.path
 
 
 def read_stack():
@@ -30,9 +31,15 @@ def create_instance(instance, image, secureboot, type):
         securebootflag = "true"
     format_text.print_blue(f"Creating instance {instance}-{type} using image: {image} -> type {type}")
     if(type == "vm"):
-        lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
-        format_text.print_blue(f"Running command : {lxc_init}")
-        cmd.call(lxc_init.split(), shell=False)
+        format_text.print_green("Checking if host is KVM")
+        path = '/dev/kvm'
+        if(os.path.exists(path)):
+            format_text.print_blue("KVM is supported on host will create QEMU VM")
+            lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
+            format_text.print_blue(f"Running command : {lxc_init}")
+            cmd.call(lxc_init.split(), shell=False)
+        else:
+            format_text.print_red("KVM is not supported on host will not create QEMU VM")
     else:
         lxc_init = f"lxc init {image} {instance}-{type}"
         format_text.print_blue(f"Running command : {lxc_init}")
@@ -42,24 +49,28 @@ def create_instance(instance, image, secureboot, type):
 
 
 def configure_instance(instance, cpu, ram, tag, type):
-    format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu}, RAM : {ram}, Type : {type}")
-    stop_instance = f"lxc stop {instance}-{type}"
-    cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
-    ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
-    if(tag == 0):
-        protected = "no"
-    else:
-        protected = "yes"
-    tagcfg = f"lxc config set {instance}-{type} user.comment={protected}"
-    lxc_start = f"lxc start {instance}-{type}"
+    check_instance_created = f"lxc info {instance}-{type}"
     try:
-        cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
-    except subprocess.subprocess.TimeoutExpired:
-        format_text.print_red(f"Timed out trying to shutdown {instance}-{type} to be reconfigured")
-    for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
-        cmd.call(command.split(), shell=False)
-        time.sleep(7.5)
-
+        cmd.check_output(check_instance_created.split(), shell=False)
+        format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu}, RAM : {ram}, Type : {type}")
+        stop_instance = f"lxc stop {instance}-{type}"
+        cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
+        ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
+        if(tag == 0):
+            protected = "no"
+        else:
+            protected = "yes"
+        tagcfg = f"lxc config set {instance}-{type} user.comment={protected}"
+        lxc_start = f"lxc start {instance}-{type}"
+        try:
+            cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
+        except subprocess.subprocess.TimeoutExpired:
+            format_text.print_red(f"Timed out trying to shutdown {instance}-{type} to be reconfigured")
+        for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
+            cmd.call(command.split(), shell=False)
+            time.sleep(3.5)
+    except:
+        format_text.print_red(f"Instance {instance}-{type} doesn't exist will skip configuration")
 
 
 def check_instance_health(instance, type):
