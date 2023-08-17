@@ -32,7 +32,7 @@ def return_system_info():
         try:
             info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
         except KeyError:
-            next
+            info['system temp (c)']=0 #Tempory work around to set value to 0 if temp sensor not present on system, will put in long term fix in later commit
         info['processor']=platform.processor()
         info['system ram']=f"{round(total_memory)/1000}GB"
         info['ram percent used']=f"{round((used_memory/total_memory) * 100, 2)}%"
