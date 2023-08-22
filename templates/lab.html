@@ -12,11 +12,11 @@
 <div class="left">
     <h4>Work in progress and at very early stage</h4>
 </div>
-{% if system_info['system temp (c)'] > 60 %}
+{% if system_info['System Temp (c)'] > 60 %}
 <div class="status_banner_alert">
     <td></td> Status : System is in alert as temp exceeds threshold </td>
 </div>
-{% elif system_info['system temp (c)'] > 50 and system_info['system temp (c)'] <= 60 %}
+{% elif system_info['System Temp (c)'] > 50 and system_info['System Temp (c)'] <= 60 %}
 <div class="status_banner_warning">
     <td></td> Status : System is in warning as temp exceeds threshold </td>
 </div>
@@ -70,22 +70,28 @@
         <th>CPU Cores</th>
         <th>System RAM</th>
         <th>Date Created</th>
-        <th>CPU usage</th>
-        <th>RAM Usage</th>
+        <th>CPU usage (seconds)</th>
+        <th>RAM Usage (MB)</th>
         <th>Status</th>
         <th>Type</th>
         <th>OS</th>
+        <th>Networking (this is work in progress and will be improved in later releases)</th>
         {% for instance in instances %}
         <tr class="table_row">
         <td> {{ instance['name'] }} </td>
         <td> {{ instance['config']['limits.cpu'] }} </td>
         <td> {{ instance['config']['limits.memory'] }} </td>
         <td> {{ instance['created_at'] }} </td>
-        <td> {{ instance['state']['cpu']['usage'] }} </td>
-        <td> {{ instance['state']['memory']['usage'] }} </td>
+        <td> {{ '{:.2f}'.format((instance['state']['cpu']['usage']|float) / 1000000000) }} </td>
+        <td> {{ '{:.2f}'.format((instance['state']['memory']['usage']|float) / 1000000) }} </td>
         <td> {{ instance['state']['status'] }} </td>
-        <td> {{ instance['type'] }} </td>
         <td> {{ instance['config']['image.os'] }} </td>
+        <td> {{ instance['type'] }} </td>
+        {% if instance['type'] == 'virtual-machine' %}
+        <td> {{ instance['state']['network']['enp5s0'] }} </td>
+        {% elif instance['type'] == 'container' %}
+        <td> {{ instance['state']['network']['eth0'] }} </td>
+        {% endif %}
         </tr>
         {% endfor %}
         </tr>

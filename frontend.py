@@ -25,18 +25,18 @@ def return_system_info():
     int, os.popen('free -t -m').readlines()[-1].split()[1:])
     try:
         info={}
-        info['hostname']=socket.gethostname()
-        info['platform']=platform.system()
-        info['platform-release']=platform.release()
-        info['platform-version']=platform.version()
+        info['Hostname']=socket.gethostname()
+        info['Host OS Type']=platform.system()
+        info['Kernel']=platform.release()
+        info['Platform']=platform.version()
         try:
-            info['system temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
+            info['System Temp (c)']=int(psutil.sensors_temperatures()['k10temp'][0][1])
         except KeyError:
-            info['system temp (c)']=0 #Tempory work around to set value to 0 if temp sensor not present on system, will put in long term fix in later commit
-        info['processor']=platform.processor()
-        info['system ram']=f"{round(total_memory)/1000}GB"
-        info['ram percent used']=f"{round((used_memory/total_memory) * 100, 2)}%"
-        info['ram used']=f"{round(used_memory)/1000}GB"
+            info['System Temp (c)']=0 #Tempory work around to set value to 0 if temp sensor not present on system, will put in long term fix in later commit
+        info['Processor']=platform.processor()
+        info['System RAM']=f"{round(total_memory)/1000}GB"
+        info['RAM Utilization (%)']=f"{round((used_memory/total_memory) * 100, 2)}%"
+        info['RAM Usage (GB)']=f"{round(used_memory)/1000}"
         info['cpu cores']=int(psutil.cpu_count()/2)
         info['cpu utilization (last 5 seconds)']=f"{(psutil.cpu_percent(5))}%"
         info['5 minute Load Average']=round(psutil.getloadavg()[1],2)
