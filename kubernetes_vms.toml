@@ -1,0 +1,23 @@
+[k8smaster]
+type = "vm"
+image = "ubuntu:22.04"
+ram = "8GB"
+cpu = 6
+protected = 0
+secureboot = 1
+
+[k8worker1]
+type = "vm"
+image = "ubuntu:22.04"
+ram = "4GB"
+cpu = 4
+protected = 0
+secureboot = 1
+
+[k8worker2]
+type = "vm"
+image = "ubuntu:22.04"
+ram = "4GB"
+cpu = 4
+protected = 0
+secureboot = 1
