@@ -75,6 +75,8 @@
         <th>Status</th>
         <th>Type</th>
         <th>OS</th>
+        <th>Protected y/n?</th>
+        <th>Secure Boot y/n?</th>
         <th>Networking (this is work in progress and will be improved in later releases)</th>
         {% for instance in instances %}
         <tr class="table_row">
@@ -87,6 +89,8 @@
         <td> {{ instance['state']['status'] }} </td>
         <td> {{ instance['config']['image.os'] }} </td>
         <td> {{ instance['type'] }} </td>
+        <td> {{ instance['config']['user.comment'] }} </td>
+        <td> {{ instance['config']['security.secureboot'] }} </td>
         {% if instance['type'] == 'virtual-machine' %}
         <td> {{ instance['state']['network']['enp5s0'] }} </td>
         {% elif instance['type'] == 'container' %}
