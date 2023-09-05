@@ -62,6 +62,14 @@ def check_instance_health(instance, type):
         return False
 
 
+def return_instances():
+    command = "lxc list -f json"
+    instances = cmd.check_output(command.split(), shell=False)
+    instances = instances.decode('utf8').replace("'", '"')
+    data = json.loads(instances)
+    return data
+
+
 def main():
     unhealthy_instances = []
     cmd.call("clear", shell=False)
@@ -89,6 +97,9 @@ def main():
     format_text.print_smiley("Lab has been setup, will display it shortly")
     time.sleep(15)
     lab_status.display()
+    format_text.print_tick("Dumping Lab info to lab.json ")
+    with open('lab.json', 'w') as jsob_lab_export:
+        json.dump(return_instances(), jsob_lab_export, indent=4)
     unhealthy_instance_qty = len(unhealthy_instances)
     format_text.print_green(f"Qty of unhealthy instances : {unhealthy_instance_qty}")
     if unhealthy_instance_qty > 0:
