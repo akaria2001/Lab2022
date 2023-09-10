@@ -48,3 +48,11 @@ Output Sample:
  'processor': 'x86_64',
  'ram': '4 GB'
 }
+
+
+Sunday 10th Sept
+
+Copy default profile to new lab profile
+Configure lab profile to user data
+When creating VMs, ensure they use the new profile and then verify they are using the user data
+User data will be used to setup ansible pull
