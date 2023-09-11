@@ -56,3 +56,10 @@ Copy default profile to new lab profile
 Configure lab profile to user data
 When creating VMs, ensure they use the new profile and then verify they are using the user data
 User data will be used to setup ansible pull
+
+Monday 11th Sept
+
+User data currently hard coded due to time constraint, use value setup in toml file for future iteration
+Add test mode via args to quickly test new features using a stripped down toml file
+frontend.py currently broken needs to be fixed
+

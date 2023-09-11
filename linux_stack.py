@@ -7,11 +7,17 @@ import format_text
 import time
 import lab_status
 import os.path
-
+import os
 
 def read_stack():
     process_dict = toml.load("file.toml")
     return process_dict
+
+def read_user_data():
+    # Read the user-data file
+    with open('user-data', 'r') as file:
+        user_data = file.read()
+        return user_data
 
 
 def check_instance_exists(instance):
@@ -25,6 +31,7 @@ def check_instance_exists(instance):
 
 
 def create_instance(instance, image, secureboot, type, cpu, ram, tag):
+    user_data = read_user_data()
     if(secureboot == 0):
         securebootflag = "false"
     else:
@@ -39,15 +46,19 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
         path = '/dev/kvm'
         if(os.path.exists(path)):
             format_text.print_blue("KVM is supported on host will create QEMU VM")
-            lxc_init = f"lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected}"
+            lxc_init = f'lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
             format_text.print_blue(f"Running command : {lxc_init}")
-            cmd.call(lxc_init.split(), shell=False)
+            # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
+            os.system(lxc_init)
+            # cmd.call(lxc_init.split(), shell=False)
         else:
             format_text.print_red("KVM is not supported on host will not create QEMU VM")
     else:
-        lxc_init = f"lxc launch {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected}"
+        lxc_init = f'lxc launch {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected}  -c user.user-data="{user_data}"'
         format_text.print_blue(f"Running command : {lxc_init}")
-        cmd.call(lxc_init.split(), shell=False)
+        # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
+        os.system(lxc_init)
+        # cmd.call(lxc_init.split(), shell=False)
     time.sleep(3)
 
 
@@ -97,9 +108,10 @@ def main():
     format_text.print_smiley("Lab has been setup, will display it shortly")
     time.sleep(15)
     lab_status.display()
-    format_text.print_tick("Dumping Lab info to lab.json ")
-    with open('lab.json', 'w') as jsob_lab_export:
-        json.dump(return_instances(), jsob_lab_export, indent=4)
+    # ToDO Following commented out as it has stopped working since adding user data to command, will fix in future Iteration
+    # format_text.print_tick("Dumping Lab info to lab.json ")
+    # with open('lab.json', 'w') as json_lab_export:
+    #     json.dump(return_instances(), json_lab_export, indent=4)
     unhealthy_instance_qty = len(unhealthy_instances)
     format_text.print_green(f"Qty of unhealthy instances : {unhealthy_instance_qty}")
     if unhealthy_instance_qty > 0:

@@ -7,6 +7,7 @@ import logging
 import json
 import os
 from datetime import timedelta
+import ipdb
 
 
 app = Flask(__name__)
@@ -52,6 +53,7 @@ def return_instances():
     instances = cmd.check_output(command.split(), shell=False)
     instances = instances.decode('utf8').replace("'", '"')
     lab_stack = json.loads(instances)
+    ipdb.set_trace()
     return lab_stack
 
 
@@ -100,15 +102,21 @@ def return_stopped_instance_qty():
 @app.route('/')
 def index():
     return render_template(
-        'lab.html',
-        instances=return_instances(),
-        instance_qty=return_instance_qty(),
-        lxc_instance_qty=return_lxc_instance_qty(),
-        vm_instance_qty=return_instance_qty()-return_lxc_instance_qty(),
-        running_instance_qty=return_running_instance_qty(),
-        stopped_instance_qty=return_stopped_instance_qty(),
-        system_info=return_system_info()
+        'notice.html',
         )
+
+# @app.route('/')
+# def index():
+#     return render_template(
+#         'lab.html',
+#         instances=return_instances(),
+#         instance_qty=return_instance_qty(),
+#         lxc_instance_qty=return_lxc_instance_qty(),
+#         vm_instance_qty=return_instance_qty()-return_lxc_instance_qty(),
+#         running_instance_qty=return_running_instance_qty(),
+#         stopped_instance_qty=return_stopped_instance_qty(),
+#         system_info=return_system_info()
+#         )
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=25000)
