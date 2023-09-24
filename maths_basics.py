@@ -14,6 +14,14 @@ def square_root(number):
     return math.sqrt(number)
 
 
+def floor_division(number):
+    return number // 2
+
+
+def modulus(number):
+    return number % 2
+
+
 def main():
     upperbound = 25
     print("Running Square Number function")
@@ -22,6 +30,12 @@ def main():
     print("Running Cubed Number function")
     for num in range(1, upperbound+1):
         print(f"{num} -> Cubed {cubed(num)}")
+    print("Running Floor Division Number function")
+    for num in range(1, upperbound+1):
+        print(f"{num} -> Floor Division (return whole number after division by 2) {floor_division(num)}")
+    print("Running Modulus Number function")
+    for num in range(1, upperbound+1):
+        print(f"{num} ->  Modulus (/2 and remainder) {modulus(num)}")
     print("Running Square Root Number function, will only print whole numbers")
     for num in range(1, upperbound+1):
         val = round(square_root(num),3)
