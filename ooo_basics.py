@@ -4,7 +4,7 @@ import ipdb
 
 # Create Instance Parent Class with properties for type, name, ram and cpu
 class MyInstance:
-    def __init__(self,type, name, ram, cpu):
+    def __init__(self, type, name, ram, cpu):
         self.type = type # VM or Container
         self.name = name
         self.ram = ram # Allocated as Integer in GB
@@ -30,21 +30,22 @@ print(f"Will rename instance from {vm.name} to 'debian'")
 vm.name = "debian"
 print(f"New Name : {vm.name}")
 
-# Create child Class to inherit instance class for Linux Instances
-# Following inheritance is broken needs to be fixed :(
+# Create child Class to inherit instance class for Linux Instances and add os_type property
 class Linux(MyInstance):
-    def __init__(self,type, name, ram, cpu, os_type):
-        super().__init__(self, type, name, ram)
-        self.os_type = os_type
+    def __init__(self, type, name, ram, cpu):
+        super().__init__(type, name, ram, cpu)
+        self.os_type = 'linux'
 
-container = Linux("vm", "debian", 6, 4, "linux")
 
-ipdb.set_trace()
+container = Linux("container", "debian", 6, 4)
+
+# ipdb.set_trace()
 
 print(f"Object : {container} and its type is : {type(container)}")
 print(f"Name : {container.name}")
 print(f"Type : {container.type}")
 print(f"RAM : {container.returnRamInMb()}")
-print(f"Will rename instance from {container.name} to 'debian'")
+print(f"Will rename instance from {container.name} to 'alpine'")
 container.name = "alpine"
 print(f"New Name : {container.name}")
+print(f"New property for child class (ostype) : {container.os_type}")
