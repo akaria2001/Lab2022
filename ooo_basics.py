@@ -32,15 +32,19 @@ print(f"New Name : {vm.name}")
 
 # Create child Class to inherit instance class for Linux Instances and add os_type property
 class Linux(MyInstance):
-    def __init__(self, type, name, ram, cpu):
+    def __init__(self, type, name, ram, cpu, os_type):
         super().__init__(type, name, ram, cpu)
-        self.os_type = 'linux'
+        self.os_type = os_type
+
+    def penguin(self):
+        print ("This is a Linux Object Type")
 
 
-container = Linux("container", "debian", 6, 4)
+container = Linux("container", "debian", 6, 4, 'linux')
 
-# ipdb.set_trace()
+ipdb.set_trace()
 
+print(container.penguin())
 print(f"Object : {container} and its type is : {type(container)}")
 print(f"Name : {container.name}")
 print(f"Type : {container.type}")

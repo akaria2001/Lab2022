@@ -59,7 +59,7 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
         # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
         os.system(lxc_init)
         # cmd.call(lxc_init.split(), shell=False)
-    time.sleep(3)
+    time.sleep(7.5)
 
 
 def check_instance_health(instance, type):
