@@ -38,6 +38,7 @@ def create_instance(instance, image, secureboot, type):
             lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
             format_text.print_blue(f"Running command : {lxc_init}")
             cmd.call(lxc_init.split(), shell=False)
+
         else:
             format_text.print_red("KVM is not supported on host will not create QEMU VM")
     else:
@@ -102,7 +103,17 @@ def main():
             configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'], linux_stack[instance]['type'])
             time.sleep(15)
         if(check_instance_health(instance, linux_stack[instance]['type'])):
-            format_text.print_green(f"Instance {instance} is healthy")
+            format_text.print_green(f"Instance {instance} is healthy will install MicroK8s")
+            time.sleep(60)
+            # Short term work around to run this until I can cloud-init working to do this instead
+            script_push = f"lxc file push microk8s_install.sh {instance}-{linux_stack[instance]['type']}/tmp/"
+            time.sleep(15)
+            format_text.print_green(f"Instance {instance}-{linux_stack[instance]['type']} - running - {script_push}")
+            cmd.call(script_push.split(), shell=False)
+            time.sleep(15)
+            install_microk8s = f"lxc exec {instance}-{linux_stack[instance]['type']} -- bash /tmp/microk8s_install.sh"
+            format_text.print_green(f"Instance {instance} - running - {install_microk8s}")
+            cmd.call(install_microk8s.split(), shell=False)
         else:
             format_text.print_red(f"Instance {instance}-{linux_stack[instance]['type']} is not healthy")
             unhealthy_instances.append(f"{instance}-{instance}-{linux_stack[instance]['type']}")

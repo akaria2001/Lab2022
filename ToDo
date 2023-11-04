@@ -63,3 +63,10 @@ User data currently hard coded due to time constraint, use value setup in toml f
 Add test mode via args to quickly test new features using a stripped down toml file
 frontend.py currently broken needs to be fixed
 
+
+lxc init ubuntu:22.04 k8smaster-vm --vm -c security.secureboot=true
+lxc config set k8smaster-vm limits.cpu 4
+lxc config set k8smaster-vm limits.memory 8GB
+lxc start k8smaster-vm
+lxc file push microk8s_install.sh k8smaster-vm/tmp/
+lxc exec k8smaster-vm -- bash /tmp/microk8s_install.sh
