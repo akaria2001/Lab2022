@@ -67,6 +67,7 @@
         </table>
         <table class="table">
         <th>Name</th>
+        <th>Node</th>
         <th>CPU Cores</th>
         <th>System RAM</th>
         <th>Date Created</th>
@@ -81,6 +82,7 @@
         {% for instance in instances %}
         <tr class="table_row">
         <td> {{ instance['name'] }} </td>
+        <td> {{ instance['location'] }} </td>
         <td> {{ instance['config']['limits.cpu'] }} </td>
         <td> {{ instance['config']['limits.memory'] }} </td>
         <td> {{ instance['created_at'] }} </td>
