@@ -1,0 +1,9 @@
+#cloud-config
+users:
+  - name: akaria
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+
+runcmd:
+  - echo 'Hello, World!' > /var/tmp/hello-world.txt

@@ -70,3 +70,18 @@ lxc config set k8smaster-vm limits.memory 8GB
 lxc start k8smaster-vm
 lxc file push microk8s_install.sh k8smaster-vm/tmp/
 lxc exec k8smaster-vm -- bash /tmp/microk8s_install.sh
+
+Cloud Init example
+
+Cloud Init file example
+
+#cloud-config
+users:
+  - name: <username>
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-rsa <your-public-key>
+
+lxc launch ubuntu:22.04 mycontainer --config=user.user-data="$(cat cloud-init-test.yaml)"
