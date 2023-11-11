@@ -86,6 +86,8 @@ users:
 
 lxc launch ubuntu:22.04 mycontainer --config=user.user-data="$(cat cloud-init-test.yaml)"
 
+ssh -o StrictHostKeyChecking=accept-new akaria@<IP Address>
+
 Looking at Multipass instead off LXD for VMs - https://multipass.run/install
 
 example

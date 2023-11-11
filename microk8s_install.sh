@@ -14,21 +14,21 @@ if [[ $HOSTNAME == *"master"* ]]; then
     microk8s enable observability
     microk8s enable dns
     # Enable MetalLB
-    microk8s enable metallb
-    # Provide an IP address range for MetalLB
-    microk8s kubectl apply <<EOF
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-    namespace: metallb-system
-    name: config
-    data:
-    config: |
-        address-pools:
-        - name: default
-        protocol: layer2
-        addresses:
-        - 192.168.1.240/28
+    # microk8s enable metallb
+    # # Provide an IP address range for MetalLB
+    # microk8s kubectl apply <<EOF
+    # apiVersion: v1
+    # kind: ConfigMap
+    # metadata:
+    # namespace: metallb-system
+    # name: config
+    # data:
+    # config: |
+    #     address-pools:
+    #     - name: default
+    #     protocol: layer2
+    #     addresses:
+    #     - 192.168.1.240/28
 EOF
     microk8s kubectl create deployment nginx --image=nginx
     microk8s kubectl scale deployment nginx --replicas=2

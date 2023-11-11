@@ -7,11 +7,18 @@ import format_text
 import time
 import lab_status
 import os.path
-
+import os
 
 def read_stack():
     process_dict = toml.load("kubernetes_vms.toml")
     return process_dict
+
+
+def read_user_data():
+    # Read the user-data file
+    with open('cloud-init-test.yaml', 'r') as file:
+        user_data = file.read()
+        return user_data
 
 
 def check_instance_exists(instance):
@@ -24,20 +31,27 @@ def check_instance_exists(instance):
         return False
 
 
-def create_instance(instance, image, secureboot, type):
+def create_instance(instance, image, secureboot, type, cpu, ram, tag):
+    user_data = read_user_data()
     if(secureboot == 0):
         securebootflag = "false"
     else:
         securebootflag = "true"
+    if(tag == 0):
+        protected = "no"
+    else:
+        protected = "yes"
     format_text.print_blue(f"Creating instance {instance}-{type} using image: {image} -> type {type}")
     if(type == "vm"):
         format_text.print_green("Checking if host is KVM")
         path = '/dev/kvm'
         if(os.path.exists(path)):
             format_text.print_blue("KVM is supported on host will create QEMU VM")
-            lxc_init = f"lxc init {image} {instance}-{type} --vm -c security.secureboot={securebootflag}"
+            lxc_init = f'lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
             format_text.print_blue(f"Running command : {lxc_init}")
-            cmd.call(lxc_init.split(), shell=False)
+            # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
+            os.system(lxc_init)
+            # cmd.call(lxc_init.split(), shell=False)
 
         else:
             format_text.print_red("KVM is not supported on host will not create QEMU VM")
@@ -45,33 +59,32 @@ def create_instance(instance, image, secureboot, type):
         lxc_init = f"lxc init {image} {instance}-{type}"
         format_text.print_blue(f"Running command : {lxc_init}")
         cmd.call(lxc_init.split(), shell=False)
-    time.sleep(3)
+    time.sleep(15)
 
 
-
-def configure_instance(instance, cpu, ram, tag, type):
-    check_instance_created = f"lxc info {instance}-{type}"
-    try:
-        cmd.check_output(check_instance_created.split(), shell=False)
-        format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu}, RAM : {ram}, Type : {type}")
-        stop_instance = f"lxc stop {instance}-{type}"
-        cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
-        ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
-        if(tag == 0):
-            protected = "no"
-        else:
-            protected = "yes"
-        tagcfg = f"lxc config set {instance}-{type} user.comment={protected}"
-        lxc_start = f"lxc start {instance}-{type}"
-        try:
-            cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
-        except subprocess.subprocess.TimeoutExpired:
-            format_text.print_red(f"Timed out trying to shutdown {instance}-{type} to be reconfigured")
-        for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
-            cmd.call(command.split(), shell=False)
-            time.sleep(3.5)
-    except:
-        format_text.print_red(f"Instance {instance}-{type} doesn't exist will skip configuration")
+# def configure_instance(instance, cpu, ram, tag, type):
+#     check_instance_created = f"lxc info {instance}-{type}"
+#     try:
+#         cmd.check_output(check_instance_created.split(), shell=False)
+#         format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu}, RAM : {ram}, Type : {type}")
+#         stop_instance = f"lxc stop {instance}-{type}"
+#         cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
+#         ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
+#         if(tag == 0):
+#             protected = "no"
+#         else:
+#             protected = "yes"
+#         tagcfg = f"lxc config set {instance}-{type} user.comment={protected}"
+#         lxc_start = f"lxc start {instance}-{type}"
+#         try:
+#             cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
+#         except subprocess.subprocess.TimeoutExpired:
+#             format_text.print_red(f"Timed out trying to shutdown {instance}-{type} to be reconfigured")
+#         for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
+#             cmd.call(command.split(), shell=False)
+#             time.sleep(3.5)
+#     except:
+#         format_text.print_red(f"Instance {instance}-{type} doesn't exist will skip configuration")
 
 
 def check_instance_health(instance, type):
@@ -99,8 +112,8 @@ def main():
         if(check_instance_exists(instance)):
             print(f"{instance} already exists")
         else:
-            create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'], linux_stack[instance]['type'])
-            configure_instance(instance, linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'], linux_stack[instance]['type'])
+            # create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'], linux_stack[instance]['type'])
+            create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'], linux_stack[instance]['type'], linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'])
             time.sleep(15)
         if(check_instance_health(instance, linux_stack[instance]['type'])):
             format_text.print_green(f"Instance {instance} is healthy will install MicroK8s")

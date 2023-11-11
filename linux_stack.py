@@ -15,7 +15,7 @@ def read_stack():
 
 def read_user_data():
     # Read the user-data file
-    with open('user-data', 'r') as file:
+    with open('cloud-init-test.yaml', 'r') as file:
         user_data = file.read()
         return user_data
 
