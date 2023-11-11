@@ -85,3 +85,12 @@ users:
       - ssh-rsa <your-public-key>
 
 lxc launch ubuntu:22.04 mycontainer --config=user.user-data="$(cat cloud-init-test.yaml)"
+
+Looking at Multipass instead off LXD for VMs - https://multipass.run/install
+
+example
+
+sudo snap install multipass
+
+multipass launch 22.04 --name myVM --cloud-init cloud-init-test.yaml -c 4 -m 4GB -d 50GB
+

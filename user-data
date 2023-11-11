@@ -1,6 +1,6 @@
 #cloud-config
 package_update: true
-apt_sources:
+apt:
   - source: "ppa:ansible/ansible"
 
 runcmd:
@@ -10,3 +10,4 @@ packages:
   - git
   - ansible
   - emacs-nox
+  - whois
