@@ -94,6 +94,7 @@ def check_instance_health(instance, type):
     format_text.print_blue(f"Running Check : {check_cmd}")
     try:
         cmd.check_output(check_cmd.split(), shell=False, stderr=subprocess.DEVNULL)
+        format_text.print_smiley(f"{instance}-{type} is healthy, will wait 60 seconds before proceeding")
         return True
     except subprocess.subprocess.CalledProcessError:
         return False
@@ -116,7 +117,6 @@ def main():
             create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'], linux_stack[instance]['type'], linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['protected'])
             time.sleep(15)
         if(check_instance_health(instance, linux_stack[instance]['type'])):
-            format_text.print_green(f"Instance {instance} is healthy will install MicroK8s via Ansible")
             time.sleep(60)
             # Short term work around to run this until I can cloud-init working to do this instead
             # script_push = f"lxc file push microk8s_install.sh {instance}-{linux_stack[instance]['type']}/tmp/"
@@ -137,6 +137,15 @@ def main():
     time.sleep(15)
     populate_hosts.write_hosts()
     lab_status.display()
+    for instance in linux_stack:
+        format_text.print_green(f"Instance {instance}-{linux_stack[instance]['type']} setup SSH trust")
+        remove_old_trust = f"ssh-keygen -f '/home/akaria/.ssh/known_hosts' -R {instance}-{linux_stack[instance]['type']}"
+        cmd.call(remove_old_trust.split(), shell=False)
+        setup_trust = f"ssh-copy-id -f -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']}"
+        print(f"Running command - {setup_trust}")
+        cmd.call(setup_trust.split(), shell=False)
+
+
     unhealthy_instance_qty = len(unhealthy_instances)
     format_text.print_green(f"Qty of unhealthy instances : {unhealthy_instance_qty}")
     if unhealthy_instance_qty > 0:
