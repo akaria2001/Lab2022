@@ -150,12 +150,14 @@ def main():
         print(f"Running command - {test_trust}")
         cmd.call(test_trust.split(), shell=False)
         with open('ansible-hosts', 'a') as ansible_file:
-            ansible_file.write(f"{instance}-{linux_stack[instance]['type']}")
-        format_text.print_green(f"Using Ansible to istall MicroK8s on the new VMs")
-        ansible_cmd = "ansible-playbook ansible-microk8s.yml -i ansible-hosts"
-        format_text.print_smiley(f"Running command {ansible_cmd}")
-        cmd.call(ansible_cmd.split(), shell=False)
-        time.sleep(120)
+            ansible_file.write(f"{instance}-{linux_stack[instance]['type']}\n")
+        time.sleep(15)
+
+    format_text.print_green(f"Using Ansible to istall MicroK8s on the new VMs")
+    ansible_cmd = "ansible-playbook ansible-microk8s.yml -i ansible-hosts"
+    format_text.print_smiley(f"Running command {ansible_cmd}")
+    cmd.call(ansible_cmd.split(), shell=False)
+
 
 
     unhealthy_instance_qty = len(unhealthy_instances)
