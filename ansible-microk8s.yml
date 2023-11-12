@@ -1,6 +1,7 @@
 ---
 - name: Install MicroK8s
   hosts: all
+  serial : 1
   become: true
   tasks:
     - name: Install snapd
