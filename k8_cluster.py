@@ -136,14 +136,17 @@ def main():
     format_text.print_smiley("Lab has been setup, will display it shortly")
     time.sleep(15)
     populate_hosts.write_hosts()
+    with open('/home/akaria/.ssh/known_hosts', 'w') as file:
+        pass
     lab_status.display()
     for instance in linux_stack:
         format_text.print_green(f"Instance {instance}-{linux_stack[instance]['type']} setup SSH trust")
-        remove_old_trust = f"ssh-keygen -f '/home/akaria/.ssh/known_hosts' -R {instance}-{linux_stack[instance]['type']}"
-        cmd.call(remove_old_trust.split(), shell=False)
         setup_trust = f"ssh-copy-id -f -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']}"
         print(f"Running command - {setup_trust}")
         cmd.call(setup_trust.split(), shell=False)
+        test_trust = f"ssh -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']} -- hostname"
+        print(f"Running command - {test_trust}")
+        cmd.call(test_trust.split(), shell=False)
 
 
     unhealthy_instance_qty = len(unhealthy_instances)
