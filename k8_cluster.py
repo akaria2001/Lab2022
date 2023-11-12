@@ -138,6 +138,8 @@ def main():
     populate_hosts.write_hosts()
     with open('/home/akaria/.ssh/known_hosts', 'w') as file:
         pass
+    with open('ansible-hosts', 'w') as ansible_file:
+        pass
     lab_status.display()
     for instance in linux_stack:
         format_text.print_green(f"Instance {instance}-{linux_stack[instance]['type']} setup SSH trust")
@@ -147,6 +149,13 @@ def main():
         test_trust = f"ssh -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']} -- hostname"
         print(f"Running command - {test_trust}")
         cmd.call(test_trust.split(), shell=False)
+        with open('ansible-hosts', 'a') as ansible_file:
+            ansible_file.write(f"{instance}-{linux_stack[instance]['type']}")
+        format_text.print_green(f"Using Ansible to istall MicroK8s on the new VMs")
+        ansible_cmd = "ansible-playbook ansible-microk8s.yml -i ansible-hosts"
+        format_text.print_smiley(f"Running command {ansible_cmd}")
+        cmd.call(ansible_cmd.split(), shell=False)
+        time.sleep(120)
 
 
     unhealthy_instance_qty = len(unhealthy_instances)

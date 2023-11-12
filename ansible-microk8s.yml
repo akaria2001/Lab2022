@@ -1,0 +1,18 @@
+---
+- name: Install MicroK8s
+  hosts: all
+  become: true
+  tasks:
+    - name: Install snapd
+      apt:
+        name: snapd
+        state: present
+
+    - name: Install MicroK8s
+      shell: snap install microk8s --classic
+
+    - name: Allow non-root access to MicroK8s
+      shell: usermod -aG microk8s $USER
+
+    - name: Configure MicroK8s
+      shell: sudo microk8s status --wait-ready
