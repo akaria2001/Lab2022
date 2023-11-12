@@ -8,6 +8,8 @@ import time
 import lab_status
 import os.path
 import os
+import populate_hosts
+
 
 def read_stack():
     process_dict = toml.load("file.toml")
@@ -59,7 +61,7 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
         # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
         os.system(lxc_init)
         # cmd.call(lxc_init.split(), shell=False)
-    time.sleep(7.5)
+    time.sleep(60)
 
 
 def check_instance_health(instance, type):
@@ -106,6 +108,7 @@ def main():
             cmd.call(del_instance_cmd.split(), shell=False)
 
     format_text.print_smiley("Lab has been setup, will display it shortly")
+    populate_hosts.write_hosts()
     time.sleep(15)
     lab_status.display()
     # ToDO Following commented out as it has stopped working since adding user data to command, will fix in future Iteration

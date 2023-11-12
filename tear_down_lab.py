@@ -5,6 +5,7 @@ import format_text
 import lab_status
 import check_instances_exist
 import countdown
+import populate_hosts
 
 
 def generate_username():
@@ -62,6 +63,7 @@ def destroy():
 def main():
     cmd.call("clear", shell=False)
     destroy()
+    populate_hosts.write_hosts()
 
 
 if __name__ == '__main__':

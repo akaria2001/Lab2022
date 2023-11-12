@@ -1,6 +1,7 @@
 #cloud-config
 package_update: true
 package_upgrade: true
+package_reboot_if_required: true
 
 apt:
   - source: "ppa:ansible/ansible"
@@ -53,3 +54,6 @@ write_files:
          Subsystem sftp /usr/lib/openssh/sftp-server
          UsePAM yes
          AllowUsers akaria
+
+autoinstall:
+  shutdown: reboot
