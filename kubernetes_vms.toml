@@ -1,4 +1,4 @@
-[k8scontroller]
+[k8scontroller1]
 type = "vm"
 image = "ubuntu:22.04"
 ram = "8GB"
@@ -15,14 +15,6 @@ protected = 0
 secureboot = 1
 
 [k8sworker2]
-type = "vm"
-image = "ubuntu:22.04"
-ram = "4GB"
-cpu = 4
-protected = 0
-secureboot = 1
-
-[k8sworker3]
 type = "vm"
 image = "ubuntu:22.04"
 ram = "4GB"

@@ -9,6 +9,8 @@ import lab_status
 import os.path
 import os
 import populate_hosts
+import re
+import create_ansible_configuration as ansible_gen
 
 def read_stack():
     process_dict = toml.load("kubernetes_vms.toml")
@@ -149,8 +151,7 @@ def main():
         test_trust = f"ssh -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']} -- hostname"
         print(f"Running command - {test_trust}")
         cmd.call(test_trust.split(), shell=False)
-        with open('ansible-hosts', 'a') as ansible_file:
-            ansible_file.write(f"{instance}-{linux_stack[instance]['type']}\n")
+        ansible_gen.generate_ansible_configuration()
         time.sleep(15)
 
     format_text.print_green(f"Using Ansible to istall MicroK8s on the new VMs")
