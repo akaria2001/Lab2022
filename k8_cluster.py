@@ -9,8 +9,8 @@ import lab_status
 import os.path
 import os
 import populate_hosts
-import re
 import create_ansible_configuration as ansible_gen
+
 
 def read_stack():
     process_dict = toml.load("kubernetes_vms.toml")
@@ -65,31 +65,6 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
     time.sleep(15)
 
 
-# def configure_instance(instance, cpu, ram, tag, type):
-#     check_instance_created = f"lxc info {instance}-{type}"
-#     try:
-#         cmd.check_output(check_instance_created.split(), shell=False)
-#         format_text.print_blue(f"Reconfiguring {instance}-{type} - CPU : {cpu}, RAM : {ram}, Type : {type}")
-#         stop_instance = f"lxc stop {instance}-{type}"
-#         cpucfg = f"lxc config set {instance}-{type} limits.cpu {cpu}"
-#         ramcfg = f"lxc config set {instance}-{type} limits.memory {ram}"
-#         if(tag == 0):
-#             protected = "no"
-#         else:
-#             protected = "yes"
-#         tagcfg = f"lxc config set {instance}-{type} user.comment={protected}"
-#         lxc_start = f"lxc start {instance}-{type}"
-#         try:
-#             cmd.call(stop_instance.split(), shell=False, stderr=subprocess.DEVNULL, timeout=5)
-#         except subprocess.subprocess.TimeoutExpired:
-#             format_text.print_red(f"Timed out trying to shutdown {instance}-{type} to be reconfigured")
-#         for command in [cpucfg, ramcfg, tagcfg, lxc_start]:
-#             cmd.call(command.split(), shell=False)
-#             time.sleep(3.5)
-#     except:
-#         format_text.print_red(f"Instance {instance}-{type} doesn't exist will skip configuration")
-
-
 def check_instance_health(instance, type):
     format_text.print_blue(f"Checking Instance health : {instance}")
     check_cmd = f"lxc exec {instance}-{type} -- ps aux"
@@ -120,15 +95,6 @@ def main():
             time.sleep(15)
         if(check_instance_health(instance, linux_stack[instance]['type'])):
             time.sleep(60)
-            # Short term work around to run this until I can cloud-init working to do this instead
-            # script_push = f"lxc file push microk8s_install.sh {instance}-{linux_stack[instance]['type']}/tmp/"
-            # time.sleep(15)
-            # format_text.print_green(f"Instance {instance}-{linux_stack[instance]['type']} - running - {script_push}")
-            # cmd.call(script_push.split(), shell=False)
-            # time.sleep(15)
-            # install_microk8s = f"lxc exec {instance}-{linux_stack[instance]['type']} -- bash /tmp/microk8s_install.sh"
-            # format_text.print_green(f"Instance {instance} - running - {install_microk8s}")
-            # cmd.call(install_microk8s.split(), shell=False)
         else:
             format_text.print_red(f"Instance {instance}-{linux_stack[instance]['type']} is not healthy")
             unhealthy_instances.append(f"{instance}-{instance}-{linux_stack[instance]['type']}")

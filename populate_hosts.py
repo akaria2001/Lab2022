@@ -1,5 +1,7 @@
 #!/bin/python3
 import os
+import re
+import ipdb
 
 def write_hosts():
     # Read the contents of the hosts.seed file
@@ -15,13 +17,17 @@ def write_hosts():
 
     # Split the output into lines and remove the first line
     lxc_output_lines = lxc_output.split("\n")[1:]
+    # ipdb.set_trace()
     lxc_output_lines = list(filter(None,lxc_output_lines))
 
     # Append the remaining lines to /etc/hosts
+    pattern = "k8s"
     with open("/etc/hosts", "a") as f:
         for line in lxc_output_lines:
-            print(f"{line.split()[0]} {line.split()[2]} {line.split()[2]}")
-            f.write(f"{line.split()[0]} {line.split()[2]} {line.split()[2]}\n")
+            # ipdb.set_trace()
+            if re.search(pattern, line):
+                print(f"{line.split()[0]} {line.split()[2]} {line.split()[2]}")
+                f.write(f"{line.split()[0]} {line.split()[2]} {line.split()[2]}\n")
 
 
 if __name__ == '__main__':
