@@ -96,3 +96,14 @@ sudo snap install multipass
 
 multipass launch 22.04 --name myVM --cloud-init cloud-init-test.yaml -c 4 -m 4GB -d 50GB
 
+----
+
+Configure hosts file to allow sudo user to edit - ok for a test system home lab. Not ideal for production.
+
+sudo addgroup editors #make a new group
+sudo adduser $USER editors #add yourself to it
+sudo chown :editors /etc/hosts #change the group ownership
+sudo chmod 664 /etc/hosts #give the group write permission
+
+sudo setfacl -m $USER:rw /etc/hosts
+
