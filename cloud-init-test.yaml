@@ -7,7 +7,7 @@ apt:
   - source: "ppa:ansible/ansible"
 
 users:
-  - name: akaria
+  - name: $USER
     groups: sudo
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
@@ -53,7 +53,7 @@ write_files:
          AcceptEnv LANG LC_*
          Subsystem sftp /usr/lib/openssh/sftp-server
          UsePAM yes
-         AllowUsers akaria
+         AllowUsers $USER
 
 autoinstall:
   shutdown: reboot

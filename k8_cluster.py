@@ -23,6 +23,9 @@ def read_user_data():
         user_data = file.read()
         return user_data
 
+def get_user():
+    return os.environ.get('USER')
+
 
 def check_instance_exists(instance):
     print(f"Will check {instance} exists")
@@ -78,6 +81,9 @@ def check_instance_health(instance, type):
 
 
 def main():
+    cmd.call('clear', shell=False)
+    format_text.print_smiley(f"Welcome {get_user()} to the MicroK8s stack creation tool")
+    time.sleep(2)
     unhealthy_instances = []
     cmd.call("clear", shell=False)
     format_text.print_green("Loading Stack Configuraton from toml file")
@@ -104,17 +110,17 @@ def main():
     format_text.print_smiley("Lab has been setup, will display it shortly")
     time.sleep(15)
     populate_hosts.write_hosts()
-    with open('/home/akaria/.ssh/known_hosts', 'w') as file:
+    with open(f'/home/{get_user()}/.ssh/known_hosts', 'w') as file:
         pass
     with open('ansible-hosts', 'w') as ansible_file:
         pass
     lab_status.display()
     for instance in linux_stack:
         format_text.print_green(f"Instance {instance}-{linux_stack[instance]['type']} setup SSH trust")
-        setup_trust = f"ssh-copy-id -f -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']}"
+        setup_trust = f"ssh-copy-id -f -o StrictHostKeyChecking=accept-new {get_user()}@{instance}-{linux_stack[instance]['type']}"
         print(f"Running command - {setup_trust}")
         cmd.call(setup_trust.split(), shell=False)
-        test_trust = f"ssh -o StrictHostKeyChecking=accept-new akaria@{instance}-{linux_stack[instance]['type']} -- hostname"
+        test_trust = f"ssh -o StrictHostKeyChecking=accept-new {get_user()}@{instance}-{linux_stack[instance]['type']} -- hostname"
         print(f"Running command - {test_trust}")
         cmd.call(test_trust.split(), shell=False)
         ansible_gen.generate_ansible_configuration()
