@@ -1,5 +1,5 @@
 [k8scontroller1]
-type = "vm"
+type = "container"
 image = "ubuntu:22.04"
 ram = "8GB"
 cpu = 6
@@ -7,7 +7,7 @@ protected = 0
 secureboot = 1
 
 [k8sworker1]
-type = "vm"
+type = "container"
 image = "ubuntu:22.04"
 ram = "4GB"
 cpu = 4

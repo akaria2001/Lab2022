@@ -58,13 +58,14 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
             # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
             os.system(lxc_init)
             # cmd.call(lxc_init.split(), shell=False)
-
         else:
             format_text.print_red("KVM is not supported on host will not create QEMU VM")
     else:
-        lxc_init = f"lxc init {image} {instance}-{type}"
+        lxc_init = f'lxc launch -p default -p microk8s {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
         format_text.print_blue(f"Running command : {lxc_init}")
-        cmd.call(lxc_init.split(), shell=False)
+        # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
+        os.system(lxc_init)
+        # cmd.call(lxc_init.split(), shell=False)
     time.sleep(15)
 
 
@@ -123,6 +124,7 @@ def main():
         test_trust = f"ssh -o StrictHostKeyChecking=accept-new {get_user()}@{instance}-{linux_stack[instance]['type']} -- hostname"
         print(f"Running command - {test_trust}")
         cmd.call(test_trust.split(), shell=False)
+        ansible_gen.generate_playbook(get_user())
         ansible_gen.generate_ansible_configuration()
         time.sleep(15)
 

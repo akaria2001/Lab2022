@@ -4,6 +4,7 @@ import ipdb
 import toml
 import format_text
 import re
+import shutil
 
 def read_stack():
     process_dict = toml.load("kubernetes_vms.toml")
@@ -35,6 +36,20 @@ def generate_ansible_configuration():
                 # ipdb.set_trace()
                 if re.match(pattern, instance_name):
                     ansible_file.write(f"{instance_name}\n")
+
+
+def generate_playbook(user):
+    source_file = "ansible-microk8s.yml.template"
+    destination_file = "ansible-microk8s.yml"
+    shutil.copy(source_file, destination_file)
+
+    with open(destination_file, 'r') as file:
+          file_data = file.read()
+
+    file_data  = re.sub('USER_TMP', user, file_data)
+
+    with open(destination_file, 'w') as file:
+        file.write(file_data)
 
 
 if __name__ == '__main__':
