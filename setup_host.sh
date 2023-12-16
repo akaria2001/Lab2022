@@ -1,5 +1,6 @@
 #!/bin/sh
 
+sudo apt-get install openssh-server -y
 sudo snap install neofetch ansible glances emacs-nox
 sudo snap install lxd
 lxd init
