@@ -20,11 +20,11 @@ sudo adduser $USER editors
 sudo chown :editors /etc/hosts
 sudo chmod 664 /etc/hosts
 sudo setfacl -m $USER:rw /etc/hosts
-printf "You can now create your MicroK8s cluster by running the following"
-printf "ssh-keygen -t rsa"
-printf "Enter the default options"
-printf "Copy the contens off $HOME/.ssh/id_rsa.pub to the cloud-init-test.yaml file line 15"
+printf "You can now create your MicroK8s cluster by running the following\n\n"
+printf "ssh-keygen -t rsa\n"
+printf "Enter the default options\n"
+printf "Copy the contens off $HOME/.ssh/id_rsa.pub to the cloud-init-test.yaml file line 15\n"
 printf "\n"
-printf "cd $HOME/bin"
-printf "source/bin/activate"
-printf "time python3 k8_cluster.py"
+printf "cd $HOME/bin\n"
+printf "source/bin/activate\n"
+printf "time python3 k8_cluster.py\n"
