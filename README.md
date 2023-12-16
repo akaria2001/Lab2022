@@ -1,7 +1,7 @@
 # Lab2022
 Amit Karia Lab 2022
 
-Setup Lab
+Setup Lab (To help automate this, working on setup_host.sh which is currently a work in progress)
 
 On New Ubuntu 22.04 Desktop Install
 
