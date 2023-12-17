@@ -4,7 +4,7 @@ cd $HOME
 sudo apt-get update -y
 sudo snap remove lxd --purge
 sudo apt-get install openssh-server -y
-sudo apt-get install neofetch ansible glances vim emacs-nox -y
+sudo apt-get install neofetch ansible glances vim emacs-nox acl -y
 sudo snap install lxd
 lxd init
 wget https://raw.githubusercontent.com/ubuntu/microk8s/master/tests/lxc/microk8s.profile -O $HOME/bin/microk8s.profile
