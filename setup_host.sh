@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cd $HOME
+sudo apt-get update -y
 sudo snap remove lxd --purge
 sudo apt-get install openssh-server -y
 sudo apt-get install neofetch ansible glances vim emacs-nox -y
