@@ -29,7 +29,7 @@ Copy the contents off `$HOME/.ssh/id_rsa.pub` to the `cloud-init-test.yaml` file
 
 `time python3 k8_cluster.py`
 
-The last script will create the nodes as defined in `kubernetes_vms.toml`, by default it will create them as LXC system containers, but you can change the type value to `VM` to use QEMU KVM VMs instead
+The last script will create the nodes as defined in `kubernetes_vms.toml`, by default it will create them as LXC system containers, but you can change the type value to `vm` to use QEMU KVM VMs instead
 
 It used cloud-init to bootstrap the nodes and then ansible for installing MicroK8s
 
