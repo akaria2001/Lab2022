@@ -12,7 +12,7 @@ users:
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh-authorized-keys:
-      - TMPKEY 
+      - ssh-rsa <key>
 
 runcmd:
   - echo 'Hello, World!' > /var/tmp/hello-world.txt
