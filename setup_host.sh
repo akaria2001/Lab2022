@@ -22,9 +22,9 @@ sudo chown :editors /etc/hosts
 sudo chmod 664 /etc/hosts
 sudo setfacl -m $USER:rw /etc/hosts
 printf "You can now create your MicroK8s cluster by running the following\n\n"
-printf "ssh-keygen -t rsa\n"
+printf "ssh-keygen -b 256 -t ecdsa\n"
 printf "Enter the default options\n"
-printf "Copy the contens off $HOME/.ssh/id_rsa.pub to the cloud-init-test.yaml file line 15\n"
+printf "Copy the contens off $HOME/.ssh/id_ecdsa.pub to the cloud-init-test.yaml file line 15\n"
 printf "\n"
 printf "cd $HOME/bin\n"
 printf "source/bin/activate\n"
