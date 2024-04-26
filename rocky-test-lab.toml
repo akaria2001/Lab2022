@@ -1,0 +1,7 @@
+[rocky-linux-vm-1]
+type = "vm"
+image = "images:rockylinux/8/cloud"
+ram = "2GB"
+cpu = 2
+protected = 0
+secureboot = 1
