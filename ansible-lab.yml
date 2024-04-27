@@ -4,6 +4,24 @@
   serial : 1
   become: true
   tasks:
+  - name: ensure firewalld is at the latest version
+    ansible.builtin.dnf:
+      name: firewalld
+      state: latest
+    when: ansible_distribution == 'Rocky'
+    notify:
+    - restart firewalld
+  - name: ensure firewalld is running
+    service:
+      name: firewalld
+      state: started
+    when: ansible_distribution == 'Rocky'
+  handlers:
+    - name: restart firewalld
+      service:
+        name: firewalld
+        state: restarted
+      when: ansible_distribution == 'Rocky'
     - name: Install snapd
       ansible.builtin.apt:
         name: snapd

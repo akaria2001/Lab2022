@@ -21,3 +21,27 @@ ram = "2GB"
 cpu = 2
 protected = 0
 secureboot = 1
+
+[lab-rocky8-1-ct]
+type = "container"
+image = "images:rockylinux/8/cloud"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 1
+
+[lab-rocky8-2-ct]
+type = "container"
+image = "images:rockylinux/8/cloud"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 1
+
+[lab-ubuntu22-1-ct]
+type = "container"
+image = "ubuntu:22.04"
+ram = "1GB"
+cpu = 1
+protected = 0
+secureboot = 1
