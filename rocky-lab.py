@@ -133,7 +133,10 @@ def main():
     # format_text.print_smiley(f"Running command {ansible_cmd}")
     # cmd.call(ansible_cmd.split(), shell=False)
 
-
+    format_text.print_smiley(f"Running Ansible playbook to setup Lab Instances")
+    time.sleep(5)
+    ansible_cmd = "ansible-playbook ansible-lab.yml -i ansible-lab"
+    cmd.call(ansible_cmd.split(), shell=False)
 
     unhealthy_instance_qty = len(unhealthy_instances)
     format_text.print_green(f"Qty of unhealthy instances : {unhealthy_instance_qty}")
