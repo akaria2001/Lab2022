@@ -41,9 +41,56 @@
       name: emacs-nox
       state: present
     when: ansible_distribution == 'Rocky'
+  - name: Install cockpit-podman using dnf
+    ansible.builtin.dnf:
+      name: cockpit
+      state: present
+    when: ansible_distribution == 'Rocky'
+  - name: Install cockpit-podman using dnf
+    ansible.builtin.dnf:
+      name: cockpit-podman
+      state: present
+    when: ansible_distribution == 'Rocky'
+  - name: Pause for 5 seconds
+    pause:
+      seconds: 5
+    when: ansible_distribution == 'Rocky'
+  - name: Install cockpit-system using dnf
+    ansible.builtin.dnf:
+      name: cockpit-system
+      state: present
+    when: ansible_distribution == 'Rocky'
+  - name: Pause for 10 seconds
+    pause:
+      seconds: 10
+    when: ansible_distribution == 'Rocky'
+  - name: Install cockpit-machines using dnf
+    ansible.builtin.dnf:
+      name: cockpit-machines
+      state: present
+    when: ansible_distribution == 'Rocky'
+  - name: Pause for 10 seconds
+    pause:
+      seconds: 10
+    when: ansible_distribution == 'Rocky'
+  - name: Install cockpit-bridge using dnf
+    ansible.builtin.dnf:
+      name: cockpit-bridge
+      state: present
+    when: ansible_distribution == 'Rocky'
   handlers:
     - name: restart firewalld
       service:
         name: firewalld
+        state: restarted
+      when: ansible_distribution == 'Rocky'
+    - name: enable cockpit
+      service:
+        name: cockpit
+        state: enabled
+      when: ansible_distribution == 'Rocky'
+    - name: restart cockpit
+      service:
+        name: cockpit.socket
         state: restarted
       when: ansible_distribution == 'Rocky'
