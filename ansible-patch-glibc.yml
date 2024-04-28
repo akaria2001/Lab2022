@@ -34,3 +34,12 @@
         regexp: '^(module\s+INTERNAL\s+ISO-2022-CN-EXT//\s+ISO-2022-CN-EXT\s+1)'
         replace: '# \1'
       when: ansible_distribution == 'Rocky'
+    - name: Run iconvconfig
+      ansible.builtin.shell: iconvconfig
+      register: command_output
+      ignore_errors: true
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'
+    - name: Report command output
+      ansible.builtin.debug:
+        var: command_output.stdout
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'

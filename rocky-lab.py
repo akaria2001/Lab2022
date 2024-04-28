@@ -75,7 +75,11 @@ def check_instance_health(instance, type):
     format_text.print_blue(f"Running Check : {check_cmd}")
     try:
         cmd.check_output(check_cmd.split(), shell=False, stderr=subprocess.DEVNULL)
-        format_text.print_smiley(f"{instance}-{type} is healthy, will wait 60 seconds before proceeding")
+        for count in range(60, -1, -1):
+            cmd.call("clear", shell=False)
+            format_text.print_smiley(f"{instance}-{type} is healthy, will wait 60 seconds before proceeding")
+            format_text.print_smiley(f"Countdown before proceeding: {count} seconds!!")
+            time.sleep(1)
         return True
     except subprocess.subprocess.CalledProcessError:
         return False
