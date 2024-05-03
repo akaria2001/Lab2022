@@ -1,96 +1,53 @@
 ---
 - name: Setup Lab
   hosts: lab
-  serial : 1
+  serial: 1
   become: true
   tasks:
-  - name: ensure firewalld is at the latest version
-    ansible.builtin.dnf:
-      name: firewalld
-      state: latest
-    when: ansible_distribution == 'Rocky'
-    notify:
-    - restart firewalld
-  - name: ensure firewalld is running
-    service:
-      name: firewalld
-      state: started
-    when: ansible_distribution == 'Rocky'
-  - name: Install snapd
-    ansible.builtin.apt:
-      name: snapd
-      state: present
-    when: ansible_distribution == 'Ubuntu'
-  - name: Install vim using apt
-    ansible.builtin.apt:
-      name: vim
-      state: present
-    when: ansible_distribution == 'Ubuntu'
-  - name: Install emacs-nox using apt
-    ansible.builtin.apt:
-      name: emacs-nox
-      state: present
-    when: ansible_distribution == 'Ubuntu'
-  - name: Install vim using dnf
-    ansible.builtin.dnf:
-      name: vim
-      state: present
-    when: ansible_distribution == 'Rocky'
-  - name: Install emacs-nox using dnf
-    ansible.builtin.dnf:
-      name: emacs-nox
-      state: present
-    when: ansible_distribution == 'Rocky'
-  - name: Install cockpit-podman using dnf
-    ansible.builtin.dnf:
-      name: cockpit
-      state: present
-    when: ansible_distribution == 'Rocky'
-  - name: Install cockpit-podman using dnf
-    ansible.builtin.dnf:
-      name: cockpit-podman
-      state: present
-    when: ansible_distribution == 'Rocky'
-  - name: Pause for 5 seconds
-    pause:
-      seconds: 5
-    when: ansible_distribution == 'Rocky'
-  - name: Install cockpit-system using dnf
-    ansible.builtin.dnf:
-      name: cockpit-system
-      state: present
-    when: ansible_distribution == 'Rocky'
-  - name: Pause for 10 seconds
-    pause:
-      seconds: 10
-    when: ansible_distribution == 'Rocky'
-  - name: Install cockpit-machines using dnf
-    ansible.builtin.dnf:
-      name: cockpit-machines
-      state: present
-    when: ansible_distribution == 'Rocky'
-  - name: Pause for 10 seconds
-    pause:
-      seconds: 10
-    when: ansible_distribution == 'Rocky'
-  - name: Install cockpit-bridge using dnf
-    ansible.builtin.dnf:
-      name: cockpit-bridge
-      state: present
-    when: ansible_distribution == 'Rocky'
-  handlers:
-    - name: restart firewalld
-      service:
+    - name: Ensure firewalld is at the latest version
+      ansible.builtin.dnf:
         name: firewalld
-        state: restarted
+        state: present
       when: ansible_distribution == 'Rocky'
-    - name: enable cockpit
-      service:
-        name: cockpit
-        state: enabled
+      notify:
+        - Restart firewalld
+    - name: Ensure firewalld is running
+      ansible.builtin.service:
+        name: firewalld
+        state: started
       when: ansible_distribution == 'Rocky'
-    - name: restart cockpit
-      service:
-        name: cockpit.socket
+    - name: Install snapd
+      ansible.builtin.apt:
+        name: snapd
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+    - name: Install vim using apt
+      ansible.builtin.apt:
+        name: vim
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+    - name: Install emacs-nox using apt
+      ansible.builtin.apt:
+        name: emacs-nox
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+    - name: Install vim using dnf
+      ansible.builtin.dnf:
+        name: vim
+        state: present
+      when: ansible_distribution == 'Rocky'
+    - name: Install less using dnf
+      ansible.builtin.dnf:
+        name: less
+        state: present
+      when: ansible_distribution == 'Rocky'
+    - name: Pause for 10 seconds
+      ansible.builtin.pause:
+        seconds: 10
+      when: ansible_distribution == 'Rocky'
+  handlers:
+    - name: Restart firewalld
+      ansible.builtin.service:
+        name: firewalld
         state: restarted
       when: ansible_distribution == 'Rocky'

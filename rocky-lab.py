@@ -9,7 +9,7 @@ import lab_status
 import os.path
 import os
 import populate_hosts_lab
-import create_ansible_configuration as ansible_gen
+import create_ansible_lab_configuration as ansible_gen
 
 
 def read_stack():
@@ -66,7 +66,6 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
         # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
         os.system(lxc_init)
         # cmd.call(lxc_init.split(), shell=False)
-    time.sleep(60)
 
 
 def check_instance_health(instance, type):
@@ -128,7 +127,6 @@ def main():
         test_trust = f"ssh -o StrictHostKeyChecking=accept-new {get_user()}@{instance}-{linux_stack[instance]['type']} -- hostname"
         print(f"Running command - {test_trust}")
         cmd.call(test_trust.split(), shell=False)
-        ansible_gen.generate_playbook(get_user())
         ansible_gen.generate_ansible_configuration()
         time.sleep(15)
 

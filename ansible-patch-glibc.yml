@@ -1,5 +1,5 @@
 ---
-- name: report and patch glibc issue on Rocky
+- name: Report and patch glibc issue on Rocky
   hosts: lab
   become: true
   ignore_errors: false
@@ -15,22 +15,22 @@
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'
     - name: Comment out issue first line
       ansible.builtin.replace:
-        backup: yes
-        path:  /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
+        backup: true
+        path: /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
         regexp: '^(alias\s+ISO2022CNEXT//\s+ISO-2022-CN-EXT//)'
         replace: '# \1'
       when: ansible_distribution == 'Rocky'
     - name: Comment out issue second line
       ansible.builtin.replace:
-        backup: yes
-        path:  /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
+        backup: true
+        path: /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
         regexp: '^(module\s+ISO-2022-CN-EXT//\s+INTERNAL\s+ISO-2022-CN-EXT\s+1)'
         replace: '# \1'
       when: ansible_distribution == 'Rocky'
     - name: Comment out issue third line
       ansible.builtin.replace:
-        backup: yes
-        path:  /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
+        backup: true
+        path: /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
         regexp: '^(module\s+INTERNAL\s+ISO-2022-CN-EXT//\s+ISO-2022-CN-EXT\s+1)'
         replace: '# \1'
       when: ansible_distribution == 'Rocky'
