@@ -8,14 +8,14 @@
       ansible.builtin.dnf:
         name: firewalld
         state: present
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
       notify:
         - Restart firewalld
     - name: Ensure firewalld is running
       ansible.builtin.service:
         name: firewalld
         state: started
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Install snapd
       ansible.builtin.apt:
         name: snapd
@@ -35,19 +35,19 @@
       ansible.builtin.dnf:
         name: vim
         state: present
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Install less using dnf
       ansible.builtin.dnf:
         name: less
         state: present
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Pause for 10 seconds
       ansible.builtin.pause:
         seconds: 10
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
   handlers:
     - name: Restart firewalld
       ansible.builtin.service:
         name: firewalld
         state: restarted
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'

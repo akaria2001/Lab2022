@@ -8,38 +8,38 @@
       ansible.builtin.shell: iconv -l | grep -E 'CN-?EXT'
       register: command_output
       ignore_errors: true
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'AlmaLinux'
     - name: Report command output
       ansible.builtin.debug:
         var: command_output.stdout
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'Ubuntu' or ansible_distribution == 'AlmaLinux'
     - name: Comment out issue first line
       ansible.builtin.replace:
         backup: true
         path: /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
         regexp: '^(alias\s+ISO2022CNEXT//\s+ISO-2022-CN-EXT//)'
         replace: '# \1'
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Comment out issue second line
       ansible.builtin.replace:
         backup: true
         path: /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
         regexp: '^(module\s+ISO-2022-CN-EXT//\s+INTERNAL\s+ISO-2022-CN-EXT\s+1)'
         replace: '# \1'
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Comment out issue third line
       ansible.builtin.replace:
         backup: true
         path: /usr/lib64/gconv/gconv-modules.d/gconv-modules-extra.conf
         regexp: '^(module\s+INTERNAL\s+ISO-2022-CN-EXT//\s+ISO-2022-CN-EXT\s+1)'
         replace: '# \1'
-      when: ansible_distribution == 'Rocky'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Run iconvconfig
       ansible.builtin.shell: iconvconfig
       register: command_output
       ignore_errors: true
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'Ubuntu'
     - name: Report command output
       ansible.builtin.debug:
         var: command_output.stdout
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'Ubuntu'

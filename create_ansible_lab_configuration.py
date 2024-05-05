@@ -14,7 +14,7 @@ def generate_ansible_configuration():
         file = 'ansible-lab'
         linux_stack = read_stack()
         with open(file, 'w') as ansible_file:
-            ansible_file.write('[Lab]\n')
+            ansible_file.write('[lab]\n')
         format_text.print_green("Loading Stack Configuraton from toml file")
         for instance in linux_stack:
             with open(file, 'a') as ansible_file:
