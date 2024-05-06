@@ -1,22 +1,6 @@
-[lab-rocky8-1-ct]
+[lab-alma8-1-ct]
 type = "container"
-image = "images:rockylinux/8/cloud"
-ram = "1GB"
-cpu = 1
-protected = 0
-secureboot = 1
-
-[lab-rocky8-2-ct]
-type = "container"
-image = "images:rockylinux/8/cloud"
-ram = "1GB"
-cpu = 1
-protected = 0
-secureboot = 1
-
-[lab-rocky8-1-vm]
-type = "vm"
-image = "images:rockylinux/8/cloud"
+image = "images:almalinux/8/cloud"
 ram = "1GB"
 cpu = 1
 protected = 0
@@ -30,25 +14,17 @@ cpu = 1
 protected = 0
 secureboot = 1
 
-[lab-rocky8-2-vm]
-type = "vm"
-image = "images:rockylinux/8/cloud"
-ram = "1GB"
-cpu = 1
-protected = 0
-secureboot = 1
-
-[lab-alma8-1-ct]
+[lab-ubuntu22-4-ct]
 type = "container"
-image = "images:almalinux/8/cloud"
+image = "ubuntu:22.04"
 ram = "1GB"
 cpu = 1
 protected = 0
 secureboot = 1
 
-[lab-alma8-2-vm]
-type = "vm"
-image = "images:almalinux/8/cloud"
+[lab-debian12-5-ct]
+type = "container"
+image = "images:debian/12/cloud"
 ram = "1GB"
 cpu = 1
 protected = 0

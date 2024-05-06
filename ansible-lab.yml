@@ -3,6 +3,8 @@
   hosts: lab
   serial: 1
   become: true
+  ignore_unreachable: true
+  ignore_errors: true
   tasks:
     - name: Ensure firewalld is at the latest version
       ansible.builtin.dnf:

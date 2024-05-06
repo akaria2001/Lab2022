@@ -12,10 +12,13 @@ users:
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh-authorized-keys:
-      - <put key here>
+      - <insert key here>
 
 runcmd:
   - echo 'Hello, World! welcome to the twighlight zone' > /var/tmp/hello-world.txt
+  
+packages:
+  - openssh-server
 
 write_files:
   - path: /etc/ssh/sshd_config

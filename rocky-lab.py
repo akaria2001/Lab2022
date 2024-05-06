@@ -48,24 +48,27 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
     else:
         protected = "yes"
     format_text.print_blue(f"Creating instance {instance}-{type} using image: {image} -> type {type}")
-    if(type == "vm"):
-        format_text.print_green("Checking if host is KVM")
-        path = '/dev/kvm'
-        if(os.path.exists(path)):
-            format_text.print_blue("KVM is supported on host will create QEMU VM")
-            lxc_init = f'lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
+    if(check_instance_health(instance, type)):
+        return "Instance already exists will carry on"
+    else:
+        if(type == "vm"):
+            format_text.print_green("Checking if host is KVM")
+            path = '/dev/kvm'
+            if(os.path.exists(path)):
+                format_text.print_blue("KVM is supported on host will create QEMU VM")
+                lxc_init = f'lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
+                format_text.print_blue(f"Running command : {lxc_init}")
+                # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
+                os.system(lxc_init)
+                # cmd.call(lxc_init.split(), shell=False)
+            else:
+                format_text.print_red("KVM is not supported on host will not create QEMU VM")
+        else:
+            lxc_init = f'lxc launch -p default -p microk8s {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
             format_text.print_blue(f"Running command : {lxc_init}")
             # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
             os.system(lxc_init)
             # cmd.call(lxc_init.split(), shell=False)
-        else:
-            format_text.print_red("KVM is not supported on host will not create QEMU VM")
-    else:
-        lxc_init = f'lxc launch -p default -p microk8s {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
-        format_text.print_blue(f"Running command : {lxc_init}")
-        # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
-        os.system(lxc_init)
-        # cmd.call(lxc_init.split(), shell=False)
 
 
 def check_instance_health(instance, type):
@@ -74,9 +77,9 @@ def check_instance_health(instance, type):
     format_text.print_blue(f"Running Check : {check_cmd}")
     try:
         cmd.check_output(check_cmd.split(), shell=False, stderr=subprocess.DEVNULL)
-        for count in range(60, -1, -1):
+        for count in range(120, -1, -1):
             cmd.call("clear", shell=False)
-            format_text.print_smiley(f"{instance}-{type} is healthy, will wait 60 seconds before proceeding")
+            format_text.print_smiley(f"{instance}-{type} is healthy, will wait 120 seconds before proceeding")
             format_text.print_smiley(f"Countdown before proceeding: {count} seconds!!")
             time.sleep(1)
         return True

@@ -2,6 +2,7 @@
 import subprocess as cmd
 import ipdb
 import toml
+import json
 import format_text
 
 
@@ -10,17 +11,22 @@ def read_stack():
     return process_dict
 
 
+def return_instances():
+    command = "lxc list -f json"
+    instances = cmd.check_output(command.split(), shell=False)
+    instances = instances.decode('utf8')
+    lab_stack = json.loads(instances)
+    return lab_stack
+
+
 def generate_ansible_configuration():
         file = 'ansible-lab'
-        linux_stack = read_stack()
         with open(file, 'w') as ansible_file:
             ansible_file.write('[lab]\n')
-        format_text.print_green("Loading Stack Configuraton from toml file")
-        for instance in linux_stack:
-            with open(file, 'a') as ansible_file:
-                instance_name = f"{instance}-{linux_stack[instance]['type']}"
-                format_text.print_green(f"Checking {instance_name}")
-                ansible_file.write(f"{instance_name}\n")
+        for instance in return_instances():
+             format_text.print_green(f"Instance {instance['name']} found - adding to Ansible inventory")
+             with open(file, 'a') as ansible_file:
+                  ansible_file.write(f"{instance['name']}\n")
 
 
 if __name__ == '__main__':
