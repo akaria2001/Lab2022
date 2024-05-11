@@ -6,26 +6,19 @@ cpu = 1
 protected = 0
 secureboot = 1
 
-[lab-rocky8-3-ct]
+[lab-alma8-2-ct]
 type = "container"
-image = "images:rockylinux/8/cloud"
+image = "images:almalinux/8/cloud"
 ram = "1GB"
 cpu = 1
 protected = 0
 secureboot = 1
 
-[lab-ubuntu22-4-ct]
+[lab-alma8-3-ct]
 type = "container"
-image = "ubuntu:22.04"
+image = "images:almalinux/8/cloud"
 ram = "1GB"
 cpu = 1
 protected = 0
 secureboot = 1
 
-[lab-debian12-5-ct]
-type = "container"
-image = "images:debian/12/cloud"
-ram = "1GB"
-cpu = 1
-protected = 0
-secureboot = 1

@@ -11,7 +11,7 @@
 
   vars:
     # Location for job reports
-    outdir: /var/tmp/reports
+    outdir: reports
     # CSS styling for navbar: menu width, failed/missing colors
     nav_width: 200px
     failed_style: 'color:orangered'
