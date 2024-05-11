@@ -1,0 +1,41 @@
+    <!-- This is a 'child' template sourced from our master report template. -->
+    <!-- To reference a host's facts, use our loop variable named thehost, i.e. hostvars[thehost]['some_fact'] -->
+    <hr>
+    <h2 id="{{ thehost }}">{{ thehost }}</h2>
+
+    <!-- If host was missing, give a generic error. Otherwise, print facts and job output. Use default() to guard against missing variables. -->
+    {% if hostvars[thehost]['missing']|bool %}
+
+      <p style="color:red;"><strong>Host was unavailable at the time of this job; please investigate whether this was a planned or unplanned outage.</strong></p>
+
+    {% else %}
+
+      {% if not hostvars[thehost]['job_success']|bool %}<p style="color:red"><strong>Host encountered issues during job execution, see information below.</strong></p>{% endif %}
+
+      <p><strong>Host info:</strong></p>
+      <ul>
+        <li>OS: {{ hostvars[thehost]['ansible_distribution'] | default('N/A') }} {{ hostvars[thehost]['ansible_distribution_version'] | default('N/A') }}, Kernel: {{ hostvars[thehost]['ansible_kernel'] | default('N/A') }}
+        <li>IP addresses: {{ hostvars[thehost]['ansible_all_ipv4_addresses'] | d(['unknown']) | join(', ') }}</li>
+      </ul>
+
+      <p>Job Status: <strong>{% if hostvars[thehost]['job_success']|bool %}Success{% else %}Failed{% endif %}</strong></p>
+
+      <!-- We don't indent anything between 'pre' tags , because the space will be taken literally -->
+      <p><strong>Command 1 output:</strong></p>
+      <div class="code">
+        <pre>
+{{ hostvars[thehost]['cmd1_results']['stdout'] | default('no output') | trim }}
+        </pre>
+      </div>
+
+      {% if hostvars[thehost]['cmd1_results']['stderr_lines'] | d([]) | length > 0 %}
+        <!-- This code snippet will only appear if our command task had any lines printed to stderr -->
+        <p><strong>Command 1 errors:</strong></p>
+        <div class="code">
+          <pre>
+{{ hostvars[thehost]['cmd1_results']['stderr'] | default('no output') | trim }}
+          </pre>
+        </div>
+      {% endif %}
+
+    {% endif %}

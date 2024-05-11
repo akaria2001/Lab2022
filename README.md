@@ -1,6 +1,12 @@
 #### Lab2022
 Amit Karia Lab 2022
 
+Update Sat May 11th 2024
+
+I am looking into using Ansible for reporting and have pulled code from https://github.com/jwkenney/ansible-job-report into this repository to help me make a start on this,
+
+I also recommend you read the author's excellent blog post at https://jwkenney.github.io/html-reports-with-ansible/
+
 ### Setup Lab (To help automate this, working on setup_host.sh which is currently a work in progress)
 
 To setup a Multi Node MicroK8s Cluster on an Ubuntu 22.04 Desktop Physical Installation (also works inside an Ubuntu 22.04 VM)

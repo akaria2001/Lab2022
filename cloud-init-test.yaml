@@ -12,7 +12,7 @@ users:
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh-authorized-keys:
-      - <insert key here>
+      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCtxPVGvSNpmR1uvw5LBXve9Kni55osZ5x1HiTPEyxcA+mWwy+gOv8CHWiyOtgLxERoqwQ/DgBGGS/pWCnDjfSI= akaria@Penguin
 
 runcmd:
   - echo 'Hello, World! welcome to the twighlight zone' > /var/tmp/hello-world.txt

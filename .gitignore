@@ -1,0 +1,13 @@
+# created by virtualenv automatically
+.git
+.vscode
+__pycache__
+bin
+ansible-hosts
+ansible-lab
+ansible-lab.json
+lib
+microk8s.profile
+pyvenv.cfg
+file.json
+share
