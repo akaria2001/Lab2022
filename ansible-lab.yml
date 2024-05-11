@@ -11,6 +11,12 @@
         name: firewalld
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+    - name: Disable firewalld Zone Drifting
+      ansible.builtin.replace:
+        path: /etc/firewalld/firewalld.conf
+        regexp: 'AllowZoneDrifting=yes'
+        replace: 'AllowZoneDrifting=no'
+        backup: true
       notify:
         - Restart firewalld
     - name: Ensure firewalld is running
