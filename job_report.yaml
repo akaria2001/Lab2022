@@ -56,10 +56,18 @@
     ############################
     
     - name: Run a command and save the results (ignore errors)
+      become: true
       command:
-        cmd: echo "This is output from command 1."
+        cmd: firewall-cmd --list-all
       ignore_errors: yes
       register: cmd1_results
+
+    - name: Run a command and save the results (ignore errors)
+      become: true
+      command:
+        cmd: systemctl status firewalld
+      ignore_errors: yes
+      register: cmd2_results
 
   post_tasks:
 

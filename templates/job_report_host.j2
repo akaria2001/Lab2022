@@ -25,6 +25,7 @@
       <div class="code">
         <pre>
 {{ hostvars[thehost]['cmd1_results']['stdout'] | default('no output') | trim }}
+{{ hostvars[thehost]['cmd2_results']['stdout'] | default('no output') | trim }}
         </pre>
       </div>
 
