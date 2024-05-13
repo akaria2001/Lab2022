@@ -1,0 +1,12 @@
+---
+- name: Setup Lab
+  hosts: lab
+  serial: 1
+  become: true
+  ignore_unreachable: true
+  ignore_errors: true
+  tasks:
+    - name: Shutdown
+      community.general.shutdown:
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+

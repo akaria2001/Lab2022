@@ -39,6 +39,17 @@
         name: emacs-nox
         state: present
       when: ansible_distribution == 'Ubuntu'
+    - name: Install QEMU Guest Agent
+      ansible.builtin.dnf:
+        name: qemu-guest-agent
+        state: present
+    - name: Enable QEMU Guest Agent
+      ansible.builtin.service:
+        name: qemu-guest-agent
+        enabled: true
+      notify:
+        - Restart QEMU Agent
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Install vim using dnf
       ansible.builtin.dnf:
         name: vim
@@ -57,5 +68,10 @@
     - name: Restart firewalld
       ansible.builtin.service:
         name: firewalld
+        state: restarted
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+    - name: Restart QEMU Agent
+      ansible.builtin.service:
+        name: qemu-guest-agent
         state: restarted
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
