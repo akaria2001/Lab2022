@@ -69,6 +69,13 @@
       ignore_errors: yes
       register: cmd2_results
 
+    - name: Run a command and save the results (ignore errors)
+      become: true
+      command:
+        cmd: cat /etc/resolv.conf
+      ignore_errors: yes
+      register: cmd3_results
+
   post_tasks:
 
     - name: Mark surviving hosts as successful
