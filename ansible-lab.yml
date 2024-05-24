@@ -20,7 +20,7 @@
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
       notify:
         - Restart firewalld
-    - name: Disable firewalld Zone Drifting
+    - name: Further lockdown - in future iteration this will be handled via Proxmox cloud-init bootstrap process
       ansible.builtin.replace:
         path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin yes$'
