@@ -76,6 +76,12 @@
       ignore_errors: yes
       register: cmd3_results
 
+    - name: Run a command and save the results (ignore errors)
+      become: true
+      shell: "grep -E '^PermitRootLogin' /etc/ssh/sshd_config"
+      ignore_errors: yes
+      register: cmd4_results
+
   post_tasks:
 
     - name: Mark surviving hosts as successful
