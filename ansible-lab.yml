@@ -1,7 +1,7 @@
 ---
 - name: Setup Lab
   hosts: lab
-  serial: 1
+  serial: 2
   become: true
   ignore_unreachable: true
   ignore_errors: true
@@ -17,8 +17,18 @@
         regexp: 'AllowZoneDrifting=yes'
         replace: 'AllowZoneDrifting=no'
         backup: true
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
       notify:
         - Restart firewalld
+    - name: Disable firewalld Zone Drifting
+      ansible.builtin.replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin yes$'
+        replace: 'PermitRootLogin no'
+        backup: true
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+      notify:
+        - Restart sshd
     - name: Ensure firewalld is running
       ansible.builtin.service:
         name: firewalld
@@ -68,6 +78,11 @@
     - name: Restart firewalld
       ansible.builtin.service:
         name: firewalld
+        state: restarted
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+    - name: Restart sshd
+      ansible.builtin.service:
+        name: sshd
         state: restarted
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
     - name: Restart QEMU Agent
