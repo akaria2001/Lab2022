@@ -44,6 +44,14 @@
         </pre>
       </div>
 
+      <!-- We don't indent anything between 'pre' tags , because the space will be taken literally -->
+      <p><strong>quick check output:</strong></p>
+      <div class="code">
+        <pre>
+{{ hostvars[thehost]['cmd4_results']['stdout'] | default('no output') | trim }}
+        </pre>
+      </div>
+
       {% if hostvars[thehost]['cmd1_results']['stderr_lines'] | d([]) | length > 0 %}
         <!-- This code snippet will only appear if our command task had any lines printed to stderr -->
         <p><strong>Command 1 errors:</strong></p>
