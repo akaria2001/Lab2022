@@ -8,5 +8,5 @@
   tasks:
     - name: Shutdown
       community.general.shutdown:
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
 

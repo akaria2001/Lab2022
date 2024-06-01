@@ -7,13 +7,13 @@
   ignore_errors: true
   tasks:
     - name: Update OS
-      ansible.builtin.dnf:
+      ansible.builtin.yum:
         name: "*"
         state: latest
     - name: Pause for 30 seconds
       ansible.builtin.pause:
         seconds: 30
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Reboot
       ansible.builtin.reboot:
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
