@@ -64,6 +64,10 @@
       ansible.builtin.yum:
         name: vim
         state: present
+    - name: Install emacs-nox using dnf
+      ansible.builtin.yum:
+        name: emacs-nox
+        state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Install less using dnf
       ansible.builtin.yum:
