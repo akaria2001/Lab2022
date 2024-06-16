@@ -129,6 +129,11 @@
         name: nagios-plugins-load
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Enable NRPE Guest Agent
+      ansible.builtin.service:
+        name: nrpe
+        enabled: true
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Allow Nagios to poll via NRPE
       ansible.builtin.replace:
         path: /etc/nagios/nrpe.cfg
