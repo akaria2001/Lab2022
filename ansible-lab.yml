@@ -129,6 +129,13 @@
         name: nagios-plugins-load
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Allow Nagios to poll via NRPE
+      ansible.builtin.replace:
+        path: /etc/nagios/nrpe.cfg
+        regexp: 'allowed_hosts=127.0.0.1,::1'
+        replace: 'allowed_hosts=127.0.0.1,192.168.1.8'
+        backup: true
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
       notify:
         - Restart NRPE
     - name: Pause for 10 seconds
