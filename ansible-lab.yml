@@ -53,13 +53,18 @@
       ansible.builtin.yum:
         name: qemu-guest-agent
         state: present
+      when: >
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
+        ansible_virtualization_role == 'guest'
     - name: Enable QEMU Guest Agent
       ansible.builtin.service:
         name: qemu-guest-agent
         enabled: true
+      when: >
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
+        ansible_virtualization_role == 'guest'
       notify:
         - Restart QEMU Agent
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Install vim using dnf
       ansible.builtin.yum:
         name: vim
