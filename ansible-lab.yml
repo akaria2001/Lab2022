@@ -56,6 +56,13 @@
       when: >
         (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
         ansible_virtualization_role == 'guest'
+    - name: UnInstall QEMU Guest Agent if present on Physical host
+      ansible.builtin.yum:
+        name: qemu-guest-agent
+        state: absent
+      when: >
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
+        ansible_virtualization_role == 'host'
     - name: Enable QEMU Guest Agent
       ansible.builtin.service:
         name: qemu-guest-agent
