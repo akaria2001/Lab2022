@@ -107,3 +107,18 @@ sudo chmod 664 /etc/hosts #give the group write permission
 
 sudo setfacl -m $USER:rw /etc/hosts
 
+----
+
+Add following tasks to work with WSL System Containers
+
+    - name: Check Kernel Release
+      ansible.builtin.shell: uname -r
+      register: uname_cmd
+
+    - name: Work around for WSL kernel to use iptables backend for firewalld
+      ansible.builtin.replace:
+        path: /etc/firewalld/firewalld.conf
+        regexp: 'nftables'
+        replace: 'iptables'
+      when: ansible_distribution_file_variety == 'RedHat' and uname_cmd.stdout.find('microsoft') !=1
+ 

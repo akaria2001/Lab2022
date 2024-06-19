@@ -1,7 +1,7 @@
 ---
 - name: Setup Lab
   hosts: lab
-  serial: 1
+  serial: 3
   become: true
   ignore_unreachable: true
   ignore_errors: true
