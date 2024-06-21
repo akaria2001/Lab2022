@@ -1,0 +1,35 @@
+---
+- name: Setup NPRE Clients
+  hosts: lab
+  serial: 2
+  become: true
+  ignore_unreachable: true
+  ignore_errors: true
+  tasks:
+    - name: Install nagios check_ssh using yum
+      ansible.builtin.yum:
+        name: nagios-plugins-ssh
+        state: present
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+      ansible.builtin.file:
+        path: /etc/nrpe.d/site_nrpe.cfg
+        state: touch
+        mode: u=rw,g=r,o=r
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Add ssh_check command
+      ansible.builtin.lineinfile:
+        path: /etc/nrpe.d/site_nrpe.cfg
+        line: 'command[check_ssh]=/usr/lib64/nagios/plugins/check_ssh -p 22 127.0.0.1'
+        state: present
+        create: true
+        mode: '644'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+      notify:
+        - Restart NRPE
+  handlers:
+    - name: Restart NRPE
+      ansible.builtin.service:
+        name: nrpe
+        state: restarted
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
