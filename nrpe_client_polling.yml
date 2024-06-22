@@ -27,6 +27,18 @@
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
       notify:
         - Restart NRPE
+    - name: Add total proc check override command for Physical host
+      ansible.builtin.lineinfile:
+        path: /etc/nrpe.d/site_nrpe.cfg
+        line: 'command[check_total_procs]=/usr/lib64/nagios/plugins/check_procs -w 275 -c 300'
+        state: present
+        create: true
+        mode: '644'
+      when: >
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
+        ansible_virtualization_role == 'host'
+      notify:
+        - Restart NRPE
   handlers:
     - name: Restart NRPE
       ansible.builtin.service:
