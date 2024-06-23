@@ -27,6 +27,17 @@
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
       notify:
         - Restart firewalld
+    - name: Check Kernel Release
+      ansible.builtin.shell: uname -r
+      register: uname_cmd
+    - name: Work around for WSL kernel to use iptables backend for firewalld
+      ansible.builtin.replace:
+        path: /etc/firewalld/firewalld.conf
+        regexp: 'nftables'
+        replace: 'iptables'
+      when: ansible_distribution_file_variety == 'RedHat' and uname_cmd.stdout.find('microsoft') !=1
+      notify:
+        - Restart firewalld
     - name: Further lockdown - in future iteration this will be handled via Proxmox cloud-init bootstrap process
       ansible.builtin.replace:
         path: /etc/ssh/sshd_config

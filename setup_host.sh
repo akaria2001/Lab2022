@@ -18,6 +18,7 @@ source bin/activate
 pip3 install toml psutil flask ipdb
 cat /etc/hosts > $HOME/bin/hosts.seed
 sudo addgroup editors
+sudo usermod -a -G lxd $USER
 sudo adduser $USER editors
 sudo chown :editors /etc/hosts
 sudo chmod 664 /etc/hosts

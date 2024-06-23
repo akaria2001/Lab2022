@@ -64,7 +64,7 @@ def create_instance(instance, image, secureboot, type, cpu, ram, tag):
             else:
                 format_text.print_red("KVM is not supported on host will not create QEMU VM")
         else:
-            lxc_init = f'lxc launch -p default -p microk8s {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
+            lxc_init = f'lxc launch -p default {image} {instance}-{type} -c limits.cpu={cpu} -c limits.memory={ram} -c user.comment={protected} -c user.user-data="{user_data}"'
             format_text.print_blue(f"Running command : {lxc_init}")
             # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
             os.system(lxc_init)
@@ -77,9 +77,10 @@ def check_instance_health(instance, type):
     format_text.print_blue(f"Running Check : {check_cmd}")
     try:
         cmd.check_output(check_cmd.split(), shell=False, stderr=subprocess.DEVNULL)
-        for count in range(120, -1, -1):
+        countdown = 60
+        for count in range(countdown, -1, -1):
             cmd.call("clear", shell=False)
-            format_text.print_smiley(f"{instance}-{type} is healthy, will wait 120 seconds before proceeding")
+            format_text.print_smiley(f"{instance}-{type} is healthy, will wait {countdown} seconds before proceeding")
             format_text.print_smiley(f"Countdown before proceeding: {count} seconds!!")
             time.sleep(1)
         return True
