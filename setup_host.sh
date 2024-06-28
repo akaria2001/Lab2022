@@ -5,6 +5,7 @@ sudo apt-get update -y
 sudo snap remove lxd --purge
 sudo apt-get install openssh-server -y
 sudo apt-get install neofetch ansible glances vim emacs-nox acl -y
+ansible-galaxy collection install ansible.posix
 sudo snap install lxd
 sudo snap install helm --classic
 cat $HOME/bin/lxd_preseed.yaml | lxd init --preseed
