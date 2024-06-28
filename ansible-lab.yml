@@ -11,13 +11,7 @@
         name: firewalld
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Open firewall port for nrpe
-      ansible.posix.firewalld:
-        port: 5666/tcp
-        immediate: true
-        permanent: true
-        state: enabled
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+
     - name: Disable firewalld Zone Drifting
       ansible.builtin.replace:
         path: /etc/firewalld/firewalld.conf
@@ -110,50 +104,6 @@
         name: epel-release
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Install nagios common using dnf
-      ansible.builtin.yum:
-        name: nagios-common
-        state: present
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Install nagios nrpe using dnf
-      ansible.builtin.yum:
-        name: nrpe
-        state: present
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Install nagios plugins nrpe using dnf
-      ansible.builtin.yum:
-        name: nagios-plugins-nrpe
-        state: present
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Install nagios plugins proc using dnf
-      ansible.builtin.yum:
-        name: nagios-plugins-procs
-        state: present
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Install nagios plugins users using dnf
-      ansible.builtin.yum:
-        name: nagios-plugins-users
-        state: present
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Install nagios plugins load using dnf
-      ansible.builtin.yum:
-        name: nagios-plugins-load
-        state: present
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Enable NRPE Guest Agent
-      ansible.builtin.service:
-        name: nrpe
-        enabled: true
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Allow Nagios to poll via NRPE
-      ansible.builtin.replace:
-        path: /etc/nagios/nrpe.cfg
-        regexp: 'allowed_hosts=127.0.0.1,::1'
-        replace: 'allowed_hosts=127.0.0.1,192.168.1.8'
-        backup: true
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-      notify:
-        - Restart NRPE
     - name: Pause for 10 seconds
       ansible.builtin.pause:
         seconds: 10
@@ -172,10 +122,5 @@
     - name: Restart QEMU Agent
       ansible.builtin.service:
         name: qemu-guest-agent
-        state: restarted
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
-    - name: Restart NRPE
-      ansible.builtin.service:
-        name: nrpe
         state: restarted
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
