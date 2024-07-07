@@ -95,6 +95,16 @@
         name: vim
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Install wget using dnf
+      ansible.builtin.yum:
+        name: wget
+        state: present
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Install tar using dnf
+      ansible.builtin.yum:
+        name: tar
+        state: present
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Install emacs-nox using dnf
       ansible.builtin.yum:
         name: emacs-nox
