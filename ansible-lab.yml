@@ -68,6 +68,13 @@
       when: >
         (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
         ansible_virtualization_role == 'guest'
+    - name: Install QEMU Guest Agent Ubunutu and Debian
+      ansible.builtin.apt:
+        name: qemu-guest-agent
+        state: present
+      when: >
+        (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian') and
+        ansible_virtualization_role == 'guest'
     - name: UnInstall QEMU Guest Agent if present on Physical host
       ansible.builtin.yum:
         name: qemu-guest-agent
@@ -80,7 +87,8 @@
         name: qemu-guest-agent
         enabled: true
       when: >
-        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS') and
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or
+        ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian') and
         ansible_virtualization_role == 'guest'
       notify:
         - Restart QEMU Agent
@@ -133,4 +141,7 @@
       ansible.builtin.service:
         name: qemu-guest-agent
         state: restarted
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+      when: >
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or
+        ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian') and
+        ansible_virtualization_role == 'guest'
