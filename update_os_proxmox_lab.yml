@@ -6,14 +6,23 @@
   ignore_unreachable: true
   ignore_errors: true
   tasks:
-    - name: Update OS
+    - name: Update OS Red Hat variants
       ansible.builtin.yum:
         name: "*"
         state: latest
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Update OS Debian variants
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
     - name: Pause for 30 seconds
       ansible.builtin.pause:
         seconds: 30
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Reboot
       ansible.builtin.reboot:
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+      when: >
+        ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or
+        ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
