@@ -122,6 +122,11 @@
         name: epel-release
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Install net-tools using dnf
+      ansible.builtin.yum:
+        name: net-tools
+        state: present
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Pause for 10 seconds
       ansible.builtin.pause:
         seconds: 10
