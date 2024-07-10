@@ -45,6 +45,11 @@
         name: nagios-plugins-load
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Install nagios plugins disk using dnf
+      ansible.builtin.yum:
+        name: nagios-plugins-disk
+        state: present
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Enable NRPE Guest Agent
       ansible.builtin.service:
         name: nrpe
@@ -74,6 +79,16 @@
       ansible.builtin.lineinfile:
         path: /etc/nrpe.d/site_nrpe.cfg
         line: 'command[check_ssh]=/usr/lib64/nagios/plugins/check_ssh -p 22 127.0.0.1'
+        state: present
+        create: true
+        mode: '644'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+      notify:
+        - Restart NRPE
+    - name: Add disk_check command
+      ansible.builtin.lineinfile:
+        path: /etc/nrpe.d/site_nrpe.cfg
+        line: 'command[check_disk]=/usr/lib64/nagios/plugins/check_disk -w 20% -c 10% -p /'
         state: present
         create: true
         mode: '644'
