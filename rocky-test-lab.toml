@@ -1,24 +1,23 @@
 [lab-alma8-1-ct]
 type = "container"
 image = "images:almalinux/8/cloud"
-ram = "1GB"
-cpu = 1
+ram = "4GB"
+cpu = 4
 protected = 0
 secureboot = 1
 
 [lab-alma8-2-ct]
 type = "container"
 image = "images:almalinux/8/cloud"
-ram = "1GB"
-cpu = 1
+ram = "2GB"
+cpu = 2
 protected = 0
 secureboot = 1
 
 [lab-alma8-3-ct]
 type = "container"
 image = "images:almalinux/8/cloud"
-ram = "1GB"
-cpu = 1
+ram = "2GB"
+cpu = 2
 protected = 0
 secureboot = 1
-
