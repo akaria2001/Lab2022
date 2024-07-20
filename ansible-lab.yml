@@ -98,6 +98,16 @@
         ansible_virtualization_role == 'guest'
       notify:
         - Restart QEMU Agent
+    - name: Check Inode Usage and report to /var/log - Cron Job Example via Ansible - will modify this in future to use own custom polling scripts
+      ansible.builtin.cron:
+        name: "check inodes"
+        minute: "50"
+        hour: "*"
+        job: "df -i / >> /var/log/inode-check-via-cron.log"
+      when: >
+        (ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or
+        ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian') and
+        ansible_virtualization_role == 'guest'
     - name: Install vim using dnf
       ansible.builtin.yum:
         name: vim
