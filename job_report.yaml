@@ -82,6 +82,14 @@
       ignore_errors: yes
       register: cmd4_results
 
+    - name: Run a command and save the results (ignore errors)
+      become: true
+      shell: dnf check-update
+      ignore_errors: yes
+      register: cmd5_results
+
+
+
   post_tasks:
 
     - name: Mark surviving hosts as successful
