@@ -23,6 +23,9 @@
     - name: Configure Resolve file legacy
       ansible.builtin.command: nmcli connection modify eth0 ipv4.dns 192.168.1.50 and ansible_virtualization_role == 'guest'
       when: ansible_distribution == 'CentOS'
+    - name: Configure Resolve file LXC
+      ansible.builtin.command: nmcli connection modify eth0 ipv4.dns 192.168.1.50 and ansible_virtualization_type == 'lxc'
+      when: ansible_distribution == 'CentOS'
     - name: Reboot
       ansible.builtin.reboot:
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'

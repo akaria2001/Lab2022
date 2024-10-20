@@ -11,3 +11,4 @@ microk8s.profile
 pyvenv.cfg
 file.json
 share
+reports/*
