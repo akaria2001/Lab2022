@@ -1,7 +1,14 @@
 #/bin/sh
-cd $HOME/bin
+clear
+cd $HOME/bin
 sudo ls
 pwd
-time python3.10 linux_stack.py
-for instance in $(lxc list -c n -f compact | tail -n +2) ; do lxc file push $HOME/bin/readme.lxc.md $instance/tmp/ ; done
-sudo bash populate_hosts.sh
+lxc ls
+sleep 2
+time python3 tear_down_lab.py
+time python3.12 rocky-lab.py
+bash snapshot.sh
+ansible-playbook update_os_proxmox_lab.yml -i ansible-lab
+bash /home/ubuntu/bin/snapshot_lab.sh
+lxc ls
+for f in $(lxc ls -c n -f csv); do lxc info $f ; done
