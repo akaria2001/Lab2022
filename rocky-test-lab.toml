@@ -1,23 +1,47 @@
-[lab-alma8-1-ct]
+[lab-alma9-1-ct]
 type = "container"
-image = "images:almalinux/8/cloud"
+image = "images:almalinux/9/cloud"
 ram = "4GB"
 cpu = 4
 protected = 0
 secureboot = 1
 
-[lab-alma8-2-ct]
+[lab-alma9-2-ct]
 type = "container"
-image = "images:almalinux/8/cloud"
+image = "images:almalinux/9/cloud"
 ram = "2GB"
 cpu = 2
 protected = 0
 secureboot = 1
 
-[lab-alma8-3-ct]
+[lab-alma9-3-ct]
 type = "container"
-image = "images:almalinux/8/cloud"
+image = "images:almalinux/9/cloud"
 ram = "2GB"
 cpu = 2
+protected = 0
+secureboot = 1
+
+[lab-rocky9-3-ct]
+type = "container"
+image = "images:rockylinux/9/cloud"
+ram = "2GB"
+cpu = 2
+protected = 0
+secureboot = 1
+
+[lab-debian13-1-ct]
+type = "container"
+image = "images:debian/13/cloud"
+ram = "2GB"
+cpu = 2
+protected = 0
+secureboot = 1
+
+[lab-ubuntu24-1-ct]
+type = "container"
+image = "ubuntu:24.04"
+ram = "4GB"
+cpu = 4
 protected = 0
 secureboot = 1
