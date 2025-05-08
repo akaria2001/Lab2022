@@ -1,13 +1,5 @@
-[lab-alma9-1-ct]
-type = "container"
-image = "images:almalinux/9/cloud"
-ram = "4GB"
-cpu = 4
-protected = 0
-secureboot = 1
-
 [lab-alma9-2-ct]
-type = "container"
+type = "container"ß
 image = "images:almalinux/9/cloud"
 ram = "2GB"
 cpu = 2
@@ -17,6 +9,9 @@ secureboot = 1
 [lab-alma9-3-ct]
 type = "container"
 image = "images:almalinux/9/cloud"
+[lab-rocky8-3-ct]
+type = "container"
+image = "images:rockylinux/8/cloud"
 ram = "2GB"
 cpu = 2
 protected = 0
