@@ -57,16 +57,19 @@
         name: snapd
         state: present
       when: ansible_distribution == 'Ubuntu'
+    - name: Run apt apt modernize-sources for Debian and Ubuntu
+      ansible.builtin.command: 'apt modernize-sources -y'
+      when: ansible_distribution == 'Debian'
     - name: Install vim using apt
       ansible.builtin.apt:
         name: vim
         state: present
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
     - name: Install emacs-nox using apt
       ansible.builtin.apt:
         name: emacs-nox
         state: present
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
     - name: Install QEMU Guest Agent
       ansible.builtin.yum:
         name: qemu-guest-agent
