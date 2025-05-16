@@ -37,7 +37,7 @@ def check_instance_exists(instance):
         return False
 
 
-def create_instance(instance, image, secureboot, type, cpu, ram, disk, tag):
+def create_instance(instance, image, secureboot, type, cpu, ram, root_disk, tag):
     user_data = read_user_data()
     if(secureboot == 0):
         securebootflag = "false"
@@ -56,7 +56,7 @@ def create_instance(instance, image, secureboot, type, cpu, ram, disk, tag):
             path = '/dev/kvm'
             if(os.path.exists(path)):
                 format_text.print_blue("KVM is supported on host will create QEMU VM")
-                lxc_init = f'lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -d root,size={disk} -c user.comment={protected} -c user.user-data="{user_data}"'
+                lxc_init = f'lxc launch {image} {instance}-{type} --vm -c security.secureboot={securebootflag} -c limits.cpu={cpu} -c limits.memory={ram} -d root,size={root_disk} -c user.comment={protected} -c user.user-data="{user_data}"'
                 format_text.print_blue(f"Running command : {lxc_init}")
                 # Work around as subprocess not playing nice with my lxc_init command when using user-data flag, commenting out the cmd.call to use os.system, will look for better solution in future.
                 os.system(lxc_init)
@@ -105,7 +105,16 @@ def main():
         if(check_instance_exists(instance)):
             print(f"{instance} already exists")
         else:
-            create_instance(instance, linux_stack[instance]['image'], linux_stack[instance]['secureboot'], linux_stack[instance]['type'], linux_stack[instance]['cpu'], linux_stack[instance]['ram'], linux_stack[instance]['disk'], linux_stack[instance]['protected'])
+            # If the instance exists, but you want to perform additional actions, add them here
+            pass
+            image = linux_stack[instance]['image']
+            secureboot = linux_stack[instance]['secureboot']
+            type_ = linux_stack[instance]['type']
+            cpu = linux_stack[instance]['cpu']
+            ram = linux_stack[instance]['ram']
+            root_disk = linux_stack[instance]['root_disk']
+            protected = linux_stack[instance]['protected']
+            create_instance(instance, image, secureboot, type_, cpu, ram, root_disk, protected)
             time.sleep(15)
         if(check_instance_health(instance, linux_stack[instance]['type'])):
             time.sleep(60)
