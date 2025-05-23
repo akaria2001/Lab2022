@@ -11,8 +11,7 @@ users:
     groups: sudo
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    ssh-authorized-keys:
-      - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBO57ScMUnprkh8CHyILabivN/qYHxfQiQ519DKkekaFfBi4dIIMxS3mfvpwJMAlOwm2ht5e6nhpl23n/IFlwoF0= ubuntu@UbuntuMac
+    ssh-authorized-keys: TMPKEY
 
 runcmd:
   - echo 'Hello, World! welcome to the twighlight zone' > /var/tmp/hello-world.txt
