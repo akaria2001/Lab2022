@@ -10,6 +10,7 @@ import os.path
 import os
 import populate_hosts_lab
 import create_ansible_lab_configuration as ansible_gen
+import rotate_creds
 
 
 def read_stack():
@@ -142,6 +143,8 @@ def main():
         cmd.call(test_trust.split(), shell=False)
         ansible_gen.generate_ansible_configuration()
         time.sleep(15)
+
+    rotate_creds.regen_creds()
 
     # format_text.print_green(f"Using Ansible to istall MicroK8s on the new VMs")
     # ansible_cmd = "ansible-playbook ansible-microk8s.yml -i ansible-hosts"
