@@ -93,6 +93,7 @@ def main():
     cmd.call('clear', shell=False)
     format_text.print_smiley(f"Welcome {get_user()} to the Rocky Lab creation tool")
     time.sleep(2)
+    rotate_creds.regen_creds()
     unhealthy_instances = []
     cmd.call("clear", shell=False)
     format_text.print_green("Loading Stack Configuraton from toml file")
@@ -144,12 +145,6 @@ def main():
         ansible_gen.generate_ansible_configuration()
         time.sleep(15)
 
-    rotate_creds.regen_creds()
-
-    # format_text.print_green(f"Using Ansible to istall MicroK8s on the new VMs")
-    # ansible_cmd = "ansible-playbook ansible-microk8s.yml -i ansible-hosts"
-    # format_text.print_smiley(f"Running command {ansible_cmd}")
-    # cmd.call(ansible_cmd.split(), shell=False)
 
     format_text.print_smiley(f"Running Ansible playbook to setup Lab Instances")
     time.sleep(5)
