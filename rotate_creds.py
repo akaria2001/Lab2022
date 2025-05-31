@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import time
 from pathlib import Path
+import getpass
 
 def regen_creds():
     HOME = Path.home()
@@ -11,6 +12,7 @@ def regen_creds():
     PUB_KEY_FILE = SSH_DIR / "id_ecdsa.pub"
     TEMPLATE = HOME / "bin/cloud-init-test.yaml.template"
     YAML_FILE = HOME / "bin/cloud-init-test.yaml"
+    USERNAME = getpass.getuser()
 
     # Remove old keys
     for f in SSH_DIR.glob("id_ecdsa*"):
@@ -62,7 +64,7 @@ def regen_creds():
         print(f"Pushing key to {c}")
         subprocess.run([
             "lxc", "file", "push", str(PUB_KEY_FILE),
-            f"{c}/home/ubuntu/.ssh/authorized_keys"
+            f"{c}/home/{USERNAME}/.ssh/authorized_keys"
         ], check=True)
 
     # SSH into containers and print hostname and os-release
