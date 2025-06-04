@@ -1,0 +1,17 @@
+---
+- name: Test Vault
+  hosts: lab
+  serial: 2
+  become: true
+  ignore_unreachable: true
+  ignore_errors: true
+  vars_files:
+    - api_key.yml
+  tasks:
+    - name: Write API key to /etc/amit.key
+      copy:
+        content: "{{ api_key }}"
+        dest: /etc/amit.key
+        owner: root
+        group: root
+        mode: '0600'
