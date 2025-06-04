@@ -24,11 +24,17 @@ sudo adduser $USER editors
 sudo chown :editors /etc/hosts
 sudo chmod 664 /etc/hosts
 sudo setfacl -m $USER:rw /etc/hosts
-printf "You can now create your MicroK8s cluster by running the following\n\n"
-printf "ssh-keygen -b 256 -t ecdsa\n"
-printf "Enter the default options\n"
-printf "Copy the contens off $HOME/.ssh/id_ecdsa.pub to the cloud-init-test.yaml file line 15\n"
-printf "\n"
-printf "cd $HOME/bin\n"
-printf "source/bin/activate\n"
-printf "time python3 k8_cluster.py\n"
+printf "Setting up SSH Keys\n\n"
+cd $HOME
+rm -rfv $HOME/.ssh/id_ecdsa*
+ssh-keygen -b 256 -t ecdsa -q -f $HOME/.ssh/id_ecdsa -N ""
+KEY=$(cat $HOME/.ssh/id_ecdsa.pub)
+sleep 2
+cp -rfv $HOME/bin/cloud-init-test.yaml.template $HOME/bin/cloud-init-test.yaml
+sed -i "s|TMPKEY|$KEY|g" $HOME/bin/cloud-init-test.yaml
+cat $HOME/.ssh/id_ecdsa.pub
+grep -i ecdsa $HOME/bin/cloud-init-test.yaml
+for c in $(lxc ls -c n -f csv) ; do lxc file push ~/.ssh/id_ecdsa.pub $c/home/$USERNAME/.ssh/authorized_keys; done
+for f in $(lxc ls -c n -f csv ) ; do ssh $f -- hostname ; cat /etc/os-release ; printf "\n" ; done
+cd $HOME/bin
+source /bin/activate

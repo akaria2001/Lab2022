@@ -1,5 +1,5 @@
 [lab-alma-linux-9-1]
-type = "vm"
+type = "container"
 image = "images:almalinux/9/cloud"
 ram = "2GB"
 cpu = 2
@@ -8,7 +8,7 @@ protected = 0
 secureboot = 1
 
 [lab-debian-linux-12-1]
-type = "vm"
+type = "container"
 image = "images:debian/12/cloud"
 ram = "4GB"
 cpu = 4
@@ -17,7 +17,7 @@ protected = 0
 secureboot = 1
 
 [lab-debian-linux-13-1]
-type = "vm"
+type = "container"
 image = "images:debian/13/cloud"
 ram = "4GB"
 cpu = 4
@@ -26,7 +26,7 @@ protected = 0
 secureboot = 1
 
 [lab-ubuntu-linux-22-1]
-type = "vm"
+type = "container"
 image = "ubuntu:22.04"
 ram = "4GB"
 cpu = 4
@@ -35,7 +35,7 @@ protected = 0
 secureboot = 1
 
 [lab-ubuntu24-1]
-type = "vm"
+type = "container"
 image = "ubuntu:24.04"
 ram = "4GB"
 cpu = 4
@@ -44,7 +44,7 @@ protected = 0
 secureboot = 1
 
 [lab-rocky-linux-8-1]
-type = "vm"
+type = "container"
 image = "images:rockylinux/8/cloud"
 ram = "4GB"
 cpu = 4
@@ -53,7 +53,7 @@ protected = 1
 secureboot = 1
 
 [lab-rocky-linux-9-1]
-type = "vm"
+type = "container"
 image = "images:rockylinux/9/cloud"
 ram = "4GB"
 cpu = 4
