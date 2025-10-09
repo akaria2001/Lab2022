@@ -136,6 +136,12 @@
         name: less
         state: present
       when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+    - name: Add alias for clear to /etc/bashrc (system-wide)
+      ansible.builtin.lineinfile:
+        path: /etc/bashrc
+        regexp: '^alias clear='
+        line: "alias clear='printf \"\\033c\"'"
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
     - name: Install epel using dnf
       ansible.builtin.yum:
         name: epel-release

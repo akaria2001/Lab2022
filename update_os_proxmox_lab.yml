@@ -11,7 +11,7 @@
       ansible.builtin.yum:
         name: "*"
         state: latest
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or ansible_distribution == 'OracleLinux'
 
     - name: Update apt cache
       apt:
@@ -26,11 +26,11 @@
     - name: Pause for 30 seconds
       ansible.builtin.pause:
         seconds: 30
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS'
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or ansible_distribution == 'OracleLinux''
 
     - name: Reboot
       ansible.builtin.reboot:
       when: >
         ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or
-        ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+        ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' or ansible_distribution == 'OracleLinux'
 
