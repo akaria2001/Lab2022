@@ -26,7 +26,7 @@
     - name: Pause for 30 seconds
       ansible.builtin.pause:
         seconds: 30
-      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or ansible_distribution == 'OracleLinux''
+      when: ansible_distribution == 'Rocky' or ansible_distribution == 'AlmaLinux' or ansible_distribution == 'CentOS' or ansible_distribution == 'OracleLinux'
 
     - name: Reboot
       ansible.builtin.reboot:
