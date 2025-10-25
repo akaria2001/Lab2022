@@ -9,8 +9,53 @@
         name: snapd
         state: present
 
-    - name: Install MicroK8s
-      shell: snap install microk8s --classic --dev-mode
+    - name: Ensure apparmor-parser is installed
+      ansible.builtin.package:
+        name: apparmor
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+
+    - name: Install snapd
+      ansible.builtin.package:
+        name: snapd
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+
+    - name: Install MicroK8s via snap
+      community.general.snap:
+        name: microk8s
+        classic: yes
+        state: present
+      when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+        
+    - name: Add 'apparmor_parser -r' command as a cron job to run on reboot ⚙️
+      # This is the key step to fix the profile loading issue after a reboot,
+      # specifically for MicroK8s within some LXC/container environments.
+      ansible.builtin.cron:
+        name: "MicroK8s AppArmor profile reload"
+        special_time: reboot
+        job: "/usr/sbin/apparmor_parser -r /var/lib/snapd/apparmor/profiles/snap.microk8s.* > /dev/null 2>&1"
+        user: root
+        state: present
+        
+    - name: Check if a reboot is required after installation
+      # You can use the reboot module, which waits for the host to come back up.
+      # A reboot is often required after installing snapd/MicroK8s in an LXC.
+      ansible.builtin.reboot:
+        msg: "Reboot initiated by Ansible to finalize MicroK8s and AppArmor setup"
+        reboot_timeout: 600  # Wait up to 10 minutes for the host to come back
+        
+    - name: Verify MicroK8s is running (post-reboot)
+      ansible.builtin.command: microk8s status --wait-ready
+      register: microk8s_status_check
+      failed_when: microk8s_status_check.rc != 0
+      changed_when: false
+      
+    - name: Display MicroK8s status
+      ansible.builtin.debug:
+        var: microk8s_status_check.stdout
 
     - name: Get USER environment variable from remote host
       command: echo $USER
