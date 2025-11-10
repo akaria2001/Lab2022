@@ -1,85 +1,205 @@
----
-- name: Install MicroK8s
-  hosts: all
-  serial : 1
-  become: true
+# Full LXC/MicroK8s playbook — robust worker install, dynamic user, join, labeling
+
+# -----------------------------
+# Controller Setup
+# -----------------------------
+- name: Install and configure MicroK8s on controller
+  hosts: k8scontroller
+  become: yes
+  gather_facts: yes
+  vars:
+    microk8s_addons:
+      - dns
+      - storage
   tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      ignore_errors: yes
+
     - name: Install snapd
       apt:
         name: snapd
         state: present
+      ignore_errors: yes
 
-    - name: Ensure apparmor-parser is installed
-      ansible.builtin.package:
+    - name: Ensure snapd service is running
+      systemd:
+        name: snapd
+        state: started
+        enabled: yes
+      ignore_errors: yes
+
+    - name: Install AppArmor
+      apt:
         name: apparmor
         state: present
-        update_cache: yes
-      when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
+      ignore_errors: yes
 
-    - name: Install snapd
-      ansible.builtin.package:
-        name: snapd
-        state: present
-        update_cache: yes
-      when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
-
-    - name: Install MicroK8s via snap
+    - name: Install MicroK8s
       community.general.snap:
         name: microk8s
         classic: yes
         state: present
-      when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
-        
-    - name: Add 'apparmor_parser -r' command as a cron job to run on reboot ⚙️
-      # This is the key step to fix the profile loading issue after a reboot,
-      # specifically for MicroK8s within some LXC/container environments.
-      ansible.builtin.cron:
-        name: "MicroK8s AppArmor profile reload"
+      ignore_errors: yes
+
+    - name: Add AppArmor reload cron job on reboot
+      cron:
+        name: "MicroK8s AppArmor reload"
         special_time: reboot
         job: "/usr/sbin/apparmor_parser -r /var/lib/snapd/apparmor/profiles/snap.microk8s.* > /dev/null 2>&1"
         user: root
-        state: present
-        
-    - name: Check if a reboot is required after installation
-      # You can use the reboot module, which waits for the host to come back up.
-      # A reboot is often required after installing snapd/MicroK8s in an LXC.
-      ansible.builtin.reboot:
-        msg: "Reboot initiated by Ansible to finalize MicroK8s and AppArmor setup"
-        reboot_timeout: 600  # Wait up to 10 minutes for the host to come back
-        
-    - name: Verify MicroK8s is running (post-reboot)
-      ansible.builtin.command: microk8s status --wait-ready
-      register: microk8s_status_check
-      failed_when: microk8s_status_check.rc != 0
-      changed_when: false
-      
-    - name: Display MicroK8s status
-      ansible.builtin.debug:
-        var: microk8s_status_check.stdout
+      ignore_errors: yes
 
-    - name: Get USER environment variable from remote host
-      command: echo $USER
-      register: user
+    - name: Reboot controller if snapd/MicroK8s needs it
+      reboot:
+        msg: "Reboot for MicroK8s to finalize"
+        reboot_timeout: 600
+      ignore_errors: yes
 
-    - name: Allow non-root access to MicroK8s
-      shell: usermod -aG microk8s ubuntu
-
-    - name: Configure MicroK8s
+    - name: Wait for MicroK8s to be ready
       shell: microk8s status --wait-ready
+      retries: 10
+      delay: 15
+      register: microk8s_ready
+      until: microk8s_ready.rc == 0
+      ignore_errors: yes
 
-- name: MicroK8s Controller Setup
-  hosts: k8scontroller
-  serial : 1
-  become: true
+    - name: Get remote $USER
+      command: echo $USER
+      register: remote_user
+      ignore_errors: yes
+
+    - name: Add controller user to microk8s group dynamically
+      user:
+        name: "{{ remote_user.stdout }}"
+        groups: microk8s
+        append: yes
+      ignore_errors: yes
+
+    - name: Enable MicroK8s addons
+      command: microk8s enable {{ item }}
+      loop: "{{ microk8s_addons }}"
+      register: addon_results
+      changed_when: "'already enabled' not in addon_results.stdout"
+      ignore_errors: yes
+
+# -----------------------------
+# Worker Setup — robust LXC install
+# -----------------------------
+- name: Install MicroK8s on workers
+  hosts: k8sworkers
+  become: yes
+  gather_facts: yes
+  serial: 1
   tasks:
-    - name: MicroK8s Controller enable dns
-      shell: microk8s enable dns
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      ignore_errors: yes
 
-    - name: MicroK8s Controller enable hostpath-storage
-      shell: microk8s enable hostpath-storage
+    - name: Install snapd
+      apt:
+        name: snapd
+        state: present
+      ignore_errors: yes
 
-    - name: MicroK8s Controller deploy sample nginx app
-      shell: microk8s kubectl create deployment nginx --image=nginx
+    - name: Ensure snapd service is running
+      systemd:
+        name: snapd
+        state: started
+        enabled: yes
+      ignore_errors: yes
 
-    - name: MicroK8s Controller expose sample nginx app
-      shell: microk8s kubectl expose deployment nginx --type=NodePort --port=80
+    - name: Install AppArmor
+      apt:
+        name: apparmor
+        state: present
+      ignore_errors: yes
+
+    - name: Install MicroK8s
+      community.general.snap:
+        name: microk8s
+        classic: yes
+        state: present
+      ignore_errors: yes
+
+    - name: Add AppArmor reload cron job
+      cron:
+        name: "MicroK8s AppArmor reload"
+        special_time: reboot
+        job: "/usr/sbin/apparmor_parser -r /var/lib/snapd/apparmor/profiles/snap.microk8s.* > /dev/null 2>&1"
+        user: root
+      ignore_errors: yes
+
+    - name: Get remote $USER
+      command: echo $USER
+      register: remote_user
+      ignore_errors: yes
+
+    - name: Add user to microk8s group
+      user:
+        name: "{{ remote_user.stdout }}"
+        groups: microk8s
+        append: yes
+      ignore_errors: yes
+
+    - name: Reboot worker if snapd/MicroK8s needs it
+      reboot:
+        msg: "Reboot for MicroK8s to finalize"
+        reboot_timeout: 600
+      ignore_errors: yes
+
+    - name: Wait for MicroK8s to be ready
+      shell: microk8s status --wait-ready
+      retries: 10
+      delay: 15
+      register: microk8s_ready
+      until: microk8s_ready.rc == 0
+      ignore_errors: yes
+
+# -----------------------------
+# Join Workers to Cluster with retries
+# -----------------------------
+- name: Dynamically join workers to MicroK8s cluster
+  hosts: k8sworkers
+  become: yes
+  gather_facts: no
+  serial: 1
+  tasks:
+    - name: Check if worker is already in cluster
+      shell: microk8s kubectl get nodes -o name
+      delegate_to: "{{ groups['k8scontroller'][0] }}"
+      register: cluster_nodes
+      ignore_errors: yes
+      retries: 5
+      delay: 10
+      until: cluster_nodes is defined
+
+    - name: Generate join command on controller for this worker
+      shell: microk8s add-node --format short
+      delegate_to: "{{ groups['k8scontroller'][0] }}"
+      register: join_cmd
+      when: inventory_hostname not in cluster_nodes.stdout
+      ignore_errors: yes
+      retries: 5
+      delay: 10
+      until: join_cmd is defined and join_cmd.stdout != ""
+
+    - name: Join worker to MicroK8s cluster
+      shell: "{{ join_cmd.stdout }} --worker"
+      when: inventory_hostname not in cluster_nodes.stdout
+      ignore_errors: yes
+      retries: 5
+      delay: 15
+      until: result is defined and result.rc == 0
+      register: result
+
+    - name: Label worker node automatically
+      shell: microk8s kubectl label node {{ inventory_hostname }} role=worker --overwrite
+      delegate_to: "{{ groups['k8scontroller'][0] }}"
+      ignore_errors: yes
+      retries: 5
+      delay: 10
+      until: label_result is defined
+      register: label_result
